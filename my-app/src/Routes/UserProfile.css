@@ -1,0 +1,47 @@
+/* UserProfile.css */
+
+.container {
+    background-color: lightgray;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .profile-info {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .profile-info strong {
+    margin-right: 5px;
+  }
+  
+  .button {
+    padding: 10px;
+    font-size: 18px;
+    background-color: #dc3545; /* Red color for the button */
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .update-button {
+    background-color: #007bff; /* Blue color for the update button */
+  }
+  
+  .loading {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 20px;
+  }
+  

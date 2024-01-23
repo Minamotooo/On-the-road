@@ -1,0 +1,43 @@
+.body {
+    font-family: Jost, sans-serif;
+}
+
+
+.top--reviewed {
+    color: var(--Primary, #E61C5D);
+font-size: 14px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+text-transform: uppercase;
+padding-left: 80px;
+margin-bottom: 0%;
+padding-bottom: 0%;
+}
+
+
+.popular--title {
+    color: #112B3C;
+    padding-left: 80px;
+    margin-top: 0%;
+    padding-top: 0%;
+font-size: 35px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+width: 650px;
+}
+
+.bd {
+    font-style:
+}
+.card--list {
+    padding-left: 70px ;
+    padding-right: 70px ;
+
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 20px;
+        overflow-x: auto;
+     
+}

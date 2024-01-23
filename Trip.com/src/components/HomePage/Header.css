@@ -1,0 +1,71 @@
+/* Header.css */
+.header--container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 auto;
+    padding: 40px;
+    position: relative;
+  }
+  
+    .header--text {
+    font-size: 64px; /* Adjust the font size as needed */
+    padding: 50px 130px ;
+    padding-bottom: 0%;
+    max-width: 700px;
+    color: var(--Black, #112B3C);
+    margin-bottom: auto;
+
+/* D1 */
+text-shadow: 0px 12px 40px rgba(0, 0, 0, 0.04);
+font-size: 60px;
+font-style: normal;
+font-weight: 700;
+line-height: 100%; /* 76.8px */
+  }
+  
+    .header--subtext {
+        color: var(--Grey-1, #808080);
+        padding-left: 130px;
+        padding-top: 0%;
+        max-width: 350px;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+    width: 469px;   
+    font-size: 18px; /* Adjust the font size as needed */
+    color: #666; /* Replace with the exact color from the image */
+    margin-bottom: 40px; /* Adjust the space as per the design */
+  }
+  
+  .large--image {
+    border-top-left-radius: 150px;
+    border-top-right-radius: 150px; /* Adjust the border-radius as needed */
+    position: absolute;
+    right: 300px; /* Adjust the position as per the design */
+    top: 50x;
+    width: 250px;
+  }
+  
+  .smaller--image {
+    width: 110px;
+flex-shrink: 0;
+ /* Circular image */
+    position: absolute;
+    right: 250px; /* Adjust the position as per the design */
+    bottom: 30px; /* Adjust the position as per the design */
+  }
+  
+  @media (max-width: 768px) {
+    .large--image, .smaller--image {
+      position: static;
+      margin: 0 auto;
+      display: block;
+    }
+  
+    div {
+      text-align: center;
+    }
+  }
+  

@@ -1,0 +1,278 @@
+* {
+    box-sizing: ;
+}
+
+body {
+    margin: 0px;
+    font-family: Jost, sans-serif;
+    
+
+}
+
+
+.gray {
+    color:#918E9B;
+}
+
+.nav {
+    height: 60px;
+    box-shadow: 0px 12px 40px 0px rgba(0, 0, 0, 0.04);
+    display: flex;
+   justify-content: space-between;
+   align-items: center;
+  }
+
+  .airbnb-logo {
+    width: 82.02px;
+    height: 25.352px;
+  }
+
+  .hero {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-photo {
+    max-width: 400px;
+    align-self: center;
+    padding-bottom: 20px ;
+  }
+  .hero-header {
+    margin-top: 0%;
+    margin-bottom: 16px;
+    width: 347px;
+    font-size: 36px;
+    font-weight: 600;
+
+  }
+ .hero-content {
+    margin-top: 0%;
+    color: #222;
+    font-weight: 300;
+    line-height: 110%; /* 17.6px */
+    width: 320px;
+    height: 56px;
+ }
+
+ .card {
+   margin: 10px;
+   padding: 10px;
+   width: 175px;
+   font-family: 'Jost', sans-serif;
+   font-size: 12px;
+   flex: 0 0 auto;
+   display: flex;
+   flex-direction: column;
+   position: relative;
+   line-height: 100%;
+   box-shadow: 0px 12px 40px 0px rgba(0, 0, 0, 0.04);
+   border-radius: 8px; /* Rounded corners */
+   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.card:hover {
+   transform: scale(1.03); /* Slight scale-up */
+   box-shadow: 0px 15px 45px 0px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+}
+
+.card--image {
+   width: 100%;
+   height: 120px; /* Fixed height */
+   object-fit: cover; /* Cover the area without stretching */
+   border-top-left-radius: 8px; /* Rounded corners */
+   border-top-right-radius: 8px; /* Rounded corners */
+}
+
+.card--star {
+   height: 14px;
+}
+
+.card--badge {
+   position: absolute;
+   top: 6px;
+   left: 6px;
+   background-color: white;
+   padding: 5px 7px;
+   border-radius: 2px;
+   font-weight: bold;
+}
+
+.card--description {
+   padding-top: 5px;
+   font-size: 12px;
+   display: -webkit-box;
+   -webkit-line-clamp: 2; /* Changed to 2 lines as per your request */
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+   text-overflow: ellipsis; /* Ensures the text ends with '...' */
+}
+
+.card--title {
+   font-family: 'Jost', sans-serif;
+   font-size: 15px;
+}
+
+
+/**/
+
+.nav--logo {
+   height: 35px;
+   padding: 20px 40px;
+}
+
+.nav-content {
+   display: flex;
+   align-items: center;
+   margin: 0 auto;
+   color: var(--Grey-1, #808080);
+   font-size: 15px;
+   font-style: normal;
+   font-weight: 400;
+   line-height: normal;
+
+}
+.nav-content > span {
+   padding:10px;
+}
+.selected {
+   color: var(--Black, #000000);
+   font-weight: 500;
+}
+
+
+.navbar--container{
+   height: 60px;
+   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 12px 40px 0px rgba(0, 0, 0, 0.04);
+  background: var(--White, #FFF);
+  flex-shrink: 0;
+
+}
+
+.nav--Menu {
+   display: inline-flex;
+align-items: center;
+gap: 10px;
+ }
+
+
+
+/* Navbar.module.css */
+.navItem {
+  position: relative;
+  margin: 0 12px;
+  padding: 0 4px; /* Adjust padding as needed */
+  text-decoration: none;
+  color: var(--Grey-1, #808080);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  transition: color 0.2s;
+  display: inline-block; /* Needed for the positioning of the pseudo-element */
+  letter-spacing: 1px;
+}
+
+.navItem::after {
+   content: '';
+   position: absolute;
+   height: 2px;
+   bottom: -5px; /* Adjust as needed for the distance from the text */
+   left: 50%;
+   transform: translateX(-50%); /* Centers the line */
+   background-color: #E61C5D;
+   transition: width 0.3s ease-in-out, transform 0.3s ease-in-out; /* transition on transform for smoother effect */
+   max-width: 70%; /* Adjust this value for your preferred underline length */
+ }
+ 
+ .navItem:hover::after,
+ .navItem.active::after {
+   width: 18px;
+   height: 4px;
+   border-radius: 30px;
+   background: var(--Primary, #E61C5D);   
+   transform: translateX(-50%);
+ }
+ 
+
+.navItem:hover,
+.navItem.active {
+  color: var(--Black, #112B3C);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+
+
+/* Button container styles */
+.button--container {
+ /* You can choose your preferred font */
+display: inline-flex;
+justify-content: flex-end;
+align-items: center;
+gap: 5px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+/* Base styles for both buttons */
+
+
+/* Specific styles for the Login button */
+.signin--button {
+   display: flex;
+   font-family: Jost, sans-serif;
+   padding: 7px 16px;
+   justify-content: center;
+   align-items: center;
+   border-radius: 45px;
+background: var(--Primary, white);
+color: var(--Grey-1, #808080);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+border: white;
+ /* Text color */
+}
+
+/* Specific styles for the Register button */
+.signup--button {
+   display: flex;
+   font-family: Jost, sans-serif;
+   padding: 7px 16px;
+   justify-content: center;
+   align-items: center;
+   border-radius: 45px;
+background: var(--Primary, white);
+color: var(--Grey-1, #808080);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+border: white;
+margin-right: 20px;/* Spacing between the buttons */
+}
+
+/* Hover state for Login button */
+.signin--button:hover {
+
+   background-color: #E61C5D;
+   color: #FFF; /* Replace with the actual color code for the Login button hover state */
+}
+
+/* Hover state for Register button */
+.signup--button:hover {
+   background-color: #E61C5D;
+   color: #FFF;
+  /* Replace with the actual color code for the Register button hover state */
+}
+
+

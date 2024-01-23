@@ -1,0 +1,257 @@
+#userText {
+    -fx-background-color: #f4ebeb; /* Background color */
+    -fx-background-insets: 0, 0, 1, 0; /* Insets for the bottom border */
+    -fx-background-radius: 0;
+    -fx-border-color: #48456b; /* Bottom border color */
+    -fx-border-width: 0 0 1 0; /* Bottom border width */
+}
+
+#passwordText {
+    -fx-background-color: #f4ebeb; /* Background color */
+    -fx-background-insets: 0, 0, 1, 0; /* Insets for the bottom border */
+    -fx-background-radius: 0;
+    -fx-border-color: #48456b; /* Bottom border color */
+    -fx-border-width: 0 0 1 0; /* Bottom border width */
+}
+
+#loginButton {
+/* styles.css */
+    -fx-background-color: #48456b;
+    -fx-background-radius: 50px; /* Adjust the radius to create an elliptical shape */
+    -fx-text-fill: #f4ebeb;
+}
+
+#loginButton:hover {
+                -fx-background-color: #999; /* Change background color on hover */
+                -fx-text-fill: #fff; /* Change text color on hover */
+            }
+
+#exitButton {
+-fx-background-color: #48456b;
+-fx-text-fill: #f4ebeb;
+            -fx-font-size: 12px;
+            -fx-font-weight: bold;
+            -fx-font-style: italic;
+}
+#exitButton:hover {
+    -fx-background-color: #999; /* Change background color on hover */
+    -fx-text-fill: #fff; /* Change text color on hover */
+    -fx-cursor: hand; /* Show hand cursor on hover */
+}
+
+
+/* Define the TableView style */
+#table {
+    -fx-table-cell-border-color: #ccc;
+}
+
+/* Define the alternating row colors */
+
+/* Define the button style */
+#serveOrder {
+    -fx-background-color: #48456b;
+    -fx-text-fill: #f4ebeb;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 8px; /* Adjust padding as needed */
+    -fx-background-radius: 50px; /* Rounded corners */
+    -fx-border-radius: 5px; /* Rounded borders */
+}
+
+/* Define hover effect on the button */
+#serveOrder:hover {
+    -fx-background-color: #999; /* Change background color on hover */
+    -fx-text-fill: #fff; /* Change text color on hover */
+    -fx-cursor: hand; /* Show hand cursor on hover */
+}
+
+#showAllOrders {
+-fx-background-color: #48456b;
+    -fx-text-fill: #f4ebeb;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 8px; /* Adjust padding as needed */
+    -fx-background-radius: 50px; /* Rounded corners */
+    -fx-border-radius: 5px; /* Rounded borders */
+}
+
+#showAllOrders:hover {
+    -fx-background-color: #999; /* Change background color on hover */
+    -fx-text-fill: #fff; /* Change text color on hover */
+    -fx-cursor: hand; /* Show hand cursor on hover */
+}
+
+#logout {
+    -fx-background-color: #48456b;
+    -fx-text-fill: #f4ebeb;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 8px; /* Adjust padding as needed */
+    -fx-background-radius: 50px; /* Rounded corners */
+    -fx-border-radius: 5px; /* Rounded borders */
+}
+
+#logout:hover {
+    -fx-background-color: #999; /* Change background color on hover */
+    -fx-text-fill: #fff; /* Change text color on hover */
+    -fx-cursor: hand; /* Show hand cursor on hover */
+}
+
+#remove {
+    -fx-background-color: #48456b;
+    -fx-text-fill: #f4ebeb;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 8px; /* Adjust padding as needed */
+    -fx-background-radius: 50px; /* Rounded corners */
+    -fx-border-radius: 5px; /* Rounded borders */
+}
+
+/* Define hover effect on the button */
+#remove:hover {
+    -fx-background-color: #999; /* Change background color on hover */
+    -fx-text-fill: #fff; /* Change text color on hover */
+  }
+
+  #confirm {
+      -fx-background-color: #48456b;
+      -fx-text-fill: #f4ebeb;
+      -fx-font-size: 12px;
+      -fx-font-weight: bold;
+      -fx-padding: 4px 8px; /* Adjust padding as needed */
+      -fx-background-radius: 50px; /* Rounded corners */
+      -fx-border-radius: 5px; /* Rounded borders */
+  }
+
+  /* Define hover effect on the button */
+  #confirm:hover {
+      -fx-background-color: #999; /* Change background color on hover */
+      -fx-text-fill: #fff; /* Change text color on hover */
+  }
+
+  #addToCart {
+        -fx-background-color: #48456b;
+        -fx-text-fill: #f4ebeb;
+        -fx-font-size: 12px;
+        -fx-font-weight: bold;
+        -fx-padding: 4px 8px; /* Adjust padding as needed */
+        -fx-background-radius: 50px; /* Rounded corners */
+        -fx-border-radius: 5px; /* Rounded borders */
+    }
+
+    /* Define hover effect on the button */
+    #addToCart:hover {
+        -fx-background-color: #999; /* Change background color on hover */
+        -fx-text-fill: #fff; /* Change text color on hover */
+    }
+
+    #viewRestaurant {
+            -fx-background-color: #48456b;
+            -fx-text-fill: #f4ebeb;
+            -fx-font-size: 12px;
+            -fx-font-weight: bold;
+            -fx-padding: 4px 8px; /* Adjust padding as needed */
+            -fx-background-radius: 50px; /* Rounded corners */
+            -fx-border-radius: 5px; /* Rounded borders */
+        }
+
+        /* Define hover effect on the button */
+        #viewRestaurant:hover {
+            -fx-background-color: #999; /* Change background color on hover */
+            -fx-text-fill: #fff; /* Change text color on hover */
+        }
+
+#viewMenu {
+      -fx-background-color: #48456b;
+      -fx-text-fill: #f4ebeb;
+      -fx-font-size: 12px;
+      -fx-font-weight: bold;
+      -fx-padding: 4px 8px; /* Adjust padding as needed */
+      -fx-background-radius: 50px; /* Rounded corners */
+      -fx-border-radius: 5px; /* Rounded borders */
+  }
+
+  /* Define hover effect on the button */
+  #viewMenu:hover {
+      -fx-background-color: #999; /* Change background color on hover */
+      -fx-text-fill: #fff; /* Change text color on hover */
+  }
+
+
+  #viewFoodItems {
+        -fx-background-color: #48456b;
+        -fx-text-fill: #f4ebeb;
+        -fx-font-size: 12px;
+        -fx-font-weight: bold;
+        -fx-padding: 4px 8px; /* Adjust padding as needed */
+        -fx-background-radius: 50px; /* Rounded corners */
+        -fx-border-radius: 5px; /* Rounded borders */
+    }
+
+    /* Define hover effect on the button */
+    #viewFoodItems:hover {
+        -fx-background-color: #999; /* Change background color on hover */
+        -fx-text-fill: #fff; /* Change text color on hover */
+    }
+
+
+#buttonRestaurantAndFoodItems {
+        -fx-background-color: #48456b;
+        -fx-text-fill: #f4ebeb;
+        -fx-font-size: 12px;
+        -fx-font-weight: bold;
+        -fx-padding: 4px 8px; /* Adjust padding as needed */
+        -fx-background-radius: 50px; /* Rounded corners */
+        -fx-border-radius: 5px; /* Rounded borders */
+    }
+
+    /* Define hover effect on the button */
+    #buttonRestaurantAndFoodItems:hover {
+        -fx-background-color: #999; /* Change background color on hover */
+        -fx-text-fill: #fff; /* Change text color on hover */
+    }
+
+
+    #costilest {
+            -fx-background-color: #48456b;
+            -fx-text-fill: #f4ebeb;
+            -fx-font-size: 12px;
+            -fx-font-weight: bold;
+            -fx-padding: 4px 8px; /* Adjust padding as needed */
+            -fx-background-radius: 50px; /* Rounded corners */
+            -fx-border-radius: 5px; /* Rounded borders */
+        }
+
+        /* Define hover effect on the button */
+        #costilest:hover {
+            -fx-background-color: #999; /* Change background color on hover */
+            -fx-text-fill: #fff; /* Change text color on hover */
+        }
+
+
+        #categorywise {
+                -fx-background-color: #48456b;
+                -fx-text-fill: #f4ebeb;
+                -fx-font-size: 12px;
+                -fx-font-weight: bold;
+                -fx-padding: 4px 8px; /* Adjust padding as needed */
+                -fx-background-radius: 50px; /* Rounded corners */
+                -fx-border-radius: 5px; /* Rounded borders */
+            }
+
+            /* Define hover effect on the button */
+            #categorywise:hover {
+                -fx-background-color: #999; /* Change background color on hover */
+                -fx-text-fill: #fff; /* Change text color on hover */
+            }
+
+           #customerButton:hover {
+               -fx-text-fill: #cf7379;
+           }
+
+           #restaurantButton:hover {
+                          -fx-text-fill: #cf7379;
+                      }
+
+
+
