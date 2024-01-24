@@ -23,7 +23,7 @@ touristSpotRouter.post('/home', async (req, res) => {
   
       console.log(result);
   
-      res.send(result.rows);
+      res.json(result.rows);
     } catch (error) {
       console.error('Error loading tourist spot:', error);
       res.status(500).json({ success: false, error: 'Internal Server Error' });
