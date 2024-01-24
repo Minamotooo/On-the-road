@@ -11,14 +11,16 @@ const bodyParser = require('body-parser');
 touristSpotRouter.use(bodyParser.json());
 
 
+touristSpotRouter.use(cors()); // Enable CORS for all routes
+
+
+
 //SEARCH BAR RESULTS
 touristSpotRouter.post('/home', async (req, res) => {
     const { searchTerm } = req.body;
   
     try {
-      const result = await pool.query(
-        'SELECT * FROM tourist_spot TS LEFT JOIN location L ON TS.location_id = L.location_id WHERE TS.name ILIKE $1 OR L.thana ILIKE $1 OR L.upazilla ILIKE $1 OR L.district ILIKE $1 OR L.division ILIKE $1;',
-        [`%${searchTerm}%`]
+      const result = await pool.query('SELECT * FROM tourist_spot TS LEFT JOIN location L ON TS.location_id = L.location_id WHERE TS.name ILIKE $1 OR L.thana ILIKE $1 OR L.upazilla ILIKE $1 OR L.district ILIKE $1 OR L.division ILIKE $1;',[`%${searchTerm}%`]
       );
   
       console.log(result);
