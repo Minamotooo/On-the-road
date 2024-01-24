@@ -49,9 +49,6 @@ app.get('/user/:username', async (req, res) => {
 // Endpoint to add a new user
 // server.js
 
-// server.js
-
-// server.js
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
   
@@ -142,10 +139,10 @@ app.post('/signup', async (req, res) => {
     if (!username || !email || !password || !firstname || !lastname) {
       return res.status(400).json({ error: 'Bad Request: Missing or invalid fields in the request body' });
     }
-  
+    const hashedPassword = await bcrypt.hash(password,13);
     try {
       // Insert user into the database
-      const result = await pool.query('INSERT INTO CLIENT_USER (USERNAME, EMAIL, PASSWORD,FIRST_NAME, LAST_NAME) VALUES ($1, $2, $3, $4, $5 ) RETURNING *', [username, email, password,firstname,lastname]);
+      const result = await pool.query('INSERT INTO CLIENT_USER (USERNAME, EMAIL, PASSWORD,FIRST_NAME, LAST_NAME) VALUES ($1, $2, $3, $4, $5 ) RETURNING *', [username, email, hashedPassword,firstname,lastname]);
   
       // Assuming the user is successfully added, send a success response
       res.status(201).json({ message: 'User registered successfully', user: result.rows[0] });
