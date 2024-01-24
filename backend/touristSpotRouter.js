@@ -1,3 +1,5 @@
+
+
 const express = require('express');
 
 const touristSpotRouter = express.Router();
@@ -10,8 +12,7 @@ const bodyParser = require('body-parser');
 
 touristSpotRouter.use(bodyParser.json());
 
-
-touristSpotRouter.use(cors()); // Enable CORS for all routes
+ // Enable CORS for all routes
 
 
 

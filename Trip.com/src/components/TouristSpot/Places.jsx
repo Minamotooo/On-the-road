@@ -19,12 +19,13 @@ export default function Places() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ searchterm: searchTerm }),
+            body: JSON.stringify({ searchTerm: searchTerm }),
           });
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
+          console.log(data);
           setSuggestions(data);
         } catch (error) {
           console.error('Error fetching suggestions:', error);
@@ -59,12 +60,15 @@ export default function Places() {
     }
   };
 
-  const show = searchResults.map((result) => (
+  const show = suggestions.map((result) => (
     <Spot 
       key={result.spot_id}
+      spotId={result.spot_id}
       name={result.name}
-      description={result.description}
+      blog_description={result.blog_description}
       division={result.division}
+      upazilla={result.upazilla}
+      district={result.district}
     />
   ));
 
@@ -88,7 +92,7 @@ export default function Places() {
         </form>
       </div>
       <Division />
-      <section>
+      <section className="section">
         {show}
       </section>
     </div>

@@ -5,9 +5,9 @@ import 'react-multi-carousel/lib/styles.css';
 
 // Import images
 import img1 from "../images/Curzon_hall_front.jpg";
-import img2 from "../images/tour.png";
-import img3 from "../images/river.jpg";
-import img4 from "../images/logo-3.png";
+import img2 from "../images/Sylhet.jpg";
+import img3 from "../images/Chittagong.jpg";
+import img4 from "../images/Sylhet.jpg";
 
 export default function Division() {
   const responsive = {
