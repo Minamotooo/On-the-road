@@ -1,37 +1,31 @@
 // server.js
 const express = require('express');
+
+const signInRouter = express.Router();
+
 const cors = require('cors');
-const { Pool } = require('pg');
+const pool = require('./db/database');
 const bcrypt = require('bcrypt');
 
 const bodyParser = require('body-parser');
-const app = express();
+//const app = express();
 
-app.use(bodyParser.json());
+signInRouter.use(bodyParser.json());
 
 
-const port = process.env.PORT || 4000;
+// const port = process.env.PORT || 4000;
 
 
 
 
 // Use the cors middleware
-app.use(cors());
+signInRouter.use(cors());
 
-
-// PostgreSQL configuration
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',  
-    database: 'trip',
-    password: '1',
-    port: 5432,
-  });
 
 
 
 // Endpoint to retrieve all users
-app.get('/user/:username', async (req, res) => {
+signInRouter.get('/user/:username', async (req, res) => {
     try {
       const { username } = req.params;
       const { rows } = await pool.query('SELECT * FROM CLIENT_USER WHERE USERNAME = $1', [username]);
@@ -49,7 +43,7 @@ app.get('/user/:username', async (req, res) => {
 // Endpoint to add a new user
 // server.js
 
-app.post('/login', async (req, res) => {
+signInRouter.post('/login', async (req, res) => {
     const { email, password } = req.body;
   
     if (!email || !password) {
@@ -65,9 +59,9 @@ app.post('/login', async (req, res) => {
         //console.log(user);
   
         //Compare the entered password with the hashed password stored in the database
-        const passwordMatch = (password == user.password);
-
-        
+        const passwordMatch =  await bcrypt.compare(password,user.password);
+        console.log(password);
+        console.log(user.password);
   
           if (passwordMatch) {
           // Passwords match, user is authenticated
@@ -88,7 +82,7 @@ app.post('/login', async (req, res) => {
 
   
 
-  app.put('/update/:username', async (req, res) => {
+  signInRouter.put('/update/:username', async (req, res) => {
     const { username } = req.params;
     const { phone_no } = req.body;
   
@@ -108,7 +102,7 @@ app.post('/login', async (req, res) => {
   });
 // ...
 
-app.delete('/user/:username', async (req, res) => {
+signInRouter.delete('/user/:username', async (req, res) => {
     const { username } = req.params;
   
     try {
@@ -131,7 +125,7 @@ app.delete('/user/:username', async (req, res) => {
 
 
 
-app.post('/signup', async (req, res) => {
+signInRouter.post('/signup', async (req, res) => {
     const { username, email, password, firstname, lastname} = req.body;
 
     console.log(firstname);
@@ -157,6 +151,8 @@ app.post('/signup', async (req, res) => {
   
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server is running on port ${port}`);
+// });
+
+module.exports = signInRouter;

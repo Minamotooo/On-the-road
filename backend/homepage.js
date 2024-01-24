@@ -1,9 +1,16 @@
 const express = require('express');
+const signInRouter = require('./signInRouter');
+const touristSpotRouter = require('./touristSpotRouter');
+const pool = require('./db/database');
 const app = express();
 const cors = require('cors');
+const restaurantRouter = require('./restaurantRouter');
 const port = 4000;
 // Use the cors middleware
 app.use(cors());
+app.use('/signin',signInRouter);
+app.use('/touristSpot',touristSpotRouter);
+app.use('/restaurant',restaurantRouter);
 
 // Mock database query function
 const getTouristSpotsData = () => {
