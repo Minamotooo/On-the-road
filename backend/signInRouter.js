@@ -13,11 +13,6 @@ const bodyParser = require('body-parser');
 signInRouter.use(bodyParser.json());
 
 
-// const port = process.env.PORT || 4000;
-
-
-
-
 // Use the cors middleware
 signInRouter.use(cors());
 
