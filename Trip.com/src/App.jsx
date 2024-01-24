@@ -1,27 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import './App.css'
-import Navbar from "./components/HomePage/Navbar";
-import Card from "./components/HomePage/Card";
-import data from "./components/data.js";
-import Header from "./components/HomePage/Header.jsx";
+// App.jsx
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './components/HomePage/HomePage.jsx';
+import LoginModal from './components/Login/LoginModal.jsx';
+import Places from './components/TouristSpot/Places.jsx';
 
-import Popular from "./components/HomePage/Popular.jsx";
-import Footer from "./components/HomePage/Footer.jsx";
-import Places from "./components/TouristSpot/Places.jsx";
-
-
-export default function App() {
-
-    
-    return (
-        <div>
-            {/* <Navbar />
-            <Header />
-            <Popular />
-            <Footer /> */}
-            <Places />
-            
-        </div>
-    )
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginModal />} />
+        <Route path="/touristspot" element={<Places />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
+        {/* Other routes go here */}
+      </Routes>
+    </Router>
+  );
 }
+
+export default App;
