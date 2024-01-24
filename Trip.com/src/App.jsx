@@ -8,6 +8,7 @@ import Header from "./components/HomePage/Header.jsx";
 
 import Popular from "./components/HomePage/Popular.jsx";
 import Footer from "./components/HomePage/Footer.jsx";
+import Places from "./components/TouristSpot/Places.jsx";
 
 
 export default function App() {
@@ -15,10 +16,11 @@ export default function App() {
     
     return (
         <div>
-            <Navbar />
+            {/* <Navbar />
             <Header />
             <Popular />
-            <Footer />
+            <Footer /> */}
+            <Places />
             
         </div>
     )

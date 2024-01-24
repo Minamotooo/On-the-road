@@ -18,7 +18,6 @@ const port = process.env.PORT || 4000;
 // Use the cors middleware
 app.use(cors());
 
-app.use(express.json());
 
 // PostgreSQL configuration
 const pool = new Pool({
@@ -89,6 +88,7 @@ app.post('/login', async (req, res) => {
       res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
   });
+
   
 
   app.put('/update/:username', async (req, res) => {

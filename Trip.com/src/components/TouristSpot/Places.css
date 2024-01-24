@@ -1,0 +1,59 @@
+
+body {
+    background-color: #333;
+}
+
+.cover {
+    width: 100%;
+height: 400px;
+flex-shrink: 0;
+}
+.search-container {
+    text-align: center;
+    background: url('C:\Users\Aurchi\OneDrive\Desktop\Trip.com\Trip.com\src\components\images\cover.png') no-repeat center center;
+    background-size: cover;
+    padding: 100px 0; /* Adjust the padding to fit your design */
+    color: white;
+  }
+  
+  .search-container h1 {
+    font-size: 2.5em; /* Large text for the main heading */
+    margin-bottom: 0.5em; /* Space below the heading */
+  }
+  
+  .search-container p {
+    font-size: 1.2em; /* Slightly larger text for the subheading */
+    margin-bottom: 1em; /* Space below the subheading */
+  }
+  
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .search-input {
+    padding: 10px 15px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px 0 0 5px; /* Rounded corners on the left side of the input field */
+    width: 300px; /* Adjust width as necessary */
+  }
+  
+  .search-button {
+    padding: 10px 15px;
+    font-size: 1em;
+    background: #f0f0f0; /* Light grey background */
+    color: #333; /* Dark text color for contrast */
+    border: none;
+    border-radius: 0 5px 5px 0; /* Rounded corners on the right side of the button */
+    cursor: pointer;
+  }
+  
+  /* Add styles for larger screens */
+  @media (min-width: 768px) {
+    .search-input {
+      width: 500px; /* Larger width for larger screens */
+    }
+  }
+  

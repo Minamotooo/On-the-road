@@ -1,0 +1,138 @@
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal {
+    background: white;
+    border-radius: 5px;
+  /* Adjust width as needed */
+    max-width: 100%;
+
+    display: flex;
+padding: 40px 40px;
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
+border: 1px solid rgba(102, 102, 102, 0.50);
+ width: 400px;
+ height: 350px ;
+  }
+  
+  .modal-header {
+    
+    position: relative; 
+    width: 100%;
+  }
+ 
+  
+  .close-button {
+    position: absolute; /* Absolute position for the button */
+    top: 0px; /* Adjust the value to position the button from the top edge of the modal */
+    right: 0px; /* Adjust the value to position the button from the right edge of the modal */
+    border: none; /* Remove border */
+    background: none; /* Remove default background */
+    cursor: pointer; /* Change mouse cursor on hover */
+    font-size: 1.5em; /* Increase size of the cross */
+  }
+  
+  .modal-body {
+    
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+
+  /* Additional styling for buttons */
+  button:focus {
+    outline: none;
+  }
+
+  .mainContainer {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+  }
+  
+  .inputContainer {
+    display: flex;
+width: 400px;
+flex-direction: column;
+align-items: flex-start;
+justify-content: center;
+align-self: center;
+gap: 4px;
+    
+  }
+  
+  .inputContainer > .errorLabel {
+    color: #EE1D52;
+font-family: Poppins;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+  }
+  
+  .inputBox {
+    height: 56px;
+align-self: stretch;
+border-radius: 12px;
+border: 1px solid rgba(102, 102, 102, 0.35);
+  width: 100%; /* Full width of the container */
+  padding: 10px; /* Add some padding inside the input box */
+  margin-bottom: 10px; /* Add some space below the input box */
+  border: 1px solid #ccc; /* A subtle border around the input box */
+  border-radius: 4px; /* Rounded corners for the input box */
+
+
+  }
+
+  .header--logo {
+      width: 150px;
+      align-self: center;
+  }
+  
+  .inputButton {
+    display: flex;
+   font-family: Jost, sans-serif;
+   padding: 7px 16px;
+   justify-content: center;
+   align-items: center;
+   border-radius: 45px;
+background: var(--Primary, #E61C5D);
+color: var(--Grey-1, #ffffff);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+border: white;
+  }
+
+  .inputButton:hover {
+
+    background-color: #b3b0b0;
+    color: #FFF; /* Replace with the actual color code for the Login button hover state */
+ }
