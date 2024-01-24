@@ -1,5 +1,8 @@
 // Import the React useState hook
 import React, { useState } from "react";
+// Correct way to import Link and other named exports
+import { Link, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import LoginModal from "../Login/LoginModal"; // Adjust the path based on your file structure
 import logo from "../images/logo-1.png";
 import "./page.css";
@@ -7,6 +10,9 @@ import "./page.css";
 export default function Navbar() {
     // State to manage the visibility of the login modal
     const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+
+
+    
 
     // Function to open the login modal
     const openLoginModal = () => {
@@ -21,10 +27,12 @@ export default function Navbar() {
     return (
         <header className="navbar--container">
             <div>
-                <img src={logo} alt="Trip.com logo" className="nav--logo"/>
+                <Link to="/" >
+                <img src={logo} alt="Trip.com logo" className="nav--logo" />
+                </Link>
             </div>
             <nav className="nav--Menu">
-                <a href="" className="navItem">Tourist Spot</a>
+                <a href="/touristspot" className="navItem">Tourist Spot</a>
                 <a href="" className="navItem">Restaurant</a>
                 <a href="" className="navItem">Hotel</a>
                 <a href="" className="navItem">Transportation</a>

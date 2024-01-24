@@ -1,5 +1,5 @@
-import React,  { useState } from "react";
-import ReactDOM from "react-dom/client";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Modal.css";
 import logo from "../images/logo-1.png";
 
@@ -12,11 +12,31 @@ const LoginModal = ({ onClose }) => {
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const navigate = useNavigate();
 
 /// Function to handle the 'Log in' button click
-    const onButtonClick = () => {
+    const onButtonClick = async () => {
         // TODO: Implement the login logic here
         console.log('Login button clicked');
+        setEmailError(null);
+        setPassword(null);
+
+
+        const response = await fetch('http://localhost:4000/signin/login',
+        {
+            method: 'POST',
+            headers: {
+          'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+            email,
+            password,
+            }),
+
+        });
+
+        console.log(response);
+
     };
 
     return (

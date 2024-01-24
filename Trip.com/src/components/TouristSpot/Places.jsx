@@ -6,12 +6,11 @@ import search from "../images/search.png";
 import "./Places.css"
 
 
-export default function Places({onSearch}) {
+export default function Places() {
     const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = (event) => {
-    event.preventDefault();
-    onSearch(searchTerm); // Prop function to handle the search term
+    event.preventDefault(); // Prop function to handle the search term
   };
     return (
         <div className="body">
