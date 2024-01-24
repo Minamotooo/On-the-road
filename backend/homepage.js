@@ -5,12 +5,14 @@ const pool = require('./db/database');
 const app = express();
 const cors = require('cors');
 const restaurantRouter = require('./restaurantRouter');
+const touristSpotDetailsRouter = require('./touristSpotDetailsRouter');
 const port = 4000;
 // Use the cors middleware
 app.use(cors());
 app.use('/signin',signInRouter);
 app.use('/touristSpot',touristSpotRouter);
 app.use('/restaurant',restaurantRouter);
+app.use('/touristSpotInfo',touristSpotDetailsRouter);
 
 // Mock database query function
 const getTouristSpotsData = () => {

@@ -1,0 +1,37 @@
+const express = require('express');
+
+const touristSpotDetailsRouter = express.Router();
+const cors = require('cors');
+const pool = require('./db/database');
+
+const bodyParser = require('body-parser');
+
+
+touristSpotDetailsRouter.use(bodyParser.json());
+
+
+touristSpotDetailsRouter.use(cors()); // Enable CORS for all routes
+
+touristSpotDetailsRouter.post('/Details/:spot_id', async (req, res) => {
+    const { spot_id } = req.params;
+  
+    try {
+      const result = await pool.query('SELECT * FROM tourist_spot TS LEFT JOIN location L ON TS.location_id = L.location_id LEFT JOIN tourist_spot_blog_comment BC ON TS.spot_id = BC.spot_id WHERE TS.spot_id = $1;'
+      ,[spot_id]
+      );
+  
+      console.log(result);
+  
+      res.json(result.rows);
+    } catch (error) {
+      console.error('Error loading tourist spot DETAILS:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+  });
+  
+
+
+
+
+
+module.exports = touristSpotDetailsRouter;

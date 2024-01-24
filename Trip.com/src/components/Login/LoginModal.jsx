@@ -109,6 +109,10 @@ const onButtonClick = async () => {
                         value="Log in" />
                 </div>
                 </div>
+                    <p className="link">
+            Don't have an account?{" "}
+            <Link to="/signup">Create an account. SignUp</Link>
+        </p>
             </div>
         </div>
     );

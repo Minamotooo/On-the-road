@@ -34,7 +34,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/user/${username}`);
+        const response = await fetch(`http://localhost:4000/signin/user/${username}`);
         if (response.ok) {
           const data = await response.json();
           setUserData(data);

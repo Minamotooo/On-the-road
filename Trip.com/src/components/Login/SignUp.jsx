@@ -18,7 +18,7 @@ const SignUp = () => {
       setLoading(true);
       setError(null);
   
-      const response = await fetch('http://localhost:4000/signin/signup', {
+      const response = await fetch('http://localhost:4000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
