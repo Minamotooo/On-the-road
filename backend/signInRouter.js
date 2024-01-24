@@ -46,10 +46,6 @@ signInRouter.get('/user/:username', async (req, res) => {
 signInRouter.post('/login', async (req, res) => {
     const { email, password } = req.body;
   
-    if (!email || !password) {
-      return res.status(400).json({ success: false, error: 'Bad Request: Missing email or password' });
-    }
-  
     try {
       const result = await pool.query('SELECT * FROM CLIENT_USER WHERE EMAIL = $1', [email]);
   
@@ -72,7 +68,7 @@ signInRouter.post('/login', async (req, res) => {
         }
       } else {
         // No user found with the provided email
-        res.status(401).json({ success: false, error: 'Unauthorized: Email not found' });
+        res.status(402).json({ success: false, error: 'Unauthorized: Email not found' });
       }
     } catch (error) {
       console.error('Error signing in:', error);
