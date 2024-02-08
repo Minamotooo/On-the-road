@@ -19,33 +19,28 @@ export default function HotelSignup({ onClose }) {
 
   // Simulate fetching data from a database
   useEffect(() => {
-    //Fetch the Division options
+    // Fetch the Division options
     const fetchDivisions = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:4000/hotelSignUp/divisions",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              message: "Get divisions",
-            }),
-          }
-        );
+        const response = await fetch("http://localhost:4000/hotelSignUp/divisions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: "Get divisions",
+          }),
+        });
         console.log("Request sent");
         console.log(response);
         if (response.ok) {
           console.log("Response received");
-          const divisions = await response.results.json();
-          console.log(divisions);
-          setFirstLevelOptions(divisions);
+          const data = await response.json();
+          console.log(data);
+          setFirstLevelOptions(data.success ? data.data.map(division => division.name) : []);
         } else {
           const errorMessage = await response.text();
-          setError(
-            `Error getting division: ${errorMessage || response.statusText}`
-          );
+          setError(`Error getting division: ${errorMessage || response.statusText}`);
         }
       } catch (error) {
         setError(`Error getting division: ${error.message}`);
@@ -54,8 +49,8 @@ export default function HotelSignup({ onClose }) {
       }
     };
     fetchDivisions();
-    // setFirstLevelOptions(["Option 1", "Option 2", "Option 3"]);
   }, []);
+
 
   useEffect(() => {
     // Reset second level when first level changes
@@ -209,18 +204,27 @@ export default function HotelSignup({ onClose }) {
             type="text"
             value={hotelname}
             placeholder="Hotel Name"
+            onChange={(e) => {
+              setHotelName(e.target.value)
+            }}
             className="input-style"
           />
           <input
             type="text"
             value={hoteladdress}
             placeholder="Hotel Address"
+            onChange={(e) => {
+              setHotelAddress(e.target.value)
+            }}
             className="input-style"
           />
           <input
             type="text"
             value={hotelphonenumber}
             placeholder="Hotel Phone Number"
+            onChange={(e) => {
+              setHotelPhoneNumber(e.target.value)
+            }}
             className="input-style"
           />
         </div>

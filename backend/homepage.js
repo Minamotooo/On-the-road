@@ -15,6 +15,7 @@ app.use('/touristSpot',touristSpotRouter);
 app.use('/restaurant',restaurantRouter);
 app.use('/touristSpotInfo',touristSpotDetailsRouter);
 app.use('/hotelSignUp',hotelSignUpRouter);
+app.use('/hotel',hotel);
 
 // Mock database query function
 const getTouristSpotsData = () => {
