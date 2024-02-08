@@ -4,6 +4,7 @@ const touristSpotRouter = require('./touristSpotRouter');
 const pool = require('./db/database');
 const app = express();
 const cors = require('cors');
+const hotelSignUpRouter = require('./hotelSignUpRouter');
 const restaurantRouter = require('./restaurantRouter');
 const touristSpotDetailsRouter = require('./touristSpotDetailsRouter');
 const port = 4000;
@@ -13,6 +14,7 @@ app.use('/signin',signInRouter);
 app.use('/touristSpot',touristSpotRouter);
 app.use('/restaurant',restaurantRouter);
 app.use('/touristSpotInfo',touristSpotDetailsRouter);
+app.use('/hotelSignUp',hotelSignUpRouter);
 
 // Mock database query function
 const getTouristSpotsData = () => {
