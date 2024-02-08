@@ -17,7 +17,7 @@ hotelSignUpRouter.post('/divisions', async (req, res) => {
       
        console.log("Request received");
             const result = await pool.query('SELECT name FROM divisions;');
-            res.json(result.rows);
+            res.json({success : true, data:result.rows}); 
             console.log(result.rows);
         
        

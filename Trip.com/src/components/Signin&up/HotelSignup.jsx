@@ -19,7 +19,7 @@ export default function HotelSignup({ onClose }) {
 
   // Simulate fetching data from a database
   useEffect(() => {
-    //Fetch the Division options
+    // Fetch the Division options
     const fetchDivisions = async () => {
       try {
         const response = await fetch(
@@ -38,9 +38,11 @@ export default function HotelSignup({ onClose }) {
         console.log(response);
         if (response.ok) {
           console.log("Response received");
-          const divisions = await response.results.json();
-          console.log(divisions);
-          setFirstLevelOptions(divisions);
+          const data = await response.json();
+          console.log(data);
+          setFirstLevelOptions(
+            data.success ? data.data.map((division) => division.name) : []
+          );
         } else {
           const errorMessage = await response.text();
           setError(
@@ -54,7 +56,6 @@ export default function HotelSignup({ onClose }) {
       }
     };
     fetchDivisions();
-    // setFirstLevelOptions(["Option 1", "Option 2", "Option 3"]);
   }, []);
 
   useEffect(() => {
