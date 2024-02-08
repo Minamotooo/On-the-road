@@ -22,25 +22,32 @@ export default function HotelSignup({ onClose }) {
     // Fetch the Division options
     const fetchDivisions = async () => {
       try {
-        const response = await fetch("http://localhost:4000/hotelSignUp/divisions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            message: "Get divisions",
-          }),
-        });
+        const response = await fetch(
+          "http://localhost:4000/hotelSignUp/divisions",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message: "Get divisions",
+            }),
+          }
+        );
         console.log("Request sent");
         console.log(response);
         if (response.ok) {
           console.log("Response received");
           const data = await response.json();
           console.log(data);
-          setFirstLevelOptions(data.success ? data.data.map(division => division.name) : []);
+          setFirstLevelOptions(
+            data.success ? data.data.map((division) => division.name) : []
+          );
         } else {
           const errorMessage = await response.text();
-          setError(`Error getting division: ${errorMessage || response.statusText}`);
+          setError(
+            `Error getting division: ${errorMessage || response.statusText}`
+          );
         }
       } catch (error) {
         setError(`Error getting division: ${error.message}`);
@@ -50,7 +57,6 @@ export default function HotelSignup({ onClose }) {
     };
     fetchDivisions();
   }, []);
-
 
   useEffect(() => {
     // Reset second level when first level changes
@@ -205,7 +211,7 @@ export default function HotelSignup({ onClose }) {
             value={hotelname}
             placeholder="Hotel Name"
             onChange={(e) => {
-              setHotelName(e.target.value)
+              setHotelName(e.target.value);
             }}
             className="input-style"
           />
@@ -214,7 +220,7 @@ export default function HotelSignup({ onClose }) {
             value={hoteladdress}
             placeholder="Hotel Address"
             onChange={(e) => {
-              setHotelAddress(e.target.value)
+              setHotelAddress(e.target.value);
             }}
             className="input-style"
           />
@@ -223,7 +229,7 @@ export default function HotelSignup({ onClose }) {
             value={hotelphonenumber}
             placeholder="Hotel Phone Number"
             onChange={(e) => {
-              setHotelPhoneNumber(e.target.value)
+              setHotelPhoneNumber(e.target.value);
             }}
             className="input-style"
           />
