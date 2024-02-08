@@ -210,18 +210,27 @@ export default function HotelSignup({ onClose }) {
             type="text"
             value={hotelname}
             placeholder="Hotel Name"
+            onChange={(e) => {
+              setHotelName(e.target.value);
+            }}
             className="input-style"
           />
           <input
             type="text"
             value={hoteladdress}
             placeholder="Hotel Address"
+            onChange={(e) => {
+              setHotelAddress(e.target.value);
+            }}
             className="input-style"
           />
           <input
             type="text"
             value={hotelphonenumber}
             placeholder="Hotel Phone Number"
+            onChange={(e) => {
+              setHotelPhoneNumber(e.target.value);
+            }}
             className="input-style"
           />
         </div>
