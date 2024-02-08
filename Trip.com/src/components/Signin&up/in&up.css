@@ -1,3 +1,4 @@
+
 .modal-wrapper {
     position: fixed;
     top: 0;
@@ -80,18 +81,27 @@
     background-color: black;
     color: white;
 }
+.input-container {
+  display: flex; /* This defines the container as a flex container */
+  align-items: center; /* This centers the flex items on the cross axis (vertically) */
+  justify-content: center; /* This centers the flex items on the main axis (horizontally) */
+  height: 100%;
+  flex-direction: column; 
+  width: 100%;/* You need to define a height for vertical centering to work */
+}
+
 
 
 /* Base styles for the input */
 .input-style {
-    width: 100%; /* Full width */
-    padding: 10px; /* Padding inside the input */
-    margin: 10px 0; /* Margin around the input */
-    border: 2px solid #d9d9d9; /* Default light grey border */
-    border-radius: 10px; /* Rounded corners */
-    box-sizing: border-box; /* Box-sizing set to border-box */
-    transition: border-color 0.3s; /* Smooth transition for border color */
-    outline: none; /* Remove default focus outline */
+  width: calc(100% - 22px); /* Adjust width, considering padding and border */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  
+
+   /* Remove default focus outline */
   }
   
   /* Style for the input placeholder */
@@ -102,17 +112,17 @@
   
   /* Style for the input on focus */
   .input-style:focus {
-    border-color: #28a745; /* Blue border color when the input is focused */
-    box-shadow: 0 0 0 2px rgba(0,123,255,0.25); /* Glow effect with a light blue color */
+    border-color: #28a745;  /* Glow effect with a light blue color */
   }
   
   /* Optionally, you can add styles for valid/invalid input based on HTML5 form validation */
-  .input-style:valid {
-    border-color: #28a745; /* Green border for valid input */
-  }
+  /* .input-style:valid {
+    border-color: #28a745; /* Green border for valid input 
+  } */
   
   .input-style:invalid {
     border-color: #dc3545; /* Red border for invalid input */
+  background-color: #ffe6e6;/* Red border for invalid input */
   }
     
 
@@ -134,69 +144,54 @@
   }
 
 
-
-  .radio-group {
+  .radio-container {
     display: flex;
-    flex-direction: row;
-    gap: 10px;
-  }
-  
-  .custom-radio {
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    cursor: pointer;
-  }
-  
-  .custom-radio input[type="radio"] {
-    opacity: 0;
-    position: absolute;
-    cursor: pointer;
-  }
-  
-  .radio-btn {
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    border: 2px solid #ccc;
-    display: inline-block;
+    padding: 10px;
+    background: #ffffff; /* Light grey background */
+    border-radius: 4px; /* Rounded corners */
+    border: 1px solid #ccc; /* Box-shadow for some depth */
+}
+
+.custom-radio {
     position: relative;
-    margin-right: 10px;
-    background-color: #fff;
-    transition: background-color 0.2s, border-color 0.2s;
-  }
-  
-  .custom-radio span {
-    padding-left: 5px; /* Adjust spacing between radio button and text */
-  }
-  
-  /* Create a custom indicator */
-  .radio-btn::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: black;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  /* Show the indicator when the radio is checked */
-  .custom-radio input[type="radio"]:checked + .radio-btn::after {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  
-  /* Styling label text when radio button is selected */
-  .custom-radio input[type="radio"]:checked + .radio-btn + span {
-    color: #000000;
-  }
-  
-  /* Hover effect for labels */
-  .custom-radio:hover .radio-btn {
-    border-color: #000000;
-  }
+    padding: 2px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 4px; /* Rounded corners for the labels */
+    /* Remove default styles */
+    background: transparent;
+    border: none;
+    margin: 0;
+}
+
+.custom-radio:hover {
+   /* Lighter grey background on hover */
+}
+
+.custom-radio input[type="radio"] {
+    display: none;
+}
+
+.custom-radio span {
+    text-align: center;
+}
+
+/* Style for the label when the radio button is selected */
+.custom-radio input[type="radio"]:checked + span {
+  background-color: black; /* Grey background for selected label */
+  color: white; /* White text for selected label */
+  border-radius: 4px; /* Ensure the rounded corners match the container */
+  padding: 2px 12px; /* Ensure the rounded corners match the container */
+}
+
+/* Optional: Adjust the gap between the radio button labels if needed */
+.custom-radio:not(:last-child) {
+    margin-right: 0px;
+}
+
+
   
 
   

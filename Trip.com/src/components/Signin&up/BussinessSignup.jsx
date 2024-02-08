@@ -1,12 +1,43 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import HotelSignup from "./HotelSignup";
+import RestaurantSignup from "./RestaurantSignup";
+import TravelAgencySignup from "./TravelAgencySignup";
+import TourGuideSignup from "./TourGuideSignup";
 
-export default function BussinessSignup({ onClose }) {
+
+export default function BussinessSignup({onClose}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [username, setUsername] = useState("");
   const [bussinessType, setBussinessType] = useState("");
+  const [next,setNext] = useState(false);
+
+  // Simulate fetching data from a database
+
+  const nextPage = () => {
+    if (bussinessType) {
+      setNext(true);
+    } else {
+      // Optionally, handle the error case where no business type is selected
+      alert('Please select a business type.');
+    }
+  };
+
+  const BUSINESS_COMPONENTS = {
+    Restaurant: RestaurantSignup,
+    Hotel: HotelSignup,
+    "Travel Agency": TravelAgencySignup,
+    "Tour Guide": TourGuideSignup,
+  };
+
+  // Function to get the business signup component based on the business type
+  const getBusinessSignupComponent = () => {
+    const SignupComponent = BUSINESS_COMPONENTS[bussinessType];
+    return SignupComponent ? <SignupComponent onClose={onClose}/> : null;
+  };
+
 
   return (
     <>
@@ -53,41 +84,58 @@ export default function BussinessSignup({ onClose }) {
             className="input-style"
           />
           <label className="errorLabel">{passwordError}</label>
-          <h4>Bussiness Type</h4>
-          <div className="radio-group">
-            <label className="custom-radio">
-              <input type="radio" name="bussiness-type" value="Restaurant" />
-              <span className="radio-btn"></span>
-              Restaurant
-            </label>
-            <label className="custom-radio">
-              <input type="radio" name="bussiness-type" value="Hotel" />
-              <span className="radio-btn"></span>
-              Hotel
-            </label>
-            <label className="custom-radio">
-              <input
-                type="radio"
-                name="bussiness-type"
-                value="Travel Agency"
-              />
-              <span className="radio-btn"></span>
-              Travel Agency
-            </label>
-            <label className="custom-radio">
-              <input type="radio" name="bussiness-type" value="Tour Guide" />
-              <span className="radio-btn"></span>
-              Tour Guide
-            </label>
-          </div>
+          <p>Bussiness Type</p>
+            <div className="radio-container">
+  <label className="custom-radio">
+    <input 
+      type="radio" 
+      name="business-type" 
+      value="Restaurant" 
+      checked={bussinessType === "Restaurant"}
+      onChange={(e) => setBussinessType(e.target.value)}
+    />
+    <span>Restaurant</span>
+  </label>
+  <label className="custom-radio">
+    <input 
+      type="radio" 
+      name="business-type" 
+      value="Hotel" 
+      checked={bussinessType === "Hotel"}
+      onChange={(e) => setBussinessType(e.target.value)}
+    />
+    <span>Hotel</span>
+  </label>
+  <label className="custom-radio">
+    <input
+      type="radio"
+      name="business-type"
+      value="Travel Agency"
+      checked={bussinessType === "Travel Agency"}
+      onChange={(e) => setBussinessType(e.target.value)}
+    />
+    <span>Travel Agency</span>
+  </label>
+  <label className="custom-radio">
+    <input
+      type="radio" 
+      name="business-type" 
+      value="Tour Guide" 
+      checked={bussinessType === "Tour Guide"}
+      onChange={(e) => setBussinessType(e.target.value)}
+    />
+    <span>Tour Guide</span>
+  </label>
+</div>
         </div>
 
         <div>
-          <button className="button--style">Next</button>
+          <button className="button--style" onClick={nextPage}>Next</button>
           <p>
             Already a member? <button className="link">Sign in!</button>
           </p>
         </div>
+        {next && getBusinessSignupComponent()}
       </div>
     </>
   );
