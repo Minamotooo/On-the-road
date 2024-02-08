@@ -48,7 +48,7 @@ hotelSignUpRouter.post('/divisions', async (req, res) => {
     }
   });
 
-  hotelSignUpRouter.post('/upaziilas', async (req, res) => {
+  hotelSignUpRouter.post('/upazillas', async (req, res) => {
     const district = req.body.secondLevel;
   
     try {
@@ -69,7 +69,7 @@ hotelSignUpRouter.post('/divisions', async (req, res) => {
 
 
   hotelSignUpRouter.post('/unions', async (req, res) => {
-    const upaziila = req.body.thirdLevel;
+    const upazilla = req.body.thirdLevel;
   
     try {
       
