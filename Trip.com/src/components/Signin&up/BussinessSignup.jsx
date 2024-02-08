@@ -35,7 +35,7 @@ export default function BussinessSignup({onClose}) {
   // Function to get the business signup component based on the business type
   const getBusinessSignupComponent = () => {
     const SignupComponent = BUSINESS_COMPONENTS[bussinessType];
-    return SignupComponent ? <SignupComponent onClose={onClose}/> : null;
+    return SignupComponent ? <SignupComponent onClose={onClose} email={email} username={username}  /> : null;
   };
 
 
