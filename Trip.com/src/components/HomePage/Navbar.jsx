@@ -3,9 +3,10 @@ import React, { useState } from "react";
 // Correct way to import Link and other named exports
 import { Link, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import LoginModal from "../Login/LoginModal"; // Adjust the path based on your file structure
+import LoginAs from "../Login/LoginAs"; // Adjust the path based on your file structure
 import logo from "../images/logo-1.png";
 import "./page.css";
+import Entity from "../Signin&up/Entity";
 
 export default function Navbar() {
     // State to manage the visibility of the login modal
@@ -44,7 +45,7 @@ export default function Navbar() {
             </div>
 
             {/* Conditionally render the LoginModal */}
-            {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
+            {isLoginModalOpen && <Entity onClose={closeLoginModal} />} {/* props passing*/}
         </header>
     );
 }

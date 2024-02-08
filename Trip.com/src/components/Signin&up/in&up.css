@@ -1,0 +1,202 @@
+.modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-container {
+    position: fixed; /* Fixed position to stay in place even when scrolling */
+    top: 50%; /* Positioned 50% from the top of the screen */
+    left: 50%; /* Positioned 50% from the left of the screen */
+    transform: translate(-50%, -50%); /* Translates the modal back by half its width and height */
+    background-color: white; /* Your desired background color */
+    border-radius: 5px; /* Your desired border radius */
+    z-index: 1000; /* High z-index to ensure it's on top of other elements */
+    width: 400px; /* Your desired width */
+    height: auto; /* Height set to auto to adjust to the content */
+    padding: 40px; /* Your desired padding */
+    display: flex; /* Using flexbox to align inner content */
+    flex-direction: column; /* Align children in a column */
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    gap: 10px; /* Space between children */
+  }
+  
+  /* Optional: Additional styles for when the modal is active */
+  .modal-active {
+    visibility: visible; /* Only show the modal when it's active */
+    opacity: 1; /* Set the opacity to fully opaque */
+    transition: opacity 0.2s; /* Transition for a smooth appearance */
+  }
+  
+  /* Optional: Styles for when the modal is hidden */
+  .modal-hidden {
+    visibility: hidden; /* Hide the modal */
+    opacity: 0; /* Set the opacity to fully transparent */
+    transition: visibility 0s 0.2s, opacity 0.2s; /* Transition for a smooth disappearance */
+  }
+  
+
+.close-button {
+    position: absolute;
+    top: 20px; /* Padding from top */
+    right: 20px; /* Padding from right */
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.close-button:hover {
+    transform: scale(1.1);
+}
+
+.button--style {
+    padding: 10px 20px;
+    border: 2px solid black; /* Border color changed to black */
+    border-radius: 25px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    cursor: pointer;
+    background-color: transparent;
+    color: black;
+    width: 100%; /* Make button full width */
+    text-align: center; /* Center text inside button */
+    box-sizing: border-box; /* Include padding and border in the width */
+    margin-bottom: 10px; /* Add margin to separate buttons */
+}
+
+.button--style:hover {
+    background-color: black;
+    color: white;
+}
+
+
+/* Base styles for the input */
+.input-style {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding inside the input */
+    margin: 10px 0; /* Margin around the input */
+    border: 2px solid #d9d9d9; /* Default light grey border */
+    border-radius: 10px; /* Rounded corners */
+    box-sizing: border-box; /* Box-sizing set to border-box */
+    transition: border-color 0.3s; /* Smooth transition for border color */
+    outline: none; /* Remove default focus outline */
+  }
+  
+  /* Style for the input placeholder */
+  .input-style::placeholder {
+    color: #a8a8a8; /* Light grey color for placeholder text */
+    font-weight: 150; /* Italic style for placeholder text */
+  }
+  
+  /* Style for the input on focus */
+  .input-style:focus {
+    border-color: #28a745; /* Blue border color when the input is focused */
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25); /* Glow effect with a light blue color */
+  }
+  
+  /* Optionally, you can add styles for valid/invalid input based on HTML5 form validation */
+  .input-style:valid {
+    border-color: #28a745; /* Green border for valid input */
+  }
+  
+  .input-style:invalid {
+    border-color: #dc3545; /* Red border for invalid input */
+  }
+    
+
+  .link {
+    background: none;
+    border: none;
+    color: #069;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 0;
+    text-decoration: none;
+  }
+  
+  .link:hover,
+  .link:focus {
+    color: #045;
+    text-decoration: underline;
+  }
+
+
+
+  .radio-group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .custom-radio {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .custom-radio input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+  }
+  
+  .radio-btn {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: inline-block;
+    position: relative;
+    margin-right: 10px;
+    background-color: #fff;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  
+  .custom-radio span {
+    padding-left: 5px; /* Adjust spacing between radio button and text */
+  }
+  
+  /* Create a custom indicator */
+  .radio-btn::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: black;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  /* Show the indicator when the radio is checked */
+  .custom-radio input[type="radio"]:checked + .radio-btn::after {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  /* Styling label text when radio button is selected */
+  .custom-radio input[type="radio"]:checked + .radio-btn + span {
+    color: #000000;
+  }
+  
+  /* Hover effect for labels */
+  .custom-radio:hover .radio-btn {
+    border-color: #000000;
+  }
+  
+
+  

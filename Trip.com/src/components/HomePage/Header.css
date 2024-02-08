@@ -41,20 +41,21 @@ line-height: normal;
   
   .large--image {
     border-top-left-radius: 150px;
-    border-top-right-radius: 150px; /* Adjust the border-radius as needed */
+    border-top-right-radius: 150px;
     position: absolute;
-    right: 300px; /* Adjust the position as per the design */
-    top: 50x;
+    right: 300px; /* Adjust the right position as needed */
+    top: 50px; /* Adjust the top position as needed */
     width: 250px;
+    z-index: 1; /* Ensure this stays above the smaller image */
   }
   
   .smaller--image {
     width: 110px;
-flex-shrink: 0;
- /* Circular image */
     position: absolute;
-    right: 250px; /* Adjust the position as per the design */
-    bottom: 30px; /* Adjust the position as per the design */
+    right: 250px; /* Adjust the right position as needed */
+    bottom: 30px; /* Adjust the bottom position as needed */
+ /* This will make the image circular */
+    z-index: 2; /* This ensures the smaller image lays on top of the larger one */
   }
   
   @media (max-width: 768px) {
@@ -62,6 +63,14 @@ flex-shrink: 0;
       position: static;
       margin: 0 auto;
       display: block;
+      max-width: 90%; /* Prevents images from being too wide on small devices */
+    }
+  
+    /* Centering the images in a flex container on small screens */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   
     div {
