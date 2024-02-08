@@ -62,82 +62,166 @@ export default function HotelSignup(props) {
     // Reset second level when first level changes
     setSecondLevel("");
 
-    // Fetch second level options based on the first level selection
-    if (firstLevel === "Option 1") {
-      setSecondLevelOptions(["Suboption 1.1", "Suboption 1.2"]);
-    } else if (firstLevel === "Option 2") {
-      setSecondLevelOptions(["Suboption 2.1", "Suboption 2.2"]);
-    } else if (firstLevel === "Option 3") {
-      setSecondLevelOptions(["Suboption 3.1", "Suboption 3.2"]);
-    }
+    const fetchDistricts = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:4000/hotelSignUp/districts",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              firstLevel,
+            }),
+          }
+        );
+        console.log("Request sent");
+        console.log(response);
+        if (response.ok) {
+          console.log("Response received");
+          const data = await response.json();
+          console.log(data);
+          setSecondLevelOptions(
+            data.success ? data.data.map((district) => district.name) : []
+          );
+        } else {
+          const errorMessage = await response.text();
+          setError(
+            `Error getting district: ${errorMessage || response.statusText}`
+          );
+        }
+      } catch (error) {
+        setError(`Error getting district: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDistricts();
   }, [firstLevel]);
 
   useEffect(() => {
     setThirdLevel("");
-    if (secondLevel === "Suboption 1.1") {
-      setThirdLevelOptions(["Suboption 1.1.1", "Suboption 1.1.2"]);
-    } else if (secondLevel === "Suboption 1.2") {
-      setThirdLevelOptions(["Suboption 1.2.1", "Suboption 1.2.2"]);
-    } else if (secondLevel === "Suboption 2.1") {
-      setThirdLevelOptions(["Suboption 2.1.1", "Suboption 2.1.2"]);
-    } else if (secondLevel === "Suboption 2.2") {
-      setThirdLevelOptions(["Suboption 2.2.1", "Suboption 2.2.2"]);
-    } else if (secondLevel === "Suboption 3.1") {
-      setThirdLevelOptions(["Suboption 3.1.1", "Suboption 3.1.2"]);
-    } else if (secondLevel === "Suboption 3.2") {
-      setThirdLevelOptions(["Suboption 3.2.1", "Suboption 3.2.2"]);
-    }
+    const fetchUpazillas = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:4000/hotelSignUp/upazillas",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              secondLevel,
+            }),
+          }
+        );
+        console.log("Request sent");
+        console.log(response);
+        if (response.ok) {
+          console.log("Response received");
+          const data = await response.json();
+          console.log(data);
+          setThirdLevelOptions(
+            data.success ? data.data.map((upazilla) => upazilla.name) : []
+          );
+        } else {
+          const errorMessage = await response.text();
+          setError(
+            `Error getting upazilla: ${errorMessage || response.statusText}`
+          );
+        }
+      } catch (error) {
+        setError(`Error getting upazilla: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUpazillas();
   }, [secondLevel]);
 
   useEffect(() => {
     setFourthLevel("");
-    if (thirdLevel === "Suboption 1.1.1") {
-      setFourthLevelOptions(["Suboption 1.1.1.1", "Suboption 1.1.1.2"]);
-    } else if (thirdLevel === "Suboption 1.1.2") {
-      setFourthLevelOptions(["Suboption  1.1.2.1", "Suboption 1.1.2.2"]);
-    } else if (thirdLevel === "Suboption 1.2.1") {
-      setFourthLevelOptions(["Suboption x", "Suboption y"]);
-    } else if (thirdLevel === "Suboption 1.2.2") {
-      setFourthLevelOptions(["Suboption x", "Suboption y"]);
-    } else if (thirdLevel === "Suboption 2.1.1") {
-      setFourthLevelOptions(["Suboption x", "Suboption y"]);
-    }
+    const fetchUnions = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:4000/hotelSignUp/unions",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              thirdLevel,
+            }),
+          }
+        );
+        console.log("Request sent");
+        console.log(response);
+        if (response.ok) {
+          console.log("Response received");
+          const data = await response.json();
+          console.log(data);
+          setFourthLevelOptions(
+            data.success ? data.data.map((union) => union.name) : []
+          );
+        } else {
+          const errorMessage = await response.text();
+          setError(
+            `Error getting union: ${errorMessage || response.statusText}`
+          );
+        }
+      } catch (error) {
+        setError(`Error getting union: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUnions();
   }, [thirdLevel]);
 
   //Handling signup data
 
-  // const handleSignUp = async () => {
-  //   try {
-  //     setLoading(true);
-  //     setError(null);
+  const handleSignUp = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-  //     const response = await fetch("http://localhost:4000/signup", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         username,
-  //         email,
-  //         password,
-  //         firstname: first_name,
-  //         lastname: last_name,
-  //       }),
-  //     });
+      const response = await fetch("http://localhost:4000/hotelSignUp/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email : props.email,
+          username :props.username ,
+          password : props.password,
+          businessType: props.businessType,
+          division: firstLevel,
+          district: secondLevel,
+          upazila: thirdLevel,
+          union: fourthLevel,
+          hotelname: hotelname,
+          hoteladdress: hoteladdress,
+          hotelphonenumber:hotelphonenumber
+          
 
-  //     if (response.ok) {
-  //       console.log("User registered successfully");
-  //       navigate(`/user/${username}`);
-  //     } else {
-  //       const errorMessage = await response.text();
-  //       setError(`Error signing up: ${errorMessage || response.statusText}`);
-  //     }
-  //   } catch (error) {
-  //     setError(`Error signing up: ${error.message}`);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+        }),
+      });
+
+      if (response.ok) {
+        console.log("User registered successfully");
+          navigate(`/user/${username}`);
+      } else {
+        const errorMessage = await response.text();
+        setError(`Error signing up: ${errorMessage || response.statusText}`);
+      }
+    } catch (error) {
+      setError(`Error signing up: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -235,7 +319,7 @@ export default function HotelSignup(props) {
           />
         </div>
         <div className="button-container">
-          <button className="button--style">Sign up</button>
+          <button className="button--style" onClick={handleSignUp}>Sign up</button>
         </div>
       </div>
     </>
