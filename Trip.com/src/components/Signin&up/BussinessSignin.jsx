@@ -1,4 +1,5 @@
 import React, {useEffect,useState} from "react";
+import {useNavigate } from "react-router-dom";
 
 import "./in&up.css";
 import BussinessSignup from "./BussinessSignup";
@@ -6,12 +7,79 @@ import BussinessSignup from "./BussinessSignup";
 
 export default function BussinessSignin({onClose}) {
 
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [emailError, setEmailError] = useState("");
+    const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [signup,setSignup] = useState(false);
-    
+
+    const navigate = useNavigate();
+
+    const setFieldError = (field, message) => {
+        switch(field) {
+            case "username" :
+                setUsernameError(message);
+                break;
+            case "password" :
+                setPasswordError(message);
+                break;
+            default :
+                break;
+        }
+    };
+
+
+    const handleSignin = async () => {
+        setUsernameError("");
+        setPasswordError("");
+        
+        if(!username && !password ) {
+            setFieldError("username" , "Username field cannot be empty");
+            setFieldError("password" , "Password field cannot be empty");
+            return ;
+            
+        }
+        else if(!username ) {
+            setFieldError("username" , "Username field cannot be empty");
+            return;
+        }
+
+        else if(!password) {
+            setFieldError("password" , "Password field cannot be empty");
+            return;
+        }
+
+        const response = await fetch("http://localhost:4000/signin/hotellogin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username,
+                password,
+            }),
+            });
+
+            if(response.ok) {
+                const data = await response.json();
+                if(data && data.retrievedData) {
+                    navigate(`/hotel/${username}`);
+                } else {
+                    const data = await response.json();
+                    if(data) {
+                        if(data?.status === 401){
+                            setFieldError("username" , data.error)
+                        }
+                        else if(data?.status === 402){
+                            setFieldError("password" , data.error)
+                        }
+                    }
+                } 
+            } else {
+                alert("Server is down!");
+            }
+    }; 
+
 
     const GotoSignup = () => setSignup(true);
 
@@ -28,24 +96,24 @@ export default function BussinessSignin({onClose}) {
             <div className="input-container">
                     <input
                         type="text"
-                        value={email}
+                        value={username}
                         placeholder="Username"
-                        onChange={e => setEmail(e.target.value)}
-                        className="input-style" />
-                    <label className="errorLabel">{emailError}</label>
+                        onChange={e => setUsername(e.target.value)}
+                        className={`input-style ${usernameError ? 'input-error' : ''}`} />
+                    {usernameError && <div className="error-message">{usernameError}</div>}
                 
                     <input
                         value={password}
                         type="password" // ensure the password input hides the text
                         placeholder="Password"
                         onChange={e => setPassword(e.target.value)}
-                        className="input-style" />
-                    <label className="errorLabel">{passwordError}</label>
+                        className={`input-style ${passwordError ? 'input-error' : ''}`} />
+                    {passwordError && <div className="error-message">{passwordError}</div>}
                 </div>
 
             <div>
                 
-                <button className="button--style" >Sign in</button>
+                <button className="button--style" onClick={handleSignin}>Sign in</button>
                 <p>Don't have an account? <button className="link" onClick={GotoSignup}>Create one!</button></p>
             </div>
             {signup && <BussinessSignup onClose={onClose}/>}

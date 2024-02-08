@@ -81,6 +81,13 @@
     background-color: black;
     color: white;
 }
+
+.input-error {
+  border-color: #dc3545; /* Red border for error */
+  background-color: #ffe6e6; /* Light red background for error */
+}
+
+
 .input-container {
   display: flex; /* This defines the container as a flex container */
   align-items: center; /* This centers the flex items on the cross axis (vertically) */
@@ -96,7 +103,7 @@
 .input-style {
   width: calc(100% - 22px); /* Adjust width, considering padding and border */
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
   border: 1px solid #ccc;
   border-radius: 4px;
   
@@ -194,4 +201,12 @@
 
   
 
-  
+.error-message {
+  white-space: nowrap; /* Keeps the error message on one line */
+  color: #dc3545; /* Red color for the error message text */
+  font-size: 0.8em;
+  align-self: start;
+  padding-left: 15px;
+  margin-top: -15px;
+  /* Fixed height for error message to avoid layout shift */
+}
