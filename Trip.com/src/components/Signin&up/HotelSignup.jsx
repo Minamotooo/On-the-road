@@ -16,6 +16,26 @@ export default function HotelSignup(props) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+    const [image, setImage] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState('');
+  
+    const handleImageChange = (e) => {
+      const file = e.target.files[0];
+      if (file && file.type.substr(0, 5) === "image") {
+        setImage(file);
+        console.log(URL);
+        
+        // Use FileReader to generate a preview URL
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewUrl(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setImage(null);
+        setPreviewUrl('');
+      }
+    };
 
   // Simulate fetching data from a database
   useEffect(() => {
@@ -203,8 +223,8 @@ export default function HotelSignup(props) {
           union: fourthLevel,
           hotelname: hotelname,
           hoteladdress: hoteladdress,
-          hotelphonenumber:hotelphonenumber
-          
+          hotelphonenumber:hotelphonenumber,
+          image: previewUrl
 
         }),
       });
@@ -317,6 +337,10 @@ export default function HotelSignup(props) {
             }}
             className="input-style"
           />
+          <div>
+      <input type="file" accept="image/*" onChange={handleImageChange} />
+      {previewUrl && <img src={previewUrl} alt="Preview" style={{ width: "100px", height: "100px" }} />}
+    </div>
         </div>
         <div className="button-container">
           <button className="button--style" onClick={handleSignUp}>Sign up</button>
