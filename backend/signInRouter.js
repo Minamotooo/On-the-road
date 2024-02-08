@@ -136,6 +136,40 @@ signInRouter.post('/signup', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
   });
+
+
+  signInRouter.post('/hotellogin', async (req, res) => {
+    const { username, password } = req.body;
+  
+    try {
+      const result = await pool.query('SELECT * FROM HOTEL WHERE USERNAME=$1', [username]);
+  
+      if (result.rowCount === 1) {
+        const retrievedData = result.rows[0];
+
+        //console.log(user);
+  
+        //Compare the entered password with the hashed password stored in the database
+        const passwordMatch =  await bcrypt.compare(password,retrievedData.password);
+        console.log(password);
+        console.log(user.password);
+  
+          if (passwordMatch) {
+          // Passwords match, user is authenticated
+          res.status(200).json({success: true, message: 'Login successful', retrievedData });
+        } else {
+          // Passwords do not match
+          res.status(401).json({success: false, error: 'Incorrect password' });
+        }
+      } else {
+        // No user found with the provided email
+        res.status(402).json({success: false, error: 'Invalid username' });
+      }
+    } catch (error) {
+      console.error('Error signing in:', error);
+      res.status(500).json({success: false, error: 'Internal Server Error' });
+    }
+  });
   
   
   // ...

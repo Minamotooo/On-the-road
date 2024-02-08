@@ -40,7 +40,7 @@ const onButtonClick = async () => {
       return; // Stop further execution
     }
   
-    const response = await fetch("http://localhost:4000/signin/login", {
+    const response = await fetch("http://localhost:4000/signin/hotel", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
