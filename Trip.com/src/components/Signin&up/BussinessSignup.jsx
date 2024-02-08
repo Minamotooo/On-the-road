@@ -11,13 +11,13 @@ export default function BussinessSignup({onClose}) {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [username, setUsername] = useState("");
-  const [bussinessType, setBussinessType] = useState("");
+  const [businessType, setbusinessType] = useState("");
   const [next,setNext] = useState(false);
 
   // Simulate fetching data from a database
 
   const nextPage = () => {
-    if (bussinessType) {
+    if (businessType) {
       setNext(true);
     } else {
       // Optionally, handle the error case where no business type is selected
@@ -34,8 +34,13 @@ export default function BussinessSignup({onClose}) {
 
   // Function to get the business signup component based on the business type
   const getBusinessSignupComponent = () => {
-    const SignupComponent = BUSINESS_COMPONENTS[bussinessType];
-    return SignupComponent ? <SignupComponent onClose={onClose} email={email} username={username}  /> : null;
+    const SignupComponent = BUSINESS_COMPONENTS[businessType];
+    return SignupComponent ? <SignupComponent 
+                                  onClose={onClose} 
+                                  email={email} 
+                                  username={username} 
+                                  password={password}
+                                  businessType={businessType} /> : null;
   };
 
 
@@ -91,8 +96,8 @@ export default function BussinessSignup({onClose}) {
       type="radio" 
       name="business-type" 
       value="Restaurant" 
-      checked={bussinessType === "Restaurant"}
-      onChange={(e) => setBussinessType(e.target.value)}
+      checked={businessType === "Restaurant"}
+      onChange={(e) => setbusinessType(e.target.value)}
     />
     <span>Restaurant</span>
   </label>
@@ -101,8 +106,8 @@ export default function BussinessSignup({onClose}) {
       type="radio" 
       name="business-type" 
       value="Hotel" 
-      checked={bussinessType === "Hotel"}
-      onChange={(e) => setBussinessType(e.target.value)}
+      checked={businessType === "Hotel"}
+      onChange={(e) => setbusinessType(e.target.value)}
     />
     <span>Hotel</span>
   </label>
@@ -111,8 +116,8 @@ export default function BussinessSignup({onClose}) {
       type="radio"
       name="business-type"
       value="Travel Agency"
-      checked={bussinessType === "Travel Agency"}
-      onChange={(e) => setBussinessType(e.target.value)}
+      checked={businessType === "Travel Agency"}
+      onChange={(e) => setbusinessType(e.target.value)}
     />
     <span>Travel Agency</span>
   </label>
@@ -121,8 +126,8 @@ export default function BussinessSignup({onClose}) {
       type="radio" 
       name="business-type" 
       value="Tour Guide" 
-      checked={bussinessType === "Tour Guide"}
-      onChange={(e) => setBussinessType(e.target.value)}
+      checked={businessType === "Tour Guide"}
+      onChange={(e) => setbusinessType(e.target.value)}
     />
     <span>Tour Guide</span>
   </label>

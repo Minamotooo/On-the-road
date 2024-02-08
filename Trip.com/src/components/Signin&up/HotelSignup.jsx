@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function HotelSignup({ onClose }) {
+export default function HotelSignup(props) {
   const [firstLevel, setFirstLevel] = useState("");
   const [secondLevel, setSecondLevel] = useState("");
   const [thirdLevel, setThirdLevel] = useState("");
@@ -145,7 +145,7 @@ export default function HotelSignup({ onClose }) {
 
       <div className="modal-container">
         <h1 className="header">Finish setting up your account</h1>
-        <button type="button" className="close-button" onClick={onClose}>
+        <button type="button" className="close-button" onClick={props.onClose}>
           &times;
         </button>
         <div className="input-container">
@@ -235,10 +235,7 @@ export default function HotelSignup({ onClose }) {
           />
         </div>
         <div className="button-container">
-          <button className="button--style">Submit</button>
-          <button className="button--style" onClick={onClose}>
-            Cancel
-          </button>
+          <button className="button--style">Sign up</button>
         </div>
       </div>
     </>
