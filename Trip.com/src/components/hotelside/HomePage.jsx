@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Homepage.css";
-import "./global.css";
+
 const Homepage = () => {
   const navigate = useNavigate();
 

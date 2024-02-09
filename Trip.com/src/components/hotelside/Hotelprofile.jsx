@@ -7,7 +7,9 @@ import Homepage from './HomePage';
 export default function HotelProfile() {
   return (
     <>
-    <Homepage />
+    <Navbar />
+    <Body />
+    <RoomSelection />
     </>
   );
 }

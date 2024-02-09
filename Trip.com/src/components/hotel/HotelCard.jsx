@@ -1,25 +1,29 @@
-
-import "./style.css";
+import React from "react"
+import {ReactDOM} from "react-dom/client"
+import "../HomePage/page.css"
 import defaultphoto from "../images/hotel-photo.jpg"
 
 const HotelCard = (props) => {
+  const data = props.data;
   return (
-          <div className="this-card">
-            <img className="image" src={defaultphoto} />
-            <div className="location-dates">
-              <div className="info">
-                <div className="line-1">{props.name}</div>
-                <div className="dates">{props.district}, {props.division}</div>
-                <div className="dates">{props.description}</div>
-              </div>
-              <div className="price">
-                <div className="dates">
-                  <span className="span">${props.starting_price}</span>
-                  <span className="night1">/night</span>
-                </div>
-              </div>
-            </div>
-            </div>
+    <div className="card">
+    <img
+src={defaultphoto}
+className="card--image"
+alt="poster"
+/>
+    
+    <h3 className="card--title">{data.name}</h3>
+    <div className="card--stats">
+        <span className="details">
+        <span>{data.adress}</span>
+        <span className="gray">{data.district}, </span>
+        <span className="gray">{data.division}</span>
+        </span>
+    </div>
+    
+    <p className="card--description">{data.description}</p>
+</div>
     
   );
 };
