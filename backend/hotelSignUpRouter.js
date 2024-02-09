@@ -7,6 +7,9 @@ const pool = require('./db/database');
 
 const bodyParser = require('body-parser');
 
+// Increase payload size limit to 10MB
+hotelSignUpRouter.use(bodyParser.json({ limit: '10mb' }));
+
 
 hotelSignUpRouter.use(bodyParser.json());
 
@@ -115,7 +118,7 @@ hotelSignUpRouter.post('/divisions', async (req, res) => {
       const temp = await pool.query('SELECT UNION_ID FROM UNIONS UN JOIN UPAZILLAS UP ON (UN.UPAZILLA_ID = UP.UPAZILLA_ID) JOIN DISTRICTS D ON(UP.DISTRICT_ID = D.DISTRICT_ID) JOIN DIVISIONS DIV ON(D.DIVISION_ID = DIV.DIVISION_ID) WHERE DIV.NAME = $1 AND D.NAME = $2 AND UP.NAME = $3 AND UN.NAME= $4;', [division, district, upazila, union]);
       const union_id = temp.rows[0].union_id;
       //console.log(union_id);
-      const result2 = await pool.query('INSERT INTO HOTEL (USERNAME, PASSWORD, NAME, UNION_ID, ADDRESS, PHONE_NO, EMAIL) VALUES ($1, $2, $3, $4, $5, $6, $7 ) RETURNING *', [username, hashedPassword, hotelname,  union_id,  hoteladdress, hotelphonenumber, email]);
+      const result2 = await pool.query('INSERT INTO HOTEL (USERNAME, PASSWORD, NAME, UNION_ID, ADDRESS, PHONE_NO, EMAIL, PHOTO) VALUES ($1, $2, $3, $4, $5, $6, $7 , $8) RETURNING *', [username, hashedPassword, hotelname,  union_id,  hoteladdress, hotelphonenumber, email,image]);
       //console.log(result2);
       // Assuming the user is successfully added, send a success response
       res.status(201).json({ message: 'User registered successfully', user: result1.rows[0] });

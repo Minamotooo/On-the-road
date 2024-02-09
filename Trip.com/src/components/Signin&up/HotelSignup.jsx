@@ -16,26 +16,26 @@ export default function HotelSignup(props) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-    const [image, setImage] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState('');
-  
-    const handleImageChange = (e) => {
-      const file = e.target.files[0];
-      if (file && file.type.substr(0, 5) === "image") {
-        setImage(file);
-        console.log(URL);
-        
-        // Use FileReader to generate a preview URL
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setPreviewUrl(reader.result);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        setImage(null);
-        setPreviewUrl('');
-      }
-    };
+  const [image, setImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.substr(0, 5) === "image") {
+      setImage(file);
+      console.log(URL);
+
+      // Use FileReader to generate a preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImage(null);
+      setPreviewUrl("");
+    }
+  };
 
   // Simulate fetching data from a database
   useEffect(() => {
@@ -213,9 +213,9 @@ export default function HotelSignup(props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email : props.email,
-          username :props.username ,
-          password : props.password,
+          email: props.email,
+          username: props.username,
+          password: props.password,
           businessType: props.businessType,
           division: firstLevel,
           district: secondLevel,
@@ -223,15 +223,16 @@ export default function HotelSignup(props) {
           union: fourthLevel,
           hotelname: hotelname,
           hoteladdress: hoteladdress,
-          hotelphonenumber:hotelphonenumber,
-          image: previewUrl
-
+          hotelphonenumber: hotelphonenumber,
+          image: previewUrl,
         }),
       });
 
+      console.log(previewUrl);
+
       if (response.ok) {
         console.log("User registered successfully");
-          navigate(`/user/${username}`);
+        navigate(`/user/${username}`);
       } else {
         const errorMessage = await response.text();
         setError(`Error signing up: ${errorMessage || response.statusText}`);
@@ -338,12 +339,20 @@ export default function HotelSignup(props) {
             className="input-style"
           />
           <div>
-      <input type="file" accept="image/*" onChange={handleImageChange} />
-      {previewUrl && <img src={previewUrl} alt="Preview" style={{ width: "100px", height: "100px" }} />}
-    </div>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {previewUrl && (
+              <img
+                src={previewUrl}
+                alt="Preview"
+                style={{ width: "100px", height: "100px" }}
+              />
+            )}
+          </div>
         </div>
         <div className="button-container">
-          <button className="button--style" onClick={handleSignUp}>Sign up</button>
+          <button className="button--style" onClick={handleSignUp}>
+            Sign up
+          </button>
         </div>
       </div>
     </>
