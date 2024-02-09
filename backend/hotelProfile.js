@@ -13,7 +13,32 @@ hotelRouter.use(bodyParser.json({ limit: '10mb' }));
 
 hotelRouter.use(bodyParser.json());
 
+//CLICK ON HOTELS FROM NAVBAR AND REACH HERE
+hotelRouter.post('/hotellandingpage', async (req, res) => {
 
+ try {
+    const result = await pool.query('SELECT H.NAME,H.ADDRESS,D.name AS DISTRICT, DIV.name as DIVISION, H.description, MIN(HR.price_per_night) AS STARTING_PRICE  FROM HOTEL H JOIN hotel_rooms HR ON H.hotel_id = HR.hotel_id  JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = Div.division_id GROUP BY H.hotel_id, D.name, DIV.name ORDER BY STARTING_PRICE; ');
+   
+
+    console.log(result);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error loading hotels:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+//SELECT A PARTICULAR HOTEL AND REACH HERE
 //FOR DISPLAYING THE HOTEL DETAILS ALONG WITH LOCATION
 hotelRouter.post('/details/:hotelId', async (req, res) => {
   const { hotelId } = req.params;
