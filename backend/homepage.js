@@ -7,6 +7,7 @@ const cors = require('cors');
 const hotelSignUpRouter = require('./hotelSignUpRouter');
 const restaurantRouter = require('./restaurantRouter');
 const touristSpotDetailsRouter = require('./touristSpotDetailsRouter');
+const hotelProfile = require('./hotelProfile');
 const port = 4000;
 // Use the cors middleware
 app.use(cors());
@@ -15,7 +16,7 @@ app.use('/touristSpot',touristSpotRouter);
 app.use('/restaurant',restaurantRouter);
 app.use('/touristSpotInfo',touristSpotDetailsRouter);
 app.use('/hotelSignUp',hotelSignUpRouter);
-//app.use('/hotel',hotel);
+app.use('/hotel',hotelProfile);
 
 // Mock database query function
 const getTouristSpotsData = () => {
