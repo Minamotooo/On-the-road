@@ -139,22 +139,31 @@ signInRouter.post('/signup', async (req, res) => {
 
 
   signInRouter.post('/hotellogin', async (req, res) => {
-    const { username, password, businessType} = req.body;
+    const { username, password, businessType } = req.body; 
   
+    let tableName;
+    switch (businessType.toLowerCase()) {
+      case "hotel":
+        tableName = "HOTEL"; // Ensure the table name is correct
+        break;
+      
+      default:
+        // Handle invalid businessType
+        return res.status(400).json({ success: false, error: 'Invalid business type' });
+    }
+    
     try {
-      const result = await pool.query('SELECT * FROM $1 WHERE USERNAME=$2', [businessType,username]);
+      const result = await pool.query(`SELECT * FROM ${tableName} WHERE USERNAME = $1;`, [username]);
   
       if (result.rowCount === 1) {
         const retrievedData = result.rows[0];
-
-        //console.log(user);
   
-        //Compare the entered password with the hashed password stored in the database
-        const passwordMatch =  await bcrypt.compare(password,retrievedData.password);
+        // Compare the entered password with the hashed password stored in the database
+        const passwordMatch = await bcrypt.compare(password, retrievedData.password);
         console.log(password);
-        console.log(user.password);
+        console.log(retrievedData.password); // Corrected from console.log(user.password) to console.log(retrievedData.password)
   
-          if (passwordMatch) {
+        if (passwordMatch) {
           // Passwords match, user is authenticated
           res.status(200).json({success: true, message: 'Login successful', retrievedData });
         } else {
@@ -162,7 +171,7 @@ signInRouter.post('/signup', async (req, res) => {
           res.status(401).json({success: false, error: 'Incorrect password' });
         }
       } else {
-        // No user found with the provided email
+        // No user found with the provided username
         res.status(402).json({success: false, error: 'Invalid username' });
       }
     } catch (error) {
@@ -170,6 +179,7 @@ signInRouter.post('/signup', async (req, res) => {
       res.status(500).json({success: false, error: 'Internal Server Error' });
     }
   });
+  
   
   
   // ...
