@@ -13,6 +13,8 @@ export default function HotelSignup(props) {
   const [hotelname, setHotelName] = useState("");
   const [hoteladdress, setHotelAddress] = useState("");
   const [hotelphonenumber, setHotelPhoneNumber] = useState("");
+  const [hoteldescription, setHotelDescription] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [image, setImage] = useState(null);
@@ -225,6 +227,7 @@ export default function HotelSignup(props) {
           hotelname: hotelname,
           hoteladdress: hoteladdress,
           hotelphonenumber: hotelphonenumber,
+          hoteldescription: hoteldescription,
           image: previewUrl,
         }),
       });
@@ -337,6 +340,15 @@ export default function HotelSignup(props) {
             placeholder="Hotel Phone Number"
             onChange={(e) => {
               setHotelPhoneNumber(e.target.value);
+            }}
+            className="input-style"
+          />
+          <input
+            type="text"
+            value={hoteldescription}
+            placeholder="A short description of your hotel"
+            onChange={(e) => {
+              setHotelDescription(e.target.value);
             }}
             className="input-style"
           />
