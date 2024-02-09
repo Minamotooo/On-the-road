@@ -8,6 +8,7 @@ import Details from './components/Details.jsx';
 import SignUp from '../../my-app/src/Routes/SignUp.jsx';
 import UserProfile from '../../my-app/src/Routes/UserProfile.jsx';
 import HotelProfile from './components/hotelside/Hotelprofile.jsx';
+import Hotel from "./components/hotel/Hotel.jsx";
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<LoginModal />} />
         <Route path="/loginas" element={<LoginAs />} />
         <Route path="/touristspot" element={<Places />} />
+        <Route path="/hotel" element={<Hotel />} />
         <Route path="/touristspot/:spot_id" element={<Details />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/user/:username" element={<UserProfile />} />

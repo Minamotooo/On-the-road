@@ -35,7 +35,7 @@ export default function Navbar() {
             <nav className="nav--Menu">
                 <a href="/touristspot" className="navItem">Tourist Spot</a>
                 <a href="" className="navItem">Restaurant</a>
-                <a href="" className="navItem">Hotel</a>
+                <a href="/hotel" className="navItem">Hotel</a>
                 <a href="" className="navItem">Transportation</a>
             </nav>
             <div className="button--container">

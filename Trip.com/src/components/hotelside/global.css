@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap");
+body {
+  margin: 0;
+  line-height: normal;
+}
+:root {
+  /* fonts */
+  --font-poppins: Poppins;
+  --font-raleway: Raleway;
+  --font-dancing-script: "Dancing Script";
+  --font-inter: Inter;
+
+  /* font sizes */
+  --font-size-mini: 15px;
+  --font-size-xl: 20px;
+  --font-size-xs: 12px;
+  --font-size-smi: 13px;
+  --font-size-31xl: 50px;
+  --font-size-mid: 17px;
+  --font-size-2xs: 11px;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-darkolivegreen-100: #7c6a46;
+  --color-black: #000;
+  --color-gray-100: #fafafa;
+  --color-gray-200: #1c1c1c;
+  --color-gray-300: rgba(28, 28, 28, 0.6);
+  --color-darkslategray: #454545;
+
+  /* Border radiuses */
+  --br-8xs: 5px;
+  --br-10xs-5: 2.5px;
+  --br-3xs: 10px;
+}
