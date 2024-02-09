@@ -9,13 +9,13 @@ const HotelCard = (props) => {
             <div className="location-dates">
               <div className="info">
                 <div className="line-1">{props.name}</div>
-                <div className="dates">Yosemite National Park</div>
-                <div className="dates">Oct 23 - 28</div>
+                <div className="dates">{props.district}, {props.division}</div>
+                <div className="dates">{props.description}</div>
               </div>
               <div className="price">
                 <div className="dates">
-                  <span className="span">$289</span>
-                  <span className="night1"> night</span>
+                  <span className="span">${props.starting_price}</span>
+                  <span className="night1">/night</span>
                 </div>
               </div>
             </div>

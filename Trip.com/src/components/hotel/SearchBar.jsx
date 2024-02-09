@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import searchIcon from "../images/search.png";
+import "./style.css";
 
 function SearchBar({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState('');
