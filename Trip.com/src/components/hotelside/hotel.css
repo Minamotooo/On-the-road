@@ -1,115 +1,109 @@
-.App {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  .App-header {
-    background-image: url('https://i.postimg.cc/y8WnGmWn/hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
+.hotel-header {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+    font-family: Arial, sans-serif;
+  }
+  
+  .hotel-header h1 {
+    font-size: 32px;
+    margin-bottom: 0;
+  }
+  
+  .hotel-rating {
+    display: flex;
     align-items: center;
-    text-align: center;
-    color: white;
+    gap: 10px;
   }
   
-  .header-content {
-    max-width: 500px;
+  .rating-dots {
+    display: flex;
   }
   
-  .App-header h1 {
-    font-size: 5rem;
-    line-height: 1.2;
-    margin-bottom: 0.5rem;
+  .dot {
+    height: 10px;
+    width: 10px;
+    background-color: #4CAF50; /* Green color */
+    border-radius: 50%;
+    display: inline-block;
   }
   
-  .App-header p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
+  .reviews-count {
+    font-size: 14px;
+    color: #666;
   }
   
-  .App-header button {
-    background-color: white;
-    color: #5e5e5e;
+  .review-summary {
+    background-color: yellow;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .hotel-ranking {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .hotel-location {
+    font-size: 16px;
+    color: #666;
+    margin: 8px 0;
+  }
+  
+  .check-availability {
+    background-color: #FFC107; /* Yellow color */
+    color: black;
     border: none;
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
     cursor: pointer;
   }
   
-  .App-header button:hover {
-    background-color: #f2f2f2;
-  }
-  
-  .section-1,
-  .section-2,
-  .section-3 {
+  /* Add responsive design as needed */
+  .hotel-overview {
     display: flex;
     justify-content: space-between;
+  }
+  
+  .about-section,
+  .amenities-section {
+    width: 48%; /* Adjust based on your layout */
+    padding: 20px;
+    background-color: #f5f5f5; /* Light gray background */
+  }
+  
+  .rating-overview {
+    display: flex;
     align-items: center;
-    padding: 8rem 4rem;
+    gap: 10px;
+    font-size: 24px;
   }
   
-  .section-1-content,
-  .section-2-content,
-  .section-3-content {
-    max-width: 500px;
+  .rating {
+    font-weight: bold;
+    color: green; /* Or your preferred color */
   }
   
-  .section-1 h2,
-  .section-2 h2,
-  .section-3 h2 {
-    font-size: 3rem;
-    margin-bottom: 2rem;
+  .rating-label {
+    font-size: 18px;
   }
   
-  .section-1 p,
-  .section-2 p,
-  .section-3 p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
+  .reviews-count {
+    font-size: 16px;
+    color: #666;
   }
   
-  .section-1 button,
-  .section-2 button,
-  .section-3 button {
-    background-color: #5e5e5e;
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    cursor: pointer;
+  .ranking {
+    font-size: 14px;
+    color: #666;
   }
   
-  .section-1 button:hover,
-  .section-2 button:hover,
-  .section-3 button:hover {
-    background-color: #434343;
+  .hotel-description {
+    font-size: 14px;
+    margin-top: 10px;
   }
   
-  .section-1-image,
-  .section-2-image,
-  .section-3-image {
-    background-image: url('https://i.postimg.cc/y8WnGmWn/hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    width: 500px;
-    height: 500px;
-  }
-  
-  .App-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 2rem;
-    margin-top: 2rem;
-  }
-  
-  .App-footer p {
-    margin: 0;
-    font-size: 1.2rem;
-  }
+  /* You will need to add icons and additional styling for the amenities section */
+    

@@ -1,0 +1,74 @@
+.room-selection {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    border: 1px solid #ccc; /* For a light border */
+    margin-bottom: 20px; /* Space between room options */
+  }
+  
+  .room-details {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .room-images img {
+    width: 150px; /* Adjust based on your preference */
+    height: auto;
+    border-radius: 4px; /* Optional, for rounded corners */
+  }
+  
+  .room-info h3 {
+    margin-bottom: 10px;
+  }
+  
+  .room-info ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .room-info ul li {
+    margin-bottom: 5px;
+  }
+  
+  .room-choices {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  
+  .price-box {
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 120px;
+  }
+  
+  .price-box span {
+    display: block;
+    background-color: #dedede; /* Light gray background */
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Darken color on hover */
+  }
+  
+  /* Add additional styles as needed for price inclusions and other elements */
+  
