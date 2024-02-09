@@ -139,10 +139,10 @@ signInRouter.post('/signup', async (req, res) => {
 
 
   signInRouter.post('/hotellogin', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, businessType} = req.body;
   
     try {
-      const result = await pool.query('SELECT * FROM HOTEL WHERE USERNAME=$1', [username]);
+      const result = await pool.query('SELECT * FROM $1 WHERE USERNAME=$2', [businessType,username]);
   
       if (result.rowCount === 1) {
         const retrievedData = result.rows[0];

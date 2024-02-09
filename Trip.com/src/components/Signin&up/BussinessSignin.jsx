@@ -11,9 +11,11 @@ export default function BussinessSignin({onClose}) {
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [businessType, setbusinessType] = useState("");
     const [signup,setSignup] = useState(false);
 
     const navigate = useNavigate();
+
 
     const setFieldError = (field, message) => {
         switch(field) {
@@ -32,7 +34,13 @@ export default function BussinessSignin({onClose}) {
     const handleSignin = async () => {
         setUsernameError("");
         setPasswordError("");
-        
+
+            if (!businessType) {
+              alert('Please select a business type.');
+              return;
+            }
+
+                 
         if(!username && !password ) {
             setFieldError("username" , "Username field cannot be empty");
             setFieldError("password" , "Password field cannot be empty");
@@ -57,13 +65,14 @@ export default function BussinessSignin({onClose}) {
             body: JSON.stringify({
                 username,
                 password,
+                businessType
             }),
             });
 
             if(response.ok) {
                 const data = await response.json();
                 if(data && data.retrievedData) {
-                    navigate(`/hotel/${username}`);
+                    navigate(`/${businessType}/${username}`);
                 } else {
                     const data = await response.json();
                     if(data) {
@@ -85,6 +94,7 @@ export default function BussinessSignin({onClose}) {
 
     return(
         <>
+
             <div className="modal-wrapper"></div>
             <div className="modal-container">
 
@@ -94,6 +104,49 @@ export default function BussinessSignin({onClose}) {
             </div>
 
             <div className="input-container">
+                <p>Bussiness Type</p>
+                <div className="radio-container">
+                <label className="custom-radio">
+                    <input 
+                    type="radio" 
+                    name="business-type" 
+                    value="Restaurant" 
+                    checked={businessType === "Restaurant"}
+                    onChange={(e) => setbusinessType(e.target.value)}
+                    />
+                    <span>Restaurant</span>
+                </label>
+                <label className="custom-radio">
+                    <input 
+                    type="radio" 
+                    name="business-type" 
+                    value="Hotel" 
+                    checked={businessType === "Hotel"}
+                    onChange={(e) => setbusinessType(e.target.value)}
+                    />
+                    <span>Hotel</span>
+                </label>
+                <label className="custom-radio">
+                    <input
+                    type="radio"
+                    name="business-type"
+                    value="Travel Agency"
+                    checked={businessType === "Travel Agency"}
+                    onChange={(e) => setbusinessType(e.target.value)}
+                    />
+                    <span>Travel Agency</span>
+                </label>
+                <label className="custom-radio">
+                    <input
+                    type="radio" 
+                    name="business-type" 
+                    value="Tour Guide" 
+                    checked={businessType === "Tour Guide"}
+                    onChange={(e) => setbusinessType(e.target.value)}
+                    />
+                    <span>Tour Guide</span>
+                </label>
+                </div>
                     <input
                         type="text"
                         value={username}

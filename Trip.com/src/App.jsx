@@ -7,6 +7,7 @@ import Places from './components/TouristSpot/Places.jsx';
 import Details from './components/Details.jsx';
 import SignUp from '../../my-app/src/Routes/SignUp.jsx';
 import UserProfile from '../../my-app/src/Routes/UserProfile.jsx';
+import HotelProfile from './components/hotelside/Hotelprofile.jsx';
 function App() {
   return (
     <Router>
@@ -18,6 +19,7 @@ function App() {
         <Route path="/touristspot/:spot_id" element={<Details />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/user/:username" element={<UserProfile />} />
+        <Route path="/:business/:username" element={<HotelProfile/>}/>
         {/* Other routes go here */}
       </Routes>
     </Router>

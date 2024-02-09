@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function HotelSignup(props) {
   const [firstLevel, setFirstLevel] = useState("");
@@ -9,15 +10,15 @@ export default function HotelSignup(props) {
   const [secondLevelOptions, setSecondLevelOptions] = useState([]);
   const [thirdLevelOptions, setThirdLevelOptions] = useState([]);
   const [fourthLevelOptions, setFourthLevelOptions] = useState([]);
-
   const [hotelname, setHotelName] = useState("");
   const [hoteladdress, setHotelAddress] = useState("");
   const [hotelphonenumber, setHotelPhoneNumber] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
+
+  const navigate = useNavigate(); 
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -232,7 +233,8 @@ export default function HotelSignup(props) {
 
       if (response.ok) {
         console.log("User registered successfully");
-        navigate(`/user/${username}`);
+        console.log(props.username);
+        navigate(`/hotel/${props.username}`);
       } else {
         const errorMessage = await response.text();
         setError(`Error signing up: ${errorMessage || response.statusText}`);
