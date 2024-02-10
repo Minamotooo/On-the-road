@@ -29,9 +29,9 @@ Email: grandsylhet@gmail.com
 Username: grandsylhet
 Password: 1
 Division: Sylhet
-District: 
-Upazilla:
-Union: 
+District: Sylhet
+Upazilla: SYlhet Sadar
+Union: Khadimnagar
 Hotel Name: Grand Sylhet Hotel & Resort
 Hotel Address: Airport Road | Boroshala Khadimnagar, Sylhet City 3100 Bangladesh
 Hotel Phone Number: 01715097720
@@ -59,7 +59,7 @@ Union:
 Hotel Name:  Aronnok & Lakeshore Holiday Resort
 Hotel Address: Rangamati Cantonment, Rangamati Bangladesh
 Hotel Phone Number: 01715097720
-Hotel Description: Aronnok Holiday Resort is a secured place located in Rangamati Cantonment. The serene beauty of Kaptai lake is all around the resort. As the resort is administered by Bangladesh Army, the place is secured and the quality of service is impeccable. Rooms are luxurious having aircon facility. Food quality is the best in Rangamati. Free WiFi is available in the resort. You need to book in advance thru an Army Personnel.
+Hotel Description: Aronnok Holiday Resort is a secured place located in Rangamati Cantonment. The serene beauty of Kaptai lake is all around the resort. As the resort is administered by Bangladesh Army, the place is secured and the quality of service is impeccable. Rooms are luxurious having aircon facility. Food quality is the best in Rangamati. Free WiFi is available in the resort. You need to book in advance through an Army Personnel.
 
 Email: @gmail.com
 Username: 

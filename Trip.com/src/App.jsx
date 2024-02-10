@@ -1,14 +1,16 @@
 // App.jsx
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './components/HomePage/HomePage.jsx';
-import LoginModal from './components/Login/LoginModal.jsx';
-import LoginAs from './components/Login/LoginAs.jsx';
-import Places from './components/TouristSpot/Places.jsx';
-import Details from './components/Details.jsx';
-import SignUp from '../../my-app/src/Routes/SignUp.jsx';
-import UserProfile from '../../my-app/src/Routes/UserProfile.jsx';
-import HotelProfile from './components/hotelside/Hotelprofile.jsx';
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import SignUp from "../../my-app/src/Routes/SignUp.jsx";
+import UserProfile from "../../my-app/src/Routes/UserProfile.jsx";
+import Details from "./components/Details.jsx";
+import HomePage from "./components/HomePage/HomePage.jsx";
+import LoginAs from "./components/Login/LoginAs.jsx";
+import LoginModal from "./components/Login/LoginModal.jsx";
+import Places from "./components/TouristSpot/Places.jsx";
 import Hotel from "./components/hotel/Hotel.jsx";
+import HotelDetails from "./components/hotel/hotelDetails.jsx";
+import HotelProfile from "./components/hotelside/Hotelprofile.jsx";
+//import HotelDetails from './HotelDetails';
 function App() {
   return (
     <Router>
@@ -21,7 +23,12 @@ function App() {
         <Route path="/touristspot/:spot_id" element={<Details />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/user/:username" element={<UserProfile />} />
-        <Route path="/:business/:username" element={<HotelProfile/>}/>
+        <Route
+          path="/clientsidehotelpage/:hotelId"
+          element={<HotelDetails />}
+        />
+        <Route path="/:business/:username" element={<HotelProfile />} />
+
         {/* Other routes go here */}
       </Routes>
     </Router>

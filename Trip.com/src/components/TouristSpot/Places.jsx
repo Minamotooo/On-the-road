@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../HomePage/Navbar";
 import searchIcon from "../images/search.png";
-import "./Places.css";
 import Division from "./Division";
+import "./Places.css";
 import Spot from "./Spot";
 
 export default function Places() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
@@ -14,13 +14,16 @@ export default function Places() {
     if (searchTerm.length > 0) {
       const fetchSuggestions = async () => {
         try {
-          const response = await fetch('http://localhost:4000/touristSpot/home', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ searchTerm: searchTerm }),
-          });
+          const response = await fetch(
+            "http://localhost:4000/touristSpot/home",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ searchTerm: searchTerm }),
+            }
+          );
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -28,8 +31,8 @@ export default function Places() {
           console.log(data);
           setSuggestions(data);
         } catch (error) {
-          console.error('Error fetching suggestions:', error);
-          setSuggestions([]); 
+          console.error("Error fetching suggestions:", error);
+          setSuggestions([]);
         }
       };
 
@@ -42,10 +45,10 @@ export default function Places() {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/touristSpot/home', {
-        method: 'POST',
+      const response = await fetch("http://localhost:4000/touristSpot/home", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ searchterm: searchTerm }),
       });
@@ -55,13 +58,13 @@ export default function Places() {
       const data = await response.json();
       setSearchResults(data); // Set the search results based on the search term
     } catch (error) {
-      console.error('Error fetching search results:', error);
-      setSearchResults([]); 
+      console.error("Error fetching search results:", error);
+      setSearchResults([]);
     }
   };
 
   const show = suggestions.map((result) => (
-    <Spot 
+    <Spot
       key={result.spot_id}
       spotId={result.spot_id}
       name={result.name}
@@ -77,7 +80,10 @@ export default function Places() {
       <Navbar />
       <div className="search-container">
         <h1>Explore Bangladesh</h1>
-        <p>From iconic attractions to amazing experiences, your journey begins here</p>
+        <p>
+          From iconic attractions to amazing experiences, your journey begins
+          here
+        </p>
         <form className="search-bar" onSubmit={handleSearch}>
           <input
             type="text"
@@ -92,9 +98,7 @@ export default function Places() {
         </form>
       </div>
       <Division />
-      <section className="section">
-        {show}
-      </section>
+      <section className="section">{show}</section>
     </div>
   );
 }

@@ -1,54 +1,75 @@
 import React, { useEffect, useState } from "react";
-import SearchBar from "./SearchBar";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../HomePage/Navbar";
 import HotelCard from "./HotelCard";
+import SearchBar from "./SearchBar";
 
 export default function Hotel() {
-    const [hotels, setHotels] = useState([]); // Initialize the state to hold the hotels data
+  const [hotels, setHotels] = useState([]);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        // Function to fetch hotels data
-        async function fetchHotels() {
-            try {
-                // Make a POST request to your backend endpoint
-                const response = await fetch('/hotellandingpage', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        // Include other headers like authorization if needed
-                    },
-                    body: JSON.stringify({
-                        // Include any body content required by your POST endpoint, if necessary
-                    }),
-                });
+  const handleHotelClick = (hotelId) => {
+    // Directly navigate to the hotel's detail page
+    navigate(`/clientsidehotelpage/${hotelId}`);
+  };
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+  useEffect(() => {
+    // Function to fetch hotels data
+    async function fetchHotels() {
+      try {
+        // Make a POST request to your backend endpoint
+        const response = await fetch(
+          "http://localhost:4000/hotel/hotellandingpage",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              // Include other headers like authorization if needed
+            },
+            body: JSON.stringify({
+              // Include any body content required by your POST endpoint, if necessary
+            }),
+          }
+        );
 
-                // Parse the JSON response
-                const data = await response.json();
-
-                // Set the hotels data to state
-                setHotels(data);
-            } catch (error) {
-                console.error('Error fetching hotels:', error);
-            }
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Call the fetchHotels function
-        fetchHotels();
-    }, []); // The empty array as a second argument ensures useEffect runs once after initial render
+        // Parse the JSON response
+        const data = await response.json();
 
-    return (
-        <>
-            <Navbar />
-            <div className="relative-container">
-                <SearchBar />
-                {hotels.map((hotel, index) => (
-                    <HotelCard key={index} data={hotel} /> // Pass each hotel's data as a prop to HotelCard
-                ))}
-            </div>
-        </>
-    );
+        // Set the hotels data to state
+        setHotels(data);
+      } catch (error) {
+        console.error("Error fetching hotels:", error);
+      }
+    }
+
+    // Call the fetchHotels function
+    fetchHotels();
+  }, []); // The empty array as a second argument ensures useEffect runs once after initial render
+
+  return (
+    <div>
+      <Navbar />
+      <SearchBar />
+      <h2 className="card--list">
+        Diverse lodging options, affordable accommodations to luxury stays
+      </h2>
+      <section className="card--list">
+        {hotels.map(
+          (
+            hotel // Remove index if not needed, use unique property like hotel.id as a key
+          ) => (
+            <HotelCard
+              key={hotel.hotel_id} // It's best practice to use unique ID rather than index
+              data={hotel}
+              onClick={() => handleHotelClick(hotel.hotel_id)}
+            />
+          )
+        )}
+      </section>
+    </div>
+  );
 }

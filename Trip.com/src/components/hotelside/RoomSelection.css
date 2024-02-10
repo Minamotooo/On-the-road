@@ -57,18 +57,7 @@
     margin-bottom: 10px;
   }
   
-  button {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
   
-  button:hover {
-    background-color: #0056b3; /* Darken color on hover */
-  }
   
   /* Add additional styles as needed for price inclusions and other elements */
   

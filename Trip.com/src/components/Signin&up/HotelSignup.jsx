@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function HotelSignup(props) {
   const [firstLevel, setFirstLevel] = useState("");
@@ -20,7 +20,7 @@ export default function HotelSignup(props) {
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];

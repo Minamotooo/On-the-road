@@ -17,7 +17,7 @@ hotelRouter.use(bodyParser.json());
 hotelRouter.post('/hotellandingpage', async (req, res) => {
 
  try {
-    const result = await pool.query('SELECT H.NAME,H.ADDRESS,D.name AS DISTRICT, DIV.name as DIVISION, H.description, MIN(HR.price_per_night) AS STARTING_PRICE  FROM HOTEL H JOIN hotel_rooms HR ON H.hotel_id = HR.hotel_id  JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = Div.division_id GROUP BY H.hotel_id, D.name, DIV.name ORDER BY STARTING_PRICE; ');
+    const result = await pool.query('SELECT H.hotel_id,H.NAME,H.ADDRESS,D.name AS DISTRICT, DIV.name as DIVISION, H.description, MIN(HR.price_per_night) AS STARTING_PRICE  FROM HOTEL H JOIN hotel_rooms HR ON H.hotel_id = HR.hotel_id  JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = Div.division_id GROUP BY H.hotel_id, D.name, DIV.name ORDER BY STARTING_PRICE; ');
    
 
     console.log(result);
@@ -29,6 +29,21 @@ hotelRouter.post('/hotellandingpage', async (req, res) => {
   }
 });
 
+hotelRouter.post('/search', async (req, res) => {
+  const { searchTerm } = req.body;
+
+  try {
+    const result = await pool.query('SELECT H.hotel_id,H.name, H.address, D.name AS DISTRICT, DIV.name AS DIVISION, H.description FROM HOTEL H JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = DIV.division_id WHERE LOWER(H.name) ILIKE $1 OR LOWER(D.name) ILIKE $1 OR LOWER(DIV.name) ILIKE $1;',[`%${searchTerm}%`]
+    );
+
+    console.log(result);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error loading hotels:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
 
 
 
@@ -49,7 +64,7 @@ hotelRouter.post('/details/:hotelId', async (req, res) => {
 
     console.log(result);
 
-    res.json(result.rows);
+    res.json(result.rows[0]);
   } catch (error) {
     console.error('Error loading hotel rooms:', error);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
@@ -58,7 +73,7 @@ hotelRouter.post('/details/:hotelId', async (req, res) => {
 
 
 //FOR DISPLAYING THE REVIEW OF A HOTEL
-hotelRouter.post('/review/:hotelId', async (req, res) => {
+hotelRouter.get('/review/:hotelId', async (req, res) => {
   const { hotelId } = req.params;
 
   try {
@@ -77,8 +92,9 @@ hotelRouter.post('/review/:hotelId', async (req, res) => {
 
 
 //FOR DISPLAYING THE HOTEL ROOMS FOR A HOTEL
-hotelRouter.post('/:hotelId', async (req, res) => {
+hotelRouter.post('/fetchCurrentHotel/:hotelId', async (req, res) => {
     const { hotelId } = req.params;
+    console.log("HELLLLLLLLLLLLLL");
   
     try {
       const result = await pool.query('SELECT * FROM hotel_rooms WHERE HOTEL_ID = $1;',[hotelId]);
