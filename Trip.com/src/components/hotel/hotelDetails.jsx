@@ -109,12 +109,7 @@ export default function HotelDetails() {
       ))}
       <div className="reviews-list">
         {reviews.map((review, index) => (
-          <ReviewCard
-            key={index}
-            rating={review.rating}
-            comment={review.comment}
-            clientUsername={review.client_username}
-          />
+          <ReviewCard key={index} data={review} />
         ))}
       </div>
     </div>
