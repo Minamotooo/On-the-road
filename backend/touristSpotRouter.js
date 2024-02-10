@@ -21,7 +21,7 @@ touristSpotRouter.post('/home', async (req, res) => {
     const { searchTerm } = req.body;
   
     try {
-      const result = await pool.query('SELECT * FROM tourist_spot TS LEFT JOIN location L ON TS.location_id = L.location_id WHERE TS.name ILIKE $1 OR L.thana ILIKE $1 OR L.upazilla ILIKE $1 OR L.district ILIKE $1 OR L.division ILIKE $1;',[`%${searchTerm}%`]
+      const result = await pool.query('SELECT TS.*,U.name AS union_name,UPZ.name AS upazilla_name,D.name AS district_name,DIV.name AS division_name FROM tourist_spot TS LEFT JOIN unions U ON TS.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = Div.division_id WHERE TS.name ILIKE $1 OR D.name ILIKE $1 OR DIV.name ILIKE $1;',[`%${searchTerm}%`]
       );
   
       console.log(result);

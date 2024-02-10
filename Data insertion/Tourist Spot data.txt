@@ -1,0 +1,44 @@
+-- Sundarbans Mangrove Forest
+INSERT INTO tourist_spots (union_id, name, description) VALUES ('', 'Sundarbans Mangrove Forest', 'The largest mangrove forest in the world, home to the elusive Bengal tiger and unique aquatic biodiversity.');
+
+-- Cox's Bazar Beach
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Cox\'s Bazar', 'Cox\'s Bazar Beach', 'The longest natural sea beach, stretching over 120 km, with golden sands and vibrant local culture.');
+
+-- Ratargul Swamp Forest
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Guainghat', 'Ratargul Swamp Forest', 'Bangladesh\'s only freshwater swamp forest, offering serene boat rides amidst lush greenery.');
+
+-- Tea Gardens of Srimangal
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Rajghat', 'Tea Gardens of Srimangal', 'The \'Tea Capital of Bangladesh,\' known for its expansive tea estates, scenic landscapes, and diverse wildlife.');
+
+-- Sajek Valley
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Baghaichari', 'Sajek Valley', 'Nestled in the Chittagong Hill Tracts, Sajek Valley offers breathtaking views, indigenous culture, and serene tranquility.');
+
+-- Lalbagh Fort
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Lalbagh', 'Lalbagh Fort', 'A 17th-century Mughal fort in Dhaka, known for its architectural grandeur and historical significance.');
+
+-- Kuakata Sea Beach
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Kuakata', 'Kuakata Sea Beach', 'Famous for witnessing both sunrise and sunset over the Bay of Bengal, earning the nickname \'Daughter of the Sea.');
+
+-- Rangamati Hill Tracts
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Rangamati Sadar', 'Rangamati Hill Tracts', 'A hill district with breathtaking landscapes, serene lakes, and a rich indigenous cultural heritage.');
+
+-- Ahsan Manzil
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Kotwali', 'Ahsan Manzil', 'A historic palace in Dhaka, showcasing the grandeur of the Nawabs and reflecting Bangladesh\'s architectural heritage.');
+
+-- Bisanakandi
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Guainghat', 'Bisanakandi', 'A picturesque area in Sylhet known for its crystal-clear river, rolling hills, and stunning landscapes.');
+
+-- Café Majlish, Dhaka
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Ramna', 'Café Majlish, Dhaka', 'A cultural hub in Dhaka, offering a blend of art, literature, and delicious local and international cuisine.');
+
+-- Alikadam's Nafakhum Waterfall
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Alikadam', 'Alikadam\'s Nafakhum Waterfall', 'The largest waterfall in Bangladesh, nestled in the remote hilly regions of Bandarban.');
+
+-- Jatiyo Sangsad Bhaban
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Sher-e-Bangla Nagar', 'Jatiyo Sangsad Bhaban', 'The National Parliament House in Dhaka, an architectural marvel designed by the famous architect Louis Kahn.');
+
+-- Shah Jalal University of Science and Technology (SUST)
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Kumargaon', 'Shah Jalal University of Science and Technology (SUST)', 'One of the prominent universities in Bangladesh, known for its picturesque campus surrounded by hills.');
+
+-- Sonargaon Folk Arts and Crafts Museum
+INSERT INTO tourist_spots (union_name, name, description) VALUES ('Sonargaon', 'Sonargaon Folk Arts and Crafts Museum', 'Showcasing traditional Bangladeshi arts and crafts, this museum provides a glimpse into the country\'s rich cultural heritage.');

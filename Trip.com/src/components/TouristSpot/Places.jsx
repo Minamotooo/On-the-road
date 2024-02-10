@@ -69,9 +69,10 @@ export default function Places() {
       spotId={result.spot_id}
       name={result.name}
       blog_description={result.blog_description}
-      division={result.division}
-      upazilla={result.upazilla}
-      district={result.district}
+      union={result.union_name}
+      division={result.division_name}
+      upazilla={result.upazilla_name}
+      district={result.district_name}
     />
   ));
 

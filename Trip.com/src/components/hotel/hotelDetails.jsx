@@ -104,9 +104,11 @@ export default function HotelDetails() {
     <div>
       <Navbar />
       <Hotelbasicdetails data={hotelDetails} />
+      <h2>Rooms:</h2>
       {details.map((detail, index) => (
         <Room key={index} data={detail} />
       ))}
+      <h2>Reviews:</h2>
       <div className="reviews-list">
         {reviews.map((review, index) => (
           <ReviewCard key={index} data={review} />

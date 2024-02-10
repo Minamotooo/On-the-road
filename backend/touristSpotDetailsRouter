@@ -12,24 +12,36 @@ touristSpotDetailsRouter.use(bodyParser.json());
 
 touristSpotDetailsRouter.use(cors()); // Enable CORS for all routes
 
+// touristSpotDetailsRouter.post('/Details/:spot_id', async (req, res) => {
+//     const { spot_id } = req.params;
+  
+//     try {
+//       const result = await pool.query('SELECT TS.*,U.name AS union_name,UPZ.name AS upazilla_name,D.name AS district_name,DIV.name AS division_name FROM tourist_spot TS LEFT JOIN unions U ON TS.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = Div.division_id  JOIN tourist_spot_blog_comment COM ON TS.spot_id = COM.spot_id WHERE TS.spot_id = $1;',[spot_id]
+//       );
+  
+//       console.log(result);
+  
+//       res.json(result.rows);
+//     } catch (error) {
+//       console.error('Error loading tourist spot DETAILS:', error);
+//       res.status(500).json({ success: false, error: 'Internal Server Error' });
+//     }
+//   });
+  
 touristSpotDetailsRouter.post('/Details/:spot_id', async (req, res) => {
-    const { spot_id } = req.params;
-  
-    try {
-      const result = await pool.query('SELECT * FROM tourist_spot TS LEFT JOIN location L ON TS.location_id = L.location_id LEFT JOIN tourist_spot_blog_comment BC ON TS.spot_id = BC.spot_id WHERE TS.spot_id = $1;'
-      ,[spot_id]
-      );
-  
-      console.log(result);
-  
-      res.json(result.rows);
-    } catch (error) {
-      console.error('Error loading tourist spot DETAILS:', error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
-  });
-  
+  const { spot_id } = req.params;
 
+  try {
+    const result = await pool.query(
+      `SELECT TS.*, U.name AS union_name, UPZ.name AS upazilla_name, D.name AS district_name, DIV.name AS division_name FROM tourist_spot TS LEFT JOIN unions U ON TS.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = DIV.division_id LEFT JOIN tourist_spot_blog_comment COM ON TS.spot_id = COM.spot_id WHERE TS.spot_id = $1;`, [spot_id]
+    );
+    
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error loading tourist spot DETAILS:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
 
 
 
