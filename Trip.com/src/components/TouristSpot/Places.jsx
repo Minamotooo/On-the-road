@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "../HomePage/Navbar";
 import searchIcon from "../images/search.png";
 import Division from "./Division";
@@ -6,6 +7,8 @@ import "./Places.css";
 import Spot from "./Spot";
 
 export default function Places() {
+  const { division_id } = useParams();
+  const [divisions, setDivisions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
@@ -63,6 +66,34 @@ export default function Places() {
     }
   };
 
+  useEffect(() => {
+    // Function to fetch divisions data
+    async function fetchDivisions() {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/touristSpot/divisions/all`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          console.error("Error fetching reviews:");
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setDivisions(data);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    }
+
+    fetchDivisions();
+  }, []);
+
   const show = suggestions.map((result) => (
     <Spot
       key={result.spot_id}
@@ -98,7 +129,7 @@ export default function Places() {
           </button>
         </form>
       </div>
-      <Division />
+      <Division divisions={divisions} />
       <section className="section">{show}</section>
     </div>
   );

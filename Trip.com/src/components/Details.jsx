@@ -4,64 +4,62 @@ import ReviewCard from "./TouristSpot/touristSpotReviewCard";
 
 export default function Details() {
   const { spot_id } = useParams();
+  const [imageAddress, setImageAddress] = useState("");
   const [spotData, setSpotData] = useState({});
   const [spotReviews, setSpotReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchTouristSpotData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
+        const spotResponse = await fetch(
           `http://localhost:4000/touristSpotInfo/Details/${spot_id}`,
           {
-            method: "POST", // Specify the method as POST
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            // Since you are not sending a body, the body property is not required
           }
         );
-        if (!response.ok) {
-          throw new Error(Error`fetching data: ${response.statusText}`);
-        }
-        const data = await response.json();
-        setSpotData(data[0]);
-      } catch (error) {
-        setError(Error`fetching data: ${error.message}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTouristSpotData();
-  }, [spot_id]);
 
-  useEffect(() => {
-    const fetchTouristSpotReviews = async () => {
-      try {
-        const response = await fetch(
+        if (!spotResponse.ok) {
+          throw new Error(
+            `Fetching spot data failed: ${spotResponse.statusText}`
+          );
+        }
+
+        const spotData = await spotResponse.json();
+        setSpotData(spotData[0]);
+
+        setImageAddress(spotData[0].image);
+
+        const reviewsResponse = await fetch(
           `http://localhost:4000/touristSpotInfo/Reviews/${spot_id}`,
           {
-            method: "POST", // Specify the method as POST
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            // Since you are not sending a body, the body property is not required
           }
         );
-        if (!response.ok) {
-          throw new Error(Error`fetching data: ${response.statusText}`);
+
+        if (!reviewsResponse.ok) {
+          throw new Error(
+            `Fetching reviews failed: ${reviewsResponse.statusText}`
+          );
         }
-        const data = await response.json();
-        console.log(data);
-        setSpotReviews(data);
+
+        const reviewsData = await reviewsResponse.json();
+        setSpotReviews(reviewsData);
       } catch (error) {
-        setError(Error`fetching data: ${error.message}`);
+        setError(`Fetching data failed: ${error.message}`);
       } finally {
         setLoading(false);
       }
     };
-    fetchTouristSpotReviews();
+
+    fetchData();
   }, [spot_id]);
 
   if (loading) {
@@ -72,12 +70,19 @@ export default function Details() {
     return <div>Error: {error}</div>;
   }
 
-  if (!spotData || spotData.length === 0) {
+  if (!spotData || Object.keys(spotData).length === 0) {
     return <div>No data found</div>;
   }
 
   return (
     <div>
+      {imageAddress && (
+        <img
+          src={imageAddress}
+          alt={spotData.name}
+          style={{ maxWidth: "100%", height: "200px" }}
+        />
+      )}
       <h1>{spotData.name}</h1>
       <h2>Description:</h2>
       <p>{spotData.blog_description}</p>
