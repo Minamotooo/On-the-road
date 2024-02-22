@@ -53,6 +53,7 @@ export default function Details() {
           throw new Error(Error`fetching data: ${response.statusText}`);
         }
         const data = await response.json();
+        console.log(data);
         setSpotReviews(data);
       } catch (error) {
         setError(Error`fetching data: ${error.message}`);
