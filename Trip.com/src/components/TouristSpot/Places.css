@@ -7,7 +7,7 @@
   text-align: center;
   background: url("..\images\river.jpg") no-repeat center center;
   background-size: cover;
-  padding: 100px 0; /* Adjust the padding to fit your design */
+  padding: 100px 100px; /* Adjust the padding to fit your design */
   color: white;
   height: 280px;
   align-self: center;

@@ -11,8 +11,8 @@ export default function Spot(props) {
       </Link>
       <h2>Description:</h2>
       <p>{props.blog_description}</p>
+      <h2>Location:</h2>
       <p>
-        <h2>Location:</h2>
         {`${props.union}, ${props.upazilla}, ${props.district}, ${props.division}`}
       </p>
     </div>

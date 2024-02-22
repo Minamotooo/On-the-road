@@ -43,7 +43,21 @@ touristSpotDetailsRouter.post('/Details/:spot_id', async (req, res) => {
   }
 });
 
+touristSpotDetailsRouter.post('/Reviews/:spot_id', async (req, res) => {
+  const { spot_id_1 } = req.params;
 
+  try {
+    const result = await pool.query(
+      `
+      SELECT * FROM tourist_spot_blog_comment WHERE spot_id = $1;`, [spot_id_1]
+    );
+    
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error loading tourist spot reviews:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
 
 
 module.exports = touristSpotDetailsRouter;
