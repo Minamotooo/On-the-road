@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import Navbar from "../HomePage/Navbar";
 import HotelCard from "./HotelCard";
 import SearchBar from "./SearchBar";

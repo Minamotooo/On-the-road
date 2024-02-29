@@ -52,7 +52,7 @@ signInRouter.post('/login', async (req, res) => {
 
       if (passwordMatch) {
         // Passwords match, user is authenticated
-          req.session.user = {username: username,role: 'client'};
+         // req.session.user = {username: username,role: 'client'};
         res.status(200).json({ success: true, message: 'Login successful', user: { id: user.id, username: user.username , role:'client'} });
       } else {
         // Passwords do not match

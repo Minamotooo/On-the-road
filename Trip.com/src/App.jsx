@@ -2,6 +2,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import SignUp from "../../my-app/src/Routes/SignUp.jsx";
+import { AuthProvider } from "./AuthContext.jsx";
 import Dashboard from "./components/Client/Dashboard.jsx";
 import Details from "./components/Details.jsx";
 import HomePage from "./components/HomePage/HomePage.jsx";
@@ -16,25 +17,27 @@ function App() {
   // const { user } = useAuth();
   // console.log(user);
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginModal />} />
-        <Route path="/loginas" element={<LoginAs />} />
-        <Route path="/touristspot" element={<Places />} />
-        <Route path="/hotel" element={<Hotel />} />
-        <Route path="/touristspot/:spot_id" element={<Details />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/client/:username" element={<Dashboard />} />
-        <Route
-          path="/clientsidehotelpage/:hotelId"
-          element={<HotelDetails />}
-        />
-        <Route path="/:business/:username" element={<HotelProfile />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginModal />} />
+          <Route path="/loginas" element={<LoginAs />} />
+          <Route path="/touristspot" element={<Places />} />
+          <Route path="/hotel" element={<Hotel />} />
+          <Route path="/touristspot/:spot_id" element={<Details />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/client/:username" element={<Dashboard />} />
+          <Route
+            path="/clientsidehotelpage/:hotelId"
+            element={<HotelDetails />}
+          />
+          <Route path="/:business/:username" element={<HotelProfile />} />
 
-        {/* Other routes go here */}
-      </Routes>
-    </Router>
+          {/* Other routes go here */}
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
