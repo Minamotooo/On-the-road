@@ -170,4 +170,85 @@ hotelRouter.post('/Roombooking/:hotelId', async (req, res) => {
 
 
 
+//RETRIEVE BOOKING REQUESTS FOR A HOTEL
+hotelRouter.post('/fetchBookingRequests/:username', async (req, res) => {
+  const { username } = req.params;
+  console.log("RECEIVED BOOK REQUEST: ", username);
+  try {
+    const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE H.username = $1 AND payment_completion_status = 'PENDING';`,[username]);
+   console.log("BOOKING REQUEST :");
+
+    console.log(result);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error loading booking requests:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+//HANDLE BOOKING REQUESTS APPROVAL OR DENIAL
+hotelRouter.post('/BookingAction/:booking_id', async (req, res) => {
+  const { booking_id } = req.params;
+  const { action } = req.body;
+  console.log("RECEIVED BOOK REQUEST: ",action, "for the ID: " ,booking_id);
+  try {
+    var result;
+    if(action === "approve"){
+       result = await pool.query(`
+      UPDATE hotel_room_booking SET payment_completion_status = 'APPROVED' where booking_id = $1; `,[booking_id]);
+    }
+    else
+      { result = await pool.query(`
+      DELETE FROM hotel_room_booking WHERE booking_id = $1;`,[booking_id]);
+  }
+   console.log("BOOKING REQUEST HANDLED");
+
+    console.log(result);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error loading booking requests:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+
+//FOR DISPLAYING THE PENDING REQUESTS FOR A USER
+hotelRouter.post('/fetchPendingRequests/:username', async (req, res) => {
+  const { username } = req.params;
+ // console.log("RECEIVED BOOK REQUEST: ", username);
+  try {
+    const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND payment_completion_status = 'PENDING';`,[username]);
+   console.log("BOOKING REQUEST :");
+
+    console.log(result);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error loading booking requests:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+
+//FOR DISPLAYING THE APPROVED REQUESTS FOR A USER
+hotelRouter.post('/fetchApprovedRequests/:username', async (req, res) => {
+  const { username } = req.params;
+ // console.log("RECEIVED BOOK REQUEST: ", username);
+  try {
+    const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND payment_completion_status = 'APPROVED';`,[username]);
+   //console.log("BOOKING REQUEST :");
+
+    console.log(result);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error loading booking requests:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+
+
  module.exports = hotelRouter;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../HomePage/Navbar";
 import Hotelbasicdetails from "../hotel/Hotelbasicdetails";
@@ -11,6 +11,7 @@ export default function HotelDetails() {
   const [hotelDetails, setHotelDetails] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [hotelId, setHotelId] = useState(null);
+  const fetchBookingRequestsRef = useRef();
 
   useEffect(() => {
     // Function to fetch reviews data
@@ -103,6 +104,70 @@ export default function HotelDetails() {
     fetchHotelData();
   }, [username]);
 
+  const [bookingRequests, setBookingRequests] = useState([]);
+
+  useEffect(() => {
+    // Function to fetch booking requests data
+    fetchBookingRequestsRef.current = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/hotel/fetchBookingRequests/${username}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          console.error("Error fetching booking requests");
+          return;
+        }
+
+        const data = await response.json();
+        setBookingRequests(data);
+      } catch (error) {
+        console.error("Error fetching booking requests", error);
+      }
+    };
+
+    // Call fetchBookingRequests
+    fetchBookingRequestsRef.current();
+  }, [username]);
+
+  const handleBookingAction = async (booking_id, action) => {
+    try {
+      console.log(
+        `Performing ${action} action on booking request ${booking_id}`
+      );
+      const response = await fetch(
+        `http://localhost:4000/hotel/BookingAction/${booking_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        console.error(`Error ${action} booking request`);
+        return;
+      }
+
+      // Update the UI or perform additional actions as needed
+
+      // Refetch booking requests after action
+      fetchBookingRequestsRef.current();
+    } catch (error) {
+      console.error(`Error ${action} booking request`, error);
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -115,6 +180,31 @@ export default function HotelDetails() {
       <div className="reviews-list">
         {reviews.map((review, index) => (
           <ReviewCard key={index} data={review} />
+        ))}
+      </div>
+
+      <h2>Booking Requests:</h2>
+      <div className="booking-requests-list">
+        {bookingRequests.map((booking, index) => (
+          <div key={index} className="booking-request">
+            <p>Client: {booking.client_username}</p>
+            <p>Room Type: {booking.room_type}</p>
+            <p>No. of Rooms: {booking.no_of_rooms}</p>
+            <p>Check-in Date: {booking.check_in_date}</p>
+            <p>Check-out Date: {booking.check_out_date}</p>
+            <p>Total Bill: {booking.total_bill}</p>
+            <p>Payment Completion: {booking.payment_completion_status}</p>
+            <button
+              onClick={() => handleBookingAction(booking.booking_id, "approve")}
+            >
+              Approve
+            </button>
+            <button
+              onClick={() => handleBookingAction(booking.booking_id, "deny")}
+            >
+              Deny
+            </button>
+          </div>
         ))}
       </div>
     </div>

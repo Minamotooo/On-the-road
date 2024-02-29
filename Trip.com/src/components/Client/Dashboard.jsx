@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useRevalidator } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../HomePage/Navbar";
-import "./Dashboard.css"; // Import the UserProfile.css
-import { useParams } from "react-router-dom";
 import "../Signin&up/in&up.css"; // Import the CSS file for styling
+import "./Dashboard.css"; // Import the UserProfile.css
 import EditProfile from "./EditProfile";
 
 export default function Dashboard() {
@@ -13,6 +12,8 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const [pendingHotelBookings, setPendingHotelRequests] = useState(null);
+  const [approvedHotelBookings, setApprovedHotelRequests] = useState(null);
 
   // In handleDeleteClick function
   const handleDeleteClick = async () => {
@@ -68,6 +69,63 @@ export default function Dashboard() {
     fetchUserData();
   }, [username]);
 
+  useEffect(() => {
+    const fetchPendingData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/hotel/fetchPendingRequests/${username}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setPendingHotelRequests(data);
+        } else {
+          setError(`Error fetching user data: ${response.statusText}`);
+        }
+      } catch (error) {
+        setError(`Error fetching user data: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPendingData();
+  }, [username]);
+
+  useEffect(() => {
+    const fetchApprovedData = async () => {
+      try {
+        //console.log("Fetching approved requests for:", username);
+        const response = await fetch(
+          `http://localhost:4000/hotel/fetchApprovedRequests/${username}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setApprovedHotelRequests(data);
+        } else {
+          setError(`Error fetching user data: ${response.statusText}`);
+        }
+      } catch (error) {
+        setError(`Error fetching user data: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchApprovedData();
+  }, [username]);
+
   if (loading) {
     return <p className="loading">Loading...</p>;
   }
@@ -84,7 +142,14 @@ export default function Dashboard() {
           <h1>User Dashboard</h1>
           <div className="profile-info">
             <div className="pp-container">
-              <img src={userData.profile_photo} className="pp" />
+              {/* <img src={userData.profile_photo} className="pp" /> */}
+              <img
+                src={
+                  userData?.profile_photo ||
+                  "https://static.thenounproject.com/png/5034901-200.pngl"
+                }
+                className="pp"
+              />
             </div>
 
             <h3 className="heading">{userData.username}</h3>
@@ -113,6 +178,45 @@ export default function Dashboard() {
 
         <div className="container">
           <h1>Booking History</h1>
+          <div className="booking-segment">
+            <h2>Pending Booking Requests</h2>
+            <div className="booking-list scrollable-container">
+              {pendingHotelBookings && pendingHotelBookings.length > 0 ? (
+                pendingHotelBookings.map((booking, index) => (
+                  <div key={index} className="booking-request">
+                    <p>Hotel: {booking.name}</p>
+                    <p>Room Type: {booking.room_type}</p>
+                    <p>No. of Rooms: {booking.no_of_rooms}</p>
+                    <p>Check-in Date: {booking.check_in_date}</p>
+                    <p>Check-out Date: {booking.check_out_date}</p>
+                    <p>Total Bill: {booking.total_bill}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No pending booking requests</p>
+              )}
+            </div>
+          </div>
+
+          <div className="booking-segment">
+            <h2>Completed Booking Requests</h2>
+            <div className="booking-list scrollable-container">
+              {approvedHotelBookings && approvedHotelBookings.length > 0 ? (
+                approvedHotelBookings.map((booking, index) => (
+                  <div key={index} className="booking-request">
+                    <p>Hotel: {booking.name}</p>
+                    <p>Room Type: {booking.room_type}</p>
+                    <p>No. of Rooms: {booking.no_of_rooms}</p>
+                    <p>Check-in Date: {booking.check_in_date}</p>
+                    <p>Check-out Date: {booking.check_out_date}</p>
+                    <p>Total Bill: {booking.total_bill}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No completed booking requests</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
       {showEditProfile && <EditProfile onClose={onClose} />}
