@@ -1,5 +1,6 @@
 // App.jsx
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+
 import SignUp from "../../my-app/src/Routes/SignUp.jsx";
 import UserProfile from "../../my-app/src/Routes/UserProfile.jsx";
 import Details from "./components/Details.jsx";
@@ -10,8 +11,11 @@ import Places from "./components/TouristSpot/Places.jsx";
 import Hotel from "./components/hotel/Hotel.jsx";
 import HotelDetails from "./components/hotel/hotelDetails.jsx";
 import HotelProfile from "./components/hotelside/Hotelprofile.jsx";
+
 //import HotelDetails from './HotelDetails';
 function App() {
+  // const { user } = useAuth();
+  // console.log(user);
   return (
     <Router>
       <Routes>

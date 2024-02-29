@@ -1,4 +1,6 @@
 const express = require('express');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const signInRouter = require('./signInRouter');
 const touristSpotRouter = require('./touristSpotRouter');
 const pool = require('./db/database');
@@ -10,6 +12,16 @@ const touristSpotDetailsRouter = require('./touristSpotDetailsRouter');
 const hotelProfile = require('./hotelProfile');
 const port = 4000;
 // Use the cors middleware
+app.use(cookieParser());
+app.use(session({  
+    secret: 'my-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false
+    }
+ })
+);
 app.use(cors());
 app.use('/signin',signInRouter);
 app.use('/touristSpot',touristSpotRouter);

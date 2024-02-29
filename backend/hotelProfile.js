@@ -111,9 +111,10 @@ hotelRouter.post('/fetchCurrentHotel/:hotelId', async (req, res) => {
   
 
 //FOR RESERVING A ROOM IN A HOTEL
-hotelRouter.post('/:hotelId/:username', async (req, res) => {
-  const { hotelId, username } = req.params;
+hotelRouter.post('/:hotelId', async (req, res) => {
+  const { hotelId} = req.params;
   const {
+      username,
       roomType,
       pricePerNight,
       noOfRooms,
