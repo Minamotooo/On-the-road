@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import "./in&up.css";
-import ClientSignup from "./ClientSignup";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
+import ClientSignup from "./ClientSignup";
+import "./in&up.css";
 
 export default function ClientSignin({ onClose }) {
   const [username, setusername] = useState("");
@@ -9,7 +10,7 @@ export default function ClientSignin({ onClose }) {
   const [usernameError, setusernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [serverError, setServerError] = useState("");
-
+  const { login } = useAuth();
   const navigate = useNavigate();
   const setFieldError = (field, message) => {
     switch (field) {
@@ -34,7 +35,7 @@ export default function ClientSignin({ onClose }) {
     setusernameError("");
     setPasswordError("");
     setServerError("");
-  
+
     try {
       const response = await fetch("http://localhost:4000/signin/login", {
         method: "POST",
@@ -46,12 +47,14 @@ export default function ClientSignin({ onClose }) {
           password,
         }),
       });
-  
+
       if (response.ok) {
         const userData = await response.json();
         if (userData && userData.success) {
           const username = userData.user.username;
+          login(userData.user);
           console.log(username);
+          console.log(userData.user);
           navigate(`/client/${username}`);
         } else {
           setServerError("Unexpected response from server");
@@ -63,7 +66,9 @@ export default function ClientSignin({ onClose }) {
           if (errorData && errorData.error) {
             if (errorData.error.includes("User not found")) {
               setFieldError("username", "User doesn't exist");
-            } else if (errorData.error.includes("Incorrect username or password")) {
+            } else if (
+              errorData.error.includes("Incorrect username or password")
+            ) {
               setFieldError("password", "Incorrect password");
             } else {
               setServerError(errorData.error);
@@ -79,8 +84,6 @@ export default function ClientSignin({ onClose }) {
       setServerError("Unexpected error during sign-in");
     }
   };
-  
-  
 
   return (
     <>

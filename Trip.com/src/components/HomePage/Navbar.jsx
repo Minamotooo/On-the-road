@@ -52,9 +52,9 @@ import React, { useState } from "react";
 // Correct way to import Link and other named exports
 import { Link } from "react-router-dom";
 import { useAuth } from "../../AuthContext"; // Adjust the path accordingly
+import Dashboard from "../Client/Dashboard";
 import Entity from "../Signin&up/Entity";
 import logo from "../images/logo-1.png";
-//import Dashboard from "../Dashboard/Dashboard";
 import "./page.css";
 
 export default function Navbar() {
@@ -62,10 +62,10 @@ export default function Navbar() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
 
   // Access user information using the useAuth hook
-  var { user, logout } = useAuth();
-
+  const { user, logout } = useAuth();
+  //console.log(user.username);
   // Sample user data
-  user = { username: "user1", role: "client" };
+  //user = { username: "user1", role: "client" };
   // Function to open the login modal
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -101,7 +101,9 @@ export default function Navbar() {
         {user ? ( // Check if a user is logged in
           <>
             {/* Display the username */}
-            <button className="signup--button">{user.username}</button>
+            <button onClick={<Dashboard />} className="signup--button">
+              {user.username}
+            </button>
             {/* Attach the logout function to the onClick event */}
             <button onClick={logout} className="signin--button">
               Logout

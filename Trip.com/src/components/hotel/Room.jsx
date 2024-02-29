@@ -4,8 +4,8 @@ import sampleHotelRoomPhoto from "../images/samplehotelroom.jpg";
 import ReservationModal from "./ReservationModal";
 
 export default function Room(props) {
-  var { user } = useAuth();
-  user = { username: "user1", role: "client" };
+  const { user } = useAuth();
+  //user = { username: "user1", role: "client" };
   const data = props.data;
 
   const [isModalOpen, setModalOpen] = useState(false);

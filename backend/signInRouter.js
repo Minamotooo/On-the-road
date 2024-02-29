@@ -39,10 +39,10 @@ signInRouter.get('/user/:username', async (req, res) => {
 // server.js
 
 signInRouter.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
   
     try {
-      const result = await pool.query('SELECT * FROM CLIENT_USER WHERE EMAIL = $1', [email]);
+      const result = await pool.query('SELECT * FROM CLIENT_USER WHERE USERNAME = $1', [username]);
   
       if (result.rowCount === 1) {
         const user = result.rows[0];
@@ -52,8 +52,8 @@ signInRouter.post('/login', async (req, res) => {
 
       if (passwordMatch) {
         // Passwords match, user is authenticated
-          req.session.user = {username: user.username,role: 'client'};
-        res.status(200).json({ success: true, message: 'Login successful', user: { id: user.id, username: user.username } });
+          req.session.user = {username: username,role: 'client'};
+        res.status(200).json({ success: true, message: 'Login successful', user: { id: user.id, username: user.username , role:'client'} });
       } else {
         // Passwords do not match
         res.status(401).json({ success: false, error: 'Unauthorized: Incorrect username or password' });
