@@ -12,7 +12,9 @@
   justify-content: center;
   align-items: center;
 }
-
+.input-username {
+ background-color: #f2f2f2;
+}
 .modal-container {
   position: fixed; /* Fixed position to stay in place even when scrolling */
   top: 50%; /* Positioned 50% from the top of the screen */
