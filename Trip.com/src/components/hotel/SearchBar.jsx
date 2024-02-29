@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import searchIcon from "../images/Search.png"; // Make sure you have an icon image at this path
+import searchIcon from "../images/search.png"; // Make sure you have an icon image at this path
 import HotelCard from "./HotelCard";
 import "./SearchBar.css"; // The CSS file for styling
 

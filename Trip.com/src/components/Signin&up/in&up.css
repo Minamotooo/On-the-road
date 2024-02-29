@@ -1,85 +1,86 @@
-
 .modal-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-container {
-    position: fixed; /* Fixed position to stay in place even when scrolling */
-    top: 50%; /* Positioned 50% from the top of the screen */
-    left: 50%; /* Positioned 50% from the left of the screen */
-    transform: translate(-50%, -50%); /* Translates the modal back by half its width and height */
-    background-color: white; /* Your desired background color */
-    border-radius: 5px; /* Your desired border radius */
-    z-index: 1000; /* High z-index to ensure it's on top of other elements */
-    width: 400px; /* Your desired width */
-    height: auto; /* Height set to auto to adjust to the content */
-    padding: 40px; /* Your desired padding */
-    display: flex; /* Using flexbox to align inner content */
-    flex-direction: column; /* Align children in a column */
-    align-items: center; /* Center children horizontally */
-    justify-content: center; /* Center children vertically */
-    gap: 10px; /* Space between children */
-  }
-  
-  /* Optional: Additional styles for when the modal is active */
-  .modal-active {
-    visibility: visible; /* Only show the modal when it's active */
-    opacity: 1; /* Set the opacity to fully opaque */
-    transition: opacity 0.2s; /* Transition for a smooth appearance */
-  }
-  
-  /* Optional: Styles for when the modal is hidden */
-  .modal-hidden {
-    visibility: hidden; /* Hide the modal */
-    opacity: 0; /* Set the opacity to fully transparent */
-    transition: visibility 0s 0.2s, opacity 0.2s; /* Transition for a smooth disappearance */
-  }
-  
+  position: fixed; /* Fixed position to stay in place even when scrolling */
+  top: 50%; /* Positioned 50% from the top of the screen */
+  left: 50%; /* Positioned 50% from the left of the screen */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Translates the modal back by half its width and height */
+  background-color: white; /* Your desired background color */
+  border-radius: 5px; /* Your desired border radius */
+  z-index: 1000; /* High z-index to ensure it's on top of other elements */
+  width: 500px; /* Your desired width */
+  max-height: 80vh; /* Height set to auto to adjust to the content */
+  padding: 40px; /* Your desired padding */
+  display: flex; /* Using flexbox to align inner content */
+  flex-direction: column; /* Align children in a column */
+  align-items: center; /* Center children horizontally */
+  justify-content: center; /* Center children vertically */
+  gap: 10px; /* Space between children */
+}
+
+/* Optional: Additional styles for when the modal is active */
+.modal-active {
+  visibility: visible; /* Only show the modal when it's active */
+  opacity: 1; /* Set the opacity to fully opaque */
+  transition: opacity 0.2s; /* Transition for a smooth appearance */
+}
+
+/* Optional: Styles for when the modal is hidden */
+.modal-hidden {
+  visibility: hidden; /* Hide the modal */
+  opacity: 0; /* Set the opacity to fully transparent */
+  transition: visibility 0s 0.2s, opacity 0.2s; /* Transition for a smooth disappearance */
+}
 
 .close-button {
-    position: absolute;
-    top: 20px; /* Padding from top */
-    right: 20px; /* Padding from right */
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 1.5em;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+  position: absolute;
+  top: 20px; /* Padding from top */
+  right: 20px; /* Padding from right */
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.5em;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .close-button:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .button--style {
-    padding: 10px 20px;
-    border: 2px solid black; /* Border color changed to black */
-    border-radius: 25px;
-    font-weight: bold;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-    cursor: pointer;
-    background-color: transparent;
-    color: black;
-    width: 100%; /* Make button full width */
-    text-align: center; /* Center text inside button */
-    box-sizing: border-box; /* Include padding and border in the width */
-    margin-bottom: 10px; /* Add margin to separate buttons */
+  padding: 10px 20px;
+  border: 2px solid black; /* Border color changed to black */
+  border-radius: 25px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  cursor: pointer;
+  background-color: transparent;
+  color: black;
+  width: 100%; /* Make button full width */
+  text-align: center; /* Center text inside button */
+  box-sizing: border-box; /* Include padding and border in the width */
+  margin-bottom: 10px; /* Add margin to separate buttons */
 }
 
 .button--style:hover {
-    background-color: black;
-    color: white;
+  background-color: black;
+  color: white;
 }
 
 .input-error {
@@ -87,17 +88,50 @@
   background-color: #ffe6e6; /* Light red background for error */
 }
 
-
 .input-container {
   display: flex; /* This defines the container as a flex container */
   align-items: center; /* This centers the flex items on the cross axis (vertically) */
   justify-content: center; /* This centers the flex items on the main axis (horizontally) */
   height: 100%;
-  flex-direction: column; 
-  width: 100%;/* You need to define a height for vertical centering to work */
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* You need to define a height for vertical centering to work */
 }
 
-
+.modal-container2 {
+  position: fixed; /* Fixed position to stay in place even when scrolling */
+  top: 50%; /* Positioned 50% from the top of the screen */
+  left: 50%; /* Positioned 50% from the left of the screen */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Translates the modal back by half its width and height */
+  background-color: white; /* Your desired background color */
+  border-radius: 5px; /* Your desired border radius */
+  z-index: 1000; /* High z-index to ensure it's on top of other elements */ /* Your desired width */
+  max-height: fit-content; /* Height set to auto to adjust to the content */
+  padding: 40px; /* Your desired padding */
+  display: flex; /* Using flexbox to align inner content */
+  flex-direction: column; /* Align children in a column */
+  align-items: center; /* Center children horizontally */
+  justify-content: center; /* Center children vertically */
+  gap: 10px;
+  width: 650px;
+}
+.input-container2 {
+  display: flex; /* This defines the container as a flex container */
+  align-items: center; /* This centers the flex items on the cross axis (vertically) */
+  justify-content: center; /* This centers the flex items on the main axis (horizontally) */
+  height: 100%;
+  align-items: top;
+  width: 100%;
+}
+.columns {
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  align-items: start;
+}
 
 /* Base styles for the input */
 .input-style {
@@ -106,83 +140,80 @@
   margin-bottom: 13px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  
 
-   /* Remove default focus outline */
-  }
-  
-  /* Style for the input placeholder */
-  .input-style::placeholder {
-    color: #a8a8a8; /* Light grey color for placeholder text */
-    font-weight: 150; /* Italic style for placeholder text */
-  }
-  
-  /* Style for the input on focus */
-  .input-style:focus {
-    border-color: #28a745;  /* Glow effect with a light blue color */
-  }
-  
-  /* Optionally, you can add styles for valid/invalid input based on HTML5 form validation */
-  /* .input-style:valid {
+  /* Remove default focus outline */
+}
+
+/* Style for the input placeholder */
+.input-style::placeholder {
+  color: #a8a8a8; /* Light grey color for placeholder text */
+  font-weight: 150; /* Italic style for placeholder text */
+}
+
+/* Style for the input on focus */
+.input-style:focus {
+  border-color: #28a745; /* Glow effect with a light blue color */
+}
+
+/* Optionally, you can add styles for valid/invalid input based on HTML5 form validation */
+/* .input-style:valid {
     border-color: #28a745; /* Green border for valid input 
   } */
-  
-  .input-style:invalid {
-    border-color: #dc3545; /* Red border for invalid input */
-  background-color: #ffe6e6;/* Red border for invalid input */
-  }
-    
 
-  .link {
-    background: none;
-    border: none;
-    color: #069;
-    cursor: pointer;
-    font-size: inherit;
-    font-family: inherit;
-    padding: 0;
-    text-decoration: none;
-  }
-  
-  .link:hover,
-  .link:focus {
-    color: #045;
-    text-decoration: underline;
-  }
+.input-style:invalid {
+  border-color: #dc3545; /* Red border for invalid input */
+  background-color: #ffe6e6; /* Red border for invalid input */
+}
 
+.link {
+  background: none;
+  border: none;
+  color: #069;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+  text-decoration: none;
+}
 
-  .radio-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background: #ffffff; /* Light grey background */
-    border-radius: 4px; /* Rounded corners */
-    border: 1px solid #ccc; /* Box-shadow for some depth */
+.link:hover,
+.link:focus {
+  color: #045;
+  text-decoration: underline;
+}
+
+.radio-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #ffffff; /* Light grey background */
+  border-radius: 4px; /* Rounded corners */
+  border: 1px solid #ccc; /* Box-shadow for some depth */
 }
 
 .custom-radio {
-    position: relative;
-    padding: 2px 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    border-radius: 4px; /* Rounded corners for the labels */
-    /* Remove default styles */
-    background: transparent;
-    border: none;
-    margin: 0;
+  position: relative;
+  padding: 2px 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 4px; /* Rounded corners for the labels */
+  /* Remove default styles */
+  background: transparent;
+  border: none;
+  margin: 0;
 }
 
 .custom-radio:hover {
-   /* Lighter grey background on hover */
+  /* Lighter grey background on hover */
 }
 
 .custom-radio input[type="radio"] {
-    display: none;
+  display: none;
 }
 
 .custom-radio span {
-    text-align: center;
+  text-align: center;
 }
 
 /* Style for the label when the radio button is selected */
@@ -195,11 +226,8 @@
 
 /* Optional: Adjust the gap between the radio button labels if needed */
 .custom-radio:not(:last-child) {
-    margin-right: 0px;
+  margin-right: 0px;
 }
-
-
-  
 
 .error-message {
   white-space: nowrap; /* Keeps the error message on one line */
