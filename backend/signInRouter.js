@@ -194,7 +194,7 @@ signInRouter.post('/signup', async (req, res) => {
 
   signInRouter.post('/hotellogin', async (req, res) => {
     const { username, password, businessType } = req.body; 
-  
+   
     let tableName;
     switch (businessType.toLowerCase()) {
       case "hotel":
@@ -214,13 +214,14 @@ signInRouter.post('/signup', async (req, res) => {
   
         // Compare the entered password with the hashed password stored in the database
         const passwordMatch = await bcrypt.compare(password, retrievedData.password);
-        console.log(password);
-        console.log(retrievedData.password); // Corrected from console.log(user.password) to console.log(retrievedData.password)
+        //console.log(password);
+        //console.log(retrievedData.password); // Corrected from console.log(user.password) to console.log(retrievedData.password)
   
         if (passwordMatch) {
           // Passwords match, user is authenticated
-          req.session.user = { username: retrievedData.username, role: businessType.toLowerCase() };
-          res.status(200).json({success: true, message: 'Login successful', retrievedData });
+         // req.session.user = { username: retrievedData.username, role: businessType.toLowerCase() };
+         
+          res.status(200).json({ success: true, message: 'Login successful', retrievedData: {  username: username , role:businessType} });
         } else {
           // Passwords do not match
           res.status(401).json({success: false, error: 'Incorrect password' });

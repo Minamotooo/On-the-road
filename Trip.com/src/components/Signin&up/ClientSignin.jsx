@@ -53,8 +53,8 @@ export default function ClientSignin({ onClose }) {
         if (userData && userData.success) {
           const username = userData.user.username;
           login(userData.user);
-          console.log(username);
-          console.log(userData.user);
+          //console.log(username);
+          //console.log(userData.user);
           navigate(`/client/${username}`);
         } else {
           setServerError("Unexpected response from server");

@@ -46,6 +46,29 @@ hotelRouter.post('/search', async (req, res) => {
 });
 
 
+//FOR SENDING BACK HOTELID FROM HOTEL USERNAME
+// FOR SENDING BACK HOTELID FROM HOTEL USERNAME
+hotelRouter.post('/fetchHotelId/:username', async (req, res) => {
+  const { username } = req.body;
+  console.log("RECEIVED USERNAME: ", username);
+  try {
+    const result = await pool.query(
+      `SELECT H.hotel_id FROM hotel H JOIN business_entity BE ON H.username = BE.username WHERE BE.business_type = 'Hotel' AND H.username = $1; `,
+      [username]
+    );
+
+    console.log("FOUND THE HOTEL ID");
+    console.log(result.rows[0].hotel_id);
+
+    res.json({ hotelId: result.rows[0].hotel_id }); // Return the hotelId in the response
+    console.log("SENT THE HOTEL ID");
+  } catch (error) {
+    console.error('Error loading hotel rooms:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+
 
 
 
@@ -111,7 +134,7 @@ hotelRouter.post('/fetchCurrentHotel/:hotelId', async (req, res) => {
   
 
 //FOR RESERVING A ROOM IN A HOTEL
-hotelRouter.post('/:hotelId', async (req, res) => {
+hotelRouter.post('/Roombooking/:hotelId', async (req, res) => {
   const { hotelId} = req.params;
   const {
       username,
@@ -121,7 +144,7 @@ hotelRouter.post('/:hotelId', async (req, res) => {
       checkInDate,
       checkOutDate
   } = req.body;
-
+ 
   // Convert date strings to JavaScript Date objects
   const checkInDateObj = new Date(checkInDate);
   const checkOutDateObj = new Date(checkOutDate);
