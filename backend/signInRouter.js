@@ -39,38 +39,91 @@ signInRouter.get('/user/:username', async (req, res) => {
 // server.js
 
 signInRouter.post('/login', async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
   
     try {
-      const result = await pool.query('SELECT * FROM CLIENT_USER WHERE USERNAME = $1', [username]);
+      const result = await pool.query('SELECT * FROM CLIENT_USER WHERE EMAIL = $1', [email]);
   
       if (result.rowCount === 1) {
         const user = result.rows[0];
 
-        //console.log(user);
-  
-        //Compare the entered password with the hashed password stored in the database
-        const passwordMatch =  await bcrypt.compare(password,user.password);
-        console.log(password);
-        console.log(user.password);
-  
-          if (passwordMatch) {
-          // Passwords match, user is authenticated
+      // Compare the entered password with the hashed password stored in the database
+      const passwordMatch = await bcrypt.compare(password, user.password);
+
+      if (passwordMatch) {
+        // Passwords match, user is authenticated
           req.session.user = {username: user.username,role: 'client'};
-          res.status(200).json({ success: true, message: 'Login successful', user });
-        } else {
-          // Passwords do not match
-          res.status(401).json({ success: false, error: 'Unauthorized: Incorrect password' });
-        }
+        res.status(200).json({ success: true, message: 'Login successful', user: { id: user.id, username: user.username } });
       } else {
-        // No user found with the provided email
-        res.status(402).json({ success: false, error: 'Unauthorized: Email not found' });
+        // Passwords do not match
+        res.status(401).json({ success: false, error: 'Unauthorized: Incorrect username or password' });
       }
-    } catch (error) {
-      console.error('Error signing in:', error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    } else {
+      // No user found with the provided username
+      res.status(401).json({ success: false, error: 'Unauthorized: User not found' });
     }
-  });
+  } catch (error) {
+    console.error('Error signing in:', error);
+  }
+});
+
+signInRouter.post('/client', async (req, res) => {
+  console.log(req.body);
+  const {
+    username,
+    firstName,
+    lastName,
+    password,
+    email,
+    dateOfBirth,
+    phoneNumber,
+    profilePhoto,
+    division,
+    district,
+    zipCode,
+    houseNumber,
+    roadNumber,
+    roadName,
+  } = req.body;
+
+  try {
+    // Check if username already exists
+    const usernameCheck = await pool.query('SELECT * FROM CLIENT_USER WHERE USERNAME = $1', [username]);
+    console.log(usernameCheck);
+    if (usernameCheck.rowCount > 0) {
+      res.status(400).json({ success: false, error: 'Username already exists' });
+      return;
+    }
+
+    // Perform the actual registration
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const result = await pool.query(
+      'INSERT INTO CLIENT_USER (USERNAME, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL, DATE_OF_BIRTH, PHONE_NO, PROFILE_PHOTO, DIVISION, DISTRICT, ZIP_CODE, HOUSE_NO, ROAD_NO, ROAD_NAME) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *',
+      [
+        username,
+        firstName,
+        lastName,
+        hashedPassword,
+        email,
+        dateOfBirth,
+        phoneNumber,
+        profilePhoto,
+        division,
+        district,
+        zipCode,
+        houseNumber,
+        roadNumber,
+        roadName,
+      ]
+    );
+
+    res.status(201).json({ success: true, message: 'Registration successful', user: result.rows[0] });
+  } catch (error) {
+    console.error('Error during registration:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
 
   
 

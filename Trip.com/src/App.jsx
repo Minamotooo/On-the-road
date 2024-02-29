@@ -2,7 +2,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import SignUp from "../../my-app/src/Routes/SignUp.jsx";
-import UserProfile from "../../my-app/src/Routes/UserProfile.jsx";
+import Dashboard from "./components/Client/Dashboard.jsx";
 import Details from "./components/Details.jsx";
 import HomePage from "./components/HomePage/HomePage.jsx";
 import LoginAs from "./components/Login/LoginAs.jsx";
@@ -11,7 +11,6 @@ import Places from "./components/TouristSpot/Places.jsx";
 import Hotel from "./components/hotel/Hotel.jsx";
 import HotelDetails from "./components/hotel/hotelDetails.jsx";
 import HotelProfile from "./components/hotelside/Hotelprofile.jsx";
-
 //import HotelDetails from './HotelDetails';
 function App() {
   // const { user } = useAuth();
@@ -26,7 +25,7 @@ function App() {
         <Route path="/hotel" element={<Hotel />} />
         <Route path="/touristspot/:spot_id" element={<Details />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/user/:username" element={<UserProfile />} />
+        <Route path="/client/:username" element={<Dashboard />} />
         <Route
           path="/clientsidehotelpage/:hotelId"
           element={<HotelDetails />}
