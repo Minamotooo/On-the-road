@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Add useEffect import
 import { useNavigate } from "react-router-dom";
-import ClientSignin from "./ClientSignin";
-import "./in&up.css";
+import "../Signin&up/in&up.css";
+import { useParams } from "react-router-dom";
 
-export default function ClientSignup({ onClose }) {
+export default function EditProfile({ onClose }) {
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [district, setDistrict] = useState("");
   const [division, setDivision] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
-  const [password, setPassword] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [zipCode, setZipCode] = useState("");
@@ -21,63 +19,83 @@ export default function ClientSignup({ onClose }) {
   const [usernameError, setUsernameError] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [showSignin, setShowSignin] = useState(false);
+
+  const { username } = useParams(); // Add this line
 
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/signin/user/${username}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const formattedDateOfBirth = new Date(data.date_of_birth)
+            .toISOString()
+            .split("T")[0];
+          console.log(data);
+          setEmail(data.email);
+          setFirstName(data.first_name);
+          setLastName(data.last_name);
+          setDistrict(data.district);
+          setDivision(data.division);
+          setDateOfBirth(formattedDateOfBirth);
+          setProfilePhoto(data.profile_photo);
+          setPhoneNumber(data.phone_no);
+          setZipCode(data.zip_code);
+          setRoadName(data.road_name);
+          setRoadNumber(data.road_no);
+          setHouseNumber(data.house_no);
+        } else {
+          console.log("Error fetching user data: ", response.statusText);
+        }
+      } catch (error) {
+        console.log("Error fetching user data: ", error.message);
+      }
+    };
 
-  const GotoSignin = () => {
-    setShowSignin(true);
-  };
+    fetchUserData();
+  }, [username]);
 
-  const handleSignup = async () => {
+  const handleUpdate = async () => {
     try {
-      const response = await fetch("http://localhost:4000/signin/client", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          firstName,
-          lastName,
-          password,
-          email,
-          dateOfBirth,
-          phoneNumber,
-          profilePhoto,
-          division,
-          district,
-          zipCode,
-          houseNumber,
-          roadNumber,
-          roadName,
-        }),
-      });
-
-      const data = await response.json();
+      const response = await fetch(
+        `http://localhost:4000/signin/update/${username}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            first_name: firstName,
+            last_name: lastName,
+            date_of_birth: dateOfBirth,
+            phone_no: phoneNumber,
+            profile_photo: profilePhoto,
+            division,
+            district,
+            zip_code: zipCode,
+            house_no: houseNumber,
+            road_no: roadNumber,
+            road_name: roadName,
+          }),
+        }
+      );
 
       if (response.ok) {
-        // Registration successful
-        navigate("/");
-        console.log("Registration successful");
+        alert("Profile updated successfully");
+        navigate(`/client/${username}`);
+        onClose();
       } else {
-        // Registration failed, handle errors
-        if (data.error.includes("Username")) {
-          setUsernameError("Username already exists");
-        } else if (data.error.includes("First Name")) {
-          setFirstNameError("Invalid first name");
-        } else if (data.error.includes("Last Name")) {
-          setLastNameError("Invalid last name");
-        } else if (data.error.includes("Password")) {
-          setPasswordError("Invalid password");
-        } else {
-          // Handle other errors
-          console.error(data.error);
-        }
+        const errorMessage = await response.text();
+        console.log(
+          `Error updating phone number: ${errorMessage || response.statusText}`
+        );
       }
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.log(`Error updating phone number: ${error.message}`);
     }
   };
 
@@ -86,21 +104,19 @@ export default function ClientSignup({ onClose }) {
       <div className="modal-wrapper"></div>
       <div className="modal-container2">
         <div>
-          <h1 className="header">Signup</h1>
+          <h2 className="header">Edit Profile</h2>
           <button type="button" className="close-button" onClick={onClose}>
             &times;
           </button>
         </div>
-
         <div className="input-container2">
           <div className="columns">
             <h4>Personal Info</h4>
             <input
+              className="input-username input-style"
               value={username}
               type="text" // ensure the password input hides the text
               placeholder="username"
-              onChange={(e) => setUsername(e.target.value)}
-              className="input-style"
             />
             <label className="errorLabel">{usernameError}</label>
             <input
@@ -120,21 +136,12 @@ export default function ClientSignup({ onClose }) {
             />
             <label className="errorLabel">{lastNameError}</label>
             <input
-              value={password}
-              type="password" // ensure the password input hides the text
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-style"
-            />
-            <label className="errorLabel">{passwordError}</label>
-            <input
               type="email"
               value={email}
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
               className="input-style"
             />
-
             <input
               value={dateOfBirth}
               type="date" // ensure the password input hides the text
@@ -205,22 +212,10 @@ export default function ClientSignup({ onClose }) {
             />
           </div>
         </div>
-        <div>
-          <button className="button--style" onClick={handleSignup}>
-            Sign up
-          </button>
-          <p>
-            Already have an account?{" "}
-            <button className="link" onClick={GotoSignin}>
-              Sign in!
-            </button>
-          </p>
-        </div>
+        <button className="button--style" onClick={handleUpdate}>
+          Update
+        </button>
       </div>
-
-      <p>hello</p>
-
-      {showSignin && <ClientSignin onClose={onClose} />}
     </>
   );
 }

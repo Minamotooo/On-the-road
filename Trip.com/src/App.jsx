@@ -12,6 +12,7 @@ import Places from "./components/TouristSpot/Places.jsx";
 import Hotel from "./components/hotel/Hotel.jsx";
 import HotelDetails from "./components/hotel/hotelDetails.jsx";
 import HotelProfile from "./components/hotelside/Hotelprofile.jsx";
+import EditProfile from "./components/Client/EditProfile.jsx";
 //import HotelDetails from './HotelDetails';
 function App() {
   // const { user } = useAuth();
@@ -33,6 +34,7 @@ function App() {
             element={<HotelDetails />}
           />
           <Route path="/:business/:username" element={<HotelProfile />} />
+          <Route path="/edit-profile/:username" element={<EditProfile />} />
 
           {/* Other routes go here */}
         </Routes>

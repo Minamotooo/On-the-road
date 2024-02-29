@@ -52,10 +52,10 @@ import React, { useState } from "react";
 // Correct way to import Link and other named exports
 import { Link } from "react-router-dom";
 import { useAuth } from "../../AuthContext"; // Adjust the path accordingly
-import Dashboard from "../Client/Dashboard";
 import Entity from "../Signin&up/Entity";
 import logo from "../images/logo-1.png";
 import "./page.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   // State to manage the visibility of the login modal
@@ -67,8 +67,19 @@ export default function Navbar() {
   // Sample user data
   //user = { username: "user1", role: "client" };
   // Function to open the login modal
+  const navigate = useNavigate();
+
+
+  const navigateToDashboard = () => {
+    navigate(`/client/${user.username}`); // Replace "/dashboard" with the actual path to your dashboard
+  };
+
+
   const openLoginModal = () => {
     setLoginModalOpen(true);
+  };
+  const navigateToHome = () => {
+    navigate("/");
   };
 
   // Function to close the login modal
@@ -101,11 +112,11 @@ export default function Navbar() {
         {user ? ( // Check if a user is logged in
           <>
             {/* Display the username */}
-            <button onClick={<Dashboard />} className="signup--button">
+            <button onClick={navigateToDashboard} className="signup--button">
               {user.username}
             </button>
             {/* Attach the logout function to the onClick event */}
-            <button onClick={logout} className="signin--button">
+            <button onClick={() => { logout(); navigateToHome(); }} className="signin--button">
               Logout
             </button>
           </>

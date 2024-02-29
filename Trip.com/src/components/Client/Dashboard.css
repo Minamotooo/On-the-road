@@ -1,0 +1,63 @@
+/* Dashboard.css */
+body {
+    font-family: 'Roboto', sans-serif; /* Set the font for the entire body */
+}
+.container {
+    margin-top: 100px; /* Set the margin-top to create space from the navbar */
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    font-weight: 100;
+    width: 40%;
+    height: 580px;
+  }
+  
+  .heading {
+    text-align: center;
+    color: #333;
+  }
+  
+  .profile-info {
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  
+  
+  .update-button {
+    background-color: #28a745; /* Green color for update button */
+    color: #fff;
+    margin-right: 10px;
+  }
+  
+  .loading,
+  .error {
+    text-align: center;
+    color: #ff0000; /* Red color for errors */
+  }
+  
+  .profile-info .pp {
+    border-radius: 50%; /* Make the image circular */
+    width: 120px; /* Set a max width for the image */
+    height: 120px; /* Set a max height for the image */
+    /* Add some space below the image */
+  }
+  
+  .pp-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .info {
+    margin-top: 20px;
+    font-size: 17px;
+    text-align: left; /* Align items to the left */
+  }
+  .flexbox {
+    display: flex;
+    flex-direction: row; /* Make the items appear in a row */
+  }
