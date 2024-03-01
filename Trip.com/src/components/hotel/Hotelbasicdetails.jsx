@@ -14,7 +14,7 @@ export default function Hotelbasicdetails(props) {
     setShowEdit(true);
   };
   const { user, logout } = useAuth(); // Access user information using the useAuth hook
-  console.log("User:", user.username, user.role);
+  // console.log("User:", user.username, user.role);
   // In handleDeleteClick function
   const handleDelete = async () => {
     try {

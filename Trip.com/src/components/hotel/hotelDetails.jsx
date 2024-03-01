@@ -11,8 +11,8 @@ import Room from "./Room";
 export default function HotelDetails() {
   const { hotelId } = useParams(); // Destructure hotelId from the params
   const { user } = useAuth();
-  const userRole = user.role;
-  const client_username = user.username;
+  const [client_username, setClient_username] = useState([]);
+
   const [details, setDetails] = useState([]);
   const [hotelDetails, setHotelDetails] = useState([]);
   const [hotel_username, setHotel_username] = useState("");
@@ -125,6 +125,7 @@ export default function HotelDetails() {
 
   const handleSubmitReview = async () => {
     try {
+      setClient_username(user.username);
       console.log(
         "Posting review:",
         rating,
@@ -179,7 +180,7 @@ export default function HotelDetails() {
       </div>
       {/* Review Form */}
       {/* Review Form */}
-      {user && userRole === "client" && (
+      {user && user.role === "client" && (
         <div className="review-form">
           <h2>Write a Review:</h2>
           <div>
