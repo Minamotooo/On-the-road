@@ -60,6 +60,7 @@ export default function ClientSignup({ onClose }) {
       if (response.ok) {
         // Registration successful
         navigate("/");
+        onClose();
         console.log("Registration successful");
       } else {
         // Registration failed, handle errors

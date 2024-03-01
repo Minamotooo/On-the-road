@@ -4,7 +4,9 @@ import Navbar from "../HomePage/Navbar";
 import Hotelbasicdetails from "../hotel/Hotelbasicdetails";
 import ReviewCard from "../hotel/ReviewCard";
 import Room from "../hotel/Room";
-
+import "./hotel.css";
+import "../Signin&up/in&up.css";
+import "../hotel/style.css";
 export default function HotelDetails() {
   const { username } = useParams();
   const [details, setDetails] = useState([]);
@@ -12,6 +14,7 @@ export default function HotelDetails() {
   const [reviews, setReviews] = useState([]);
   const [hotelId, setHotelId] = useState(null);
   const fetchBookingRequestsRef = useRef();
+
 
   useEffect(() => {
     // Function to fetch reviews data
@@ -194,12 +197,12 @@ export default function HotelDetails() {
             <p>Check-out Date: {booking.check_out_date}</p>
             <p>Total Bill: {booking.total_bill}</p>
             <p>Payment Completion: {booking.payment_completion_status}</p>
-            <button
+            <button className="button--style handle"
               onClick={() => handleBookingAction(booking.booking_id, "approve")}
             >
               Approve
             </button>
-            <button
+            <button className="button--style handle"
               onClick={() => handleBookingAction(booking.booking_id, "deny")}
             >
               Deny

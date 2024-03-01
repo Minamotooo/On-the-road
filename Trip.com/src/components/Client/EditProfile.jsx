@@ -90,15 +90,14 @@ export default function EditProfile({ onClose }) {
         onClose();
       } else {
         const errorMessage = await response.text();
-        console.log(
-          `Error updating phone number: ${errorMessage || response.statusText}`
-        );
+        console.log(`Error updating profile: ${errorMessage || response.statusText}`);
+        alert(`Error updating profile: ${errorMessage || response.statusText}`);
       }
     } catch (error) {
-      console.log(`Error updating phone number: ${error.message}`);
+      console.log(`Error updating profile: ${error.message}`);
+      alert(`Error updating profile: ${error.message}`);
     }
   };
-
   return (
     <>
       <div className="modal-wrapper"></div>
@@ -113,11 +112,13 @@ export default function EditProfile({ onClose }) {
           <div className="columns">
             <h4>Personal Info</h4>
             <input
-              className="input-username input-style"
-              value={username}
-              type="text" // ensure the password input hides the text
+              defaultValue={username}
+              type="text"
               placeholder="username"
+              readOnly
+              className="input-username input-style"
             />
+
             <label className="errorLabel">{usernameError}</label>
             <input
               value={firstName}
@@ -130,7 +131,7 @@ export default function EditProfile({ onClose }) {
             <input
               value={lastName}
               type="text" // ensure the password input hides the text
-              placeholder="last Name"
+              placeholder="Last Name"
               onChange={(e) => setLastName(e.target.value)}
               className="input-style"
             />

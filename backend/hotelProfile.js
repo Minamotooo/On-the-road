@@ -13,6 +13,33 @@ hotelRouter.use(bodyParser.json({ limit: '10mb' }));
 
 hotelRouter.use(bodyParser.json());
 
+//////////////////CASCADING DELETE////////////////////////
+// DELETE route for deleting a hotel by username
+hotelRouter.delete('/delete/:username', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    // Check if the hotel exists
+    const checkHotel = await pool.query(
+      'SELECT * FROM hotel WHERE username = $1',
+      [username]
+    );
+
+    if (checkHotel.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Hotel not found' });
+    }
+
+    // Perform the delete operation
+    await pool.query('DELETE FROM hotel WHERE username = $1', [username]);
+
+    res.status(200).json({ success: true, message: 'Hotel deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting hotel:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+
 //CLICK ON HOTELS FROM NAVBAR AND REACH HERE
 hotelRouter.post('/hotellandingpage', async (req, res) => {
 
@@ -68,7 +95,25 @@ hotelRouter.post('/fetchHotelId/:username', async (req, res) => {
   }
 });
 
+hotelRouter.put('/update/:hotelId', async (req, res) => {
+  const { hotelId } = req.params;
+  const { email, name, phone_no, photo, description } = req.body;
 
+  try {
+    // Update the hotel profile
+    const updateQuery = `
+      UPDATE HOTEL
+      SET email = $1, name = $2, phone_no = $3, photo = $4, description = $5
+      WHERE hotel_id = $6
+    `;
+    await pool.query(updateQuery, [email, name, phone_no, photo, description, hotelId]);
+
+    res.status(200).json({ success: true, message: 'Hotel profile updated successfully' });
+  } catch (error) {
+    console.error('Error updating hotel profile:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
 
 
 

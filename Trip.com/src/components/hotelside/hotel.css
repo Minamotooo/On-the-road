@@ -104,6 +104,8 @@
     font-size: 14px;
     margin-top: 10px;
   }
-  
   /* You will need to add icons and additional styling for the amenities section */
-    
+    .handle {
+      max-width: 300px;
+      margin-right: 20px;
+    }

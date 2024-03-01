@@ -71,7 +71,7 @@ export default function Navbar() {
 
 
   const navigateToDashboard = () => {
-    navigate(`/client/${user.username}`); // Replace "/dashboard" with the actual path to your dashboard
+    navigate(`/${user.role}/${user.username}`); // Replace "/dashboard" with the actual path to your dashboard
   };
 
 

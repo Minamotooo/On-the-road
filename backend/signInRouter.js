@@ -211,6 +211,8 @@ signInRouter.put("/update/:username", async (req, res) => {
 signInRouter.delete("/user/:username", async (req, res) => {
   const { username } = req.params;
 
+  console.log("Deleting user:", username);
+  console.log("...........................................................");
   try {
     // Assuming you have a users table in your database
     // and you want to delete the user based on their username
@@ -269,6 +271,9 @@ signInRouter.post("/signup", async (req, res) => {
 
   signInRouter.post('/hotellogin', async (req, res) => {
     const { username, password, businessType } = req.body; 
+
+    console.log("....................................................................");
+    console.log(req.body);
   
     let tableName;
     switch (businessType.toLowerCase()) {
@@ -283,6 +288,8 @@ signInRouter.post("/signup", async (req, res) => {
     
     try {
       const result = await pool.query(`SELECT * FROM ${tableName} WHERE USERNAME = $1;`, [username]);
+      console.log("....................................................................");
+      console.log(result);
   
       if (result.rowCount === 1) {
         const retrievedData = result.rows[0];

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate} from "react-router-dom";
 import Navbar from "../HomePage/Navbar";
 import "../Signin&up/in&up.css"; // Import the CSS file for styling
 import "./Dashboard.css"; // Import the UserProfile.css
-import EditProfile from "./EditProfile";
+import EditProfile from "./EditProfile"; // Import the EditProfile component
+import { useAuth } from "../../AuthContext"; // Import the useAuth hook
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { username } = useParams();
+
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,13 +16,16 @@ export default function Dashboard() {
   const [pendingHotelBookings, setPendingHotelRequests] = useState(null);
   const [approvedHotelBookings, setApprovedHotelRequests] = useState(null);
 
+  const { user, logout } = useAuth(); // Access user information using the useAuth hook
+  
+
   // In handleDeleteClick function
   const handleDeleteClick = async () => {
     try {
-      console.log("Deleting user:", username);
+      console.log("Deleting user:", user.username);
 
       const response = await fetch(
-        `http://localhost:4000/signin/user/${username}`,
+        `http://localhost:4000/signin/user/${user.username}`,
         {
           method: "DELETE",
         }
@@ -31,6 +35,7 @@ export default function Dashboard() {
 
       if (response.ok) {
         navigate("/");
+        logout();
       } else {
         setError(`Error deleting user: ${response.statusText}`);
       }
@@ -51,7 +56,7 @@ export default function Dashboard() {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/signin/user/${username}`
+          `http://localhost:4000/signin/user/${user.username}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -67,13 +72,13 @@ export default function Dashboard() {
     };
 
     fetchUserData();
-  }, [username]);
+  }, [user.username]);
 
   useEffect(() => {
     const fetchPendingData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/hotel/fetchPendingRequests/${username}`,
+          `http://localhost:4000/hotel/fetchPendingRequests/${user.username}`,
           {
             method: "POST",
             headers: {
@@ -95,14 +100,14 @@ export default function Dashboard() {
     };
 
     fetchPendingData();
-  }, [username]);
+  }, [user.username]);
 
   useEffect(() => {
     const fetchApprovedData = async () => {
       try {
         //console.log("Fetching approved requests for:", username);
         const response = await fetch(
-          `http://localhost:4000/hotel/fetchApprovedRequests/${username}`,
+          `http://localhost:4000/hotel/fetchApprovedRequests/${user.username}`,
           {
             method: "POST",
             headers: {
@@ -124,7 +129,7 @@ export default function Dashboard() {
     };
 
     fetchApprovedData();
-  }, [username]);
+  }, [user.username]);
 
   if (loading) {
     return <p className="loading">Loading...</p>;
