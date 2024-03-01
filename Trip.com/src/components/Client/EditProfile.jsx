@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react"; // Add useEffect import
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Signin&up/in&up.css";
 import { useParams } from "react-router-dom";
 
-export default function EditProfile({ onClose }) {
+export const EditProfile = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -220,3 +220,4 @@ export default function EditProfile({ onClose }) {
     </>
   );
 }
+export default EditProfile;
