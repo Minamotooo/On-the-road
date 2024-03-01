@@ -63,7 +63,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { useAuth } from "../../AuthContext";
 
-const ReservationModal = ({ isOpen, onClose, onReserve }) => {
+const ReservationModal = ({ isOpen, onClose, onReserve, availableRooms }) => {
   const { user } = useAuth();
   const [noOfRooms, setNoOfRooms] = useState(1);
   const [checkInDate, setCheckInDate] = useState("");
@@ -72,9 +72,23 @@ const ReservationModal = ({ isOpen, onClose, onReserve }) => {
 
   const handleReserve = () => {
     // Validate the form data here before calling onReserve
+    if (!checkInDate || !checkOutDate) {
+      setErrorMessage("Please enter both check-in and check-out dates");
+      return;
+    }
+
     if (new Date(checkOutDate) <= new Date(checkInDate)) {
       // Display an error message
       setErrorMessage("Check-out date must be later than check-in date");
+      return;
+    }
+
+    if (noOfRooms > availableRooms) {
+      setErrorMessage("Number of rooms exceeds the available rooms");
+      return;
+    }
+    if (noOfRooms <= 0) {
+      setErrorMessage("Number of rooms must be greater than 0");
       return;
     }
 
