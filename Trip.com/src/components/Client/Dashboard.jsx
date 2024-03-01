@@ -5,12 +5,11 @@ import Navbar from "../HomePage/Navbar";
 import "../Signin&up/in&up.css"; // Import the CSS file for styling
 import "./Dashboard.css"; // Import the UserProfile.css
 import EditProfile from "./EditProfile"; // Import the EditProfile component
-import { useAuth } from "../../AuthContext"; // Import the useAuth hook
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const username = user.username;
+  // const { user } = useAuth();
+
   //console.log("Username:", user);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,8 +19,7 @@ export default function Dashboard() {
   const [approvedHotelBookings, setApprovedHotelRequests] = useState(null);
 
   const { user, logout } = useAuth(); // Access user information using the useAuth hook
-  
-
+  const username = user.username;
   // In handleDeleteClick function
   const handleDeleteClick = async () => {
     try {

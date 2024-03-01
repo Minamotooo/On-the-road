@@ -67,8 +67,11 @@ export default function BussinessSignin({ onClose }) {
       if (data && data.success) {
         console.log(data);
         const username = data.retrievedData.username;
-        login(data.retrievedData);
-        console.log(".............................................................................................");
+        login(data.user);
+        //console.log("USER OBJECT: ", data.user);
+        //console.log(
+        //   "............................................................................................."
+        // );
         navigate(`/${businessType}/${username}`);
       } else {
         const data = await response.json();

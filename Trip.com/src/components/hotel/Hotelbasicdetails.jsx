@@ -1,11 +1,9 @@
-import React,{useState} from "react";
-import "../hotelside/hotel.css";
-import "../Signin&up/in&up.css";
-import { useParams } from "react-router-dom";
-import HotelProfileEdit from "../hotelside/HotelProfileEdit";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
-
+import "../Signin&up/in&up.css";
+import HotelProfileEdit from "../hotelside/HotelProfileEdit";
+import "../hotelside/hotel.css";
 
 export default function Hotelbasicdetails(props) {
   const [showEdit, setShowEdit] = useState(false);
@@ -13,11 +11,10 @@ export default function Hotelbasicdetails(props) {
   const { username } = useParams();
 
   const handleUpdate = () => {
-   setShowEdit(true);
+    setShowEdit(true);
   };
   const { user, logout } = useAuth(); // Access user information using the useAuth hook
-  
-
+  console.log("User:", user.username, user.role);
   // In handleDeleteClick function
   const handleDelete = async () => {
     try {
@@ -42,7 +39,6 @@ export default function Hotelbasicdetails(props) {
       console.log(`Error deleting user: ${error.message}`);
     }
   };
-
 
   const onClose = () => setShowEdit(false);
   const data = props.data;
@@ -70,10 +66,16 @@ export default function Hotelbasicdetails(props) {
           <p>Phone: {data.phone_no}</p>
           <p>Email: {data.email}</p>
         </div>
-        { user && <div>
-          <button className="button--style" onClick={handleUpdate}>Edit Hotel Profile</button>
-          <button className="button--style" onClick={handleDelete}>Delete</button>
-        </div>}
+        {user && user.username === data.username && user.role === "hotel" && (
+          <div>
+            <button className="button--style" onClick={handleUpdate}>
+              Edit Hotel Profile
+            </button>
+            <button className="button--style" onClick={handleDelete}>
+              Delete
+            </button>
+          </div>
+        )}
       </div>
       {showEdit && <HotelProfileEdit onClose={onClose} />}
     </div>

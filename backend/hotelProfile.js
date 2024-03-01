@@ -295,5 +295,24 @@ hotelRouter.post('/fetchApprovedRequests/:username', async (req, res) => {
 });
 
 
+  //FOR INSERTING A REVIEW FOR A HOTEL
+  hotelRouter.post('/review/postReview', async (req, res) => {
+    
+    const { rating, comment, imageURL, hotel_username,client_username } = req.body;
+  
+    try {
+      const result = await pool.query('INSERT INTO reviews(rating, comment, image, business_username, client_username) VALUES($1,$2,$3,$4,$5);', [rating, comment, imageURL, hotel_username,client_username]);
+  
+      console.log(result);
+  
+      res.json(result.rows);
+    } catch (error) {
+      console.error('Error posting review:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+  });
+
+
+
 
  module.exports = hotelRouter;

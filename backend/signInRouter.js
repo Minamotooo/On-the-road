@@ -301,8 +301,8 @@ signInRouter.post("/signup", async (req, res) => {
   
         if (passwordMatch) {
           // Passwords match, user is authenticated
-          req.session.user = { username: retrievedData.username, role: businessType.toLowerCase() };
-          res.status(200).json({success: true, message: 'Login successful', retrievedData });
+         // req.session.user = { username: retrievedData.username, role: businessType.toLowerCase() };
+          res.status(200).json({success: true, message: 'Login successful', retrievedData ,user :{username: retrievedData.username, role: businessType.toLowerCase()}});
         } else {
           // Passwords do not match
           res.status(401).json({success: false, error: 'Incorrect password' });
