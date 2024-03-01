@@ -110,6 +110,7 @@ export default function Room(props) {
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
         onReserve={handleReserve}
+        availableRooms={data.available_rooms_left}
       />
     </div>
   );

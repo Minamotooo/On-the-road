@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 import Navbar from "../HomePage/Navbar";
 import "../Signin&up/in&up.css"; // Import the CSS file for styling
 import "./Dashboard.css"; // Import the UserProfile.css
@@ -8,7 +9,9 @@ import { useAuth } from "../../AuthContext"; // Import the useAuth hook
 
 export default function Dashboard() {
   const navigate = useNavigate();
-
+  const { user } = useAuth();
+  const username = user.username;
+  //console.log("Username:", user);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -55,6 +58,11 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        if (!username) {
+          // Username is not available, return or handle accordingly
+          return;
+        }
+
         const response = await fetch(
           `http://localhost:4000/signin/user/${user.username}`
         );
@@ -77,6 +85,11 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchPendingData = async () => {
       try {
+        if (!username) {
+          // Username is not available, return or handle accordingly
+          return;
+        }
+
         const response = await fetch(
           `http://localhost:4000/hotel/fetchPendingRequests/${user.username}`,
           {
@@ -105,6 +118,11 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchApprovedData = async () => {
       try {
+        if (!username) {
+          // Username is not available, return or handle accordingly
+          return;
+        }
+
         //console.log("Fetching approved requests for:", username);
         const response = await fetch(
           `http://localhost:4000/hotel/fetchApprovedRequests/${user.username}`,
@@ -157,21 +175,22 @@ export default function Dashboard() {
               />
             </div>
 
-            <h3 className="heading">{userData.username}</h3>
+            <h3 className="heading">{userData?.username || "Loading User"}</h3>
           </div>
           <div className="info">
             <p>
-              Full Name: {userData.first_name} {userData.last_name}
+              Full Name: {userData?.first_name} {userData?.last_name}
             </p>
-            <p>Email : {userData.email} </p>
-            <p>Date of Birth: {userData.date_of_birth}</p>
-            <p>Phone Number: {userData.phone_no}</p>
+            <p>Email : {userData?.email} </p>
+            <p>Date of Birth: {userData?.date_of_birth}</p>
+            <p>Phone Number: {userData?.phone_no}</p>
             <p>
-              Address: {userData.house_no}, {userData.road_no},{" "}
-              {userData.road_name}, {userData.district}, {userData.division}-
-              {userData.zip_code}
+              Address: {userData?.house_no}, {userData?.road_no},{" "}
+              {userData?.road_name}, {userData?.district}, {userData?.division}-
+              {userData?.zip_code}
             </p>
           </div>
+
           <br />
           <button className="button--style" onClick={handleUpdateClick}>
             EDIT PROFILE
