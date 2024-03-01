@@ -4,10 +4,29 @@
   padding: 20px;
   margin: 10px 0;
   background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.review-card:hover {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .review-rating {
   font-weight: bold;
+  margin-bottom: 10px;
+  color: #4caf50; /* Green color for ratings */
+}
+
+.review-image img {
+  width: 100%;
+  height: auto;
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
   margin-bottom: 10px;
 }
 
@@ -19,5 +38,12 @@
 .review-username {
   text-align: right;
   font-size: 0.9em;
-  color: #555;
+  color: #777;
+}
+
+/* Add a subtle border to the image container */
+.review-image {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
 }

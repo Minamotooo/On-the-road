@@ -1,0 +1,30 @@
+/* Review Form Styles */
+.review-form {
+  margin-top: 20px;
+  width: 60%; /* Set the width to achieve a 5:3 ratio */
+  padding: 20px; /* Add padding for better aesthetics */
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-form h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.review-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.review-form select,
+.review-form textarea,
+.review-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}

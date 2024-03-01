@@ -44,7 +44,7 @@ hotelRouter.delete('/delete/:username', async (req, res) => {
 hotelRouter.post('/hotellandingpage', async (req, res) => {
 
  try {
-    const result = await pool.query('SELECT H.hotel_id,H.NAME,H.ADDRESS,D.name AS DISTRICT, DIV.name as DIVISION, H.description, MIN(HR.price_per_night) AS STARTING_PRICE  FROM HOTEL H JOIN hotel_rooms HR ON H.hotel_id = HR.hotel_id  JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = Div.division_id GROUP BY H.hotel_id, D.name, DIV.name ORDER BY STARTING_PRICE; ');
+    const result = await pool.query('SELECT H.*,D.name AS DISTRICT, DIV.name as DIVISION, H.description, MIN(HR.price_per_night) AS STARTING_PRICE  FROM HOTEL H JOIN hotel_rooms HR ON H.hotel_id = HR.hotel_id  JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = Div.division_id GROUP BY H.hotel_id, D.name, DIV.name ORDER BY STARTING_PRICE; ');
    
 
     console.log(result);

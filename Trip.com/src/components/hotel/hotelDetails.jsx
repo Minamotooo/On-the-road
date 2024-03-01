@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import Navbar from "../HomePage/Navbar";
+import "../Signin&up/in&up.css";
 import Hotelbasicdetails from "./Hotelbasicdetails";
 import ReviewCard from "./ReviewCard";
+import "./ReviewFormStyles.css";
 import Room from "./Room";
 
 export default function HotelDetails() {
@@ -176,8 +178,9 @@ export default function HotelDetails() {
         ))}
       </div>
       {/* Review Form */}
+      {/* Review Form */}
       {user && userRole === "client" && (
-        <div>
+        <div className="review-form">
           <h2>Write a Review:</h2>
           <div>
             <label htmlFor="rating">Rating:</label>
@@ -206,7 +209,9 @@ export default function HotelDetails() {
               onChange={handleImageURLChange}
             />
           </div>
-          <button onClick={handleSubmitReview}>Submit Review</button>
+          <button className="button--style" onClick={handleSubmitReview}>
+            Submit Review
+          </button>
         </div>
       )}
     </div>

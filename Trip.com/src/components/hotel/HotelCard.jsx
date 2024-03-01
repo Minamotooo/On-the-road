@@ -38,7 +38,11 @@ const HotelCard = ({ data, onClick }) => {
     <div className="card" onClick={onClick}>
       {" "}
       {/* Attach onClick to the card */}
-      <img src={defaultphoto} className="card--image" alt={data.name} />
+      <img
+        src={data.photo ? data.photo : defaultphoto}
+        className="card--image"
+        alt={data.name}
+      />
       <h3 className="card--title">{data.name}</h3>
       <div className="card--stats">
         <span className="details">

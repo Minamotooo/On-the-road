@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
+import "../Signin&up/in&up.css";
 import sampleHotelRoomPhoto from "../images/samplehotelroom.jpg";
 import ReservationModal from "./ReservationModal";
+import "./Room.css";
 
 export default function Room(props) {
   const { hotelId } = useParams();
@@ -81,7 +83,8 @@ export default function Room(props) {
     <div className="room-selection">
       <div className="room-details">
         <div className="room-images">
-          <img src={sampleHotelRoomPhoto} alt="Room" />
+          <img src={data.image ? data.image : sampleHotelRoomPhoto} />
+
           {/* Additional thumbnails */}
         </div>
         <div className="room-info">
@@ -96,6 +99,7 @@ export default function Room(props) {
           <div className="price">${data.price_per_night}</div>
           {user && user.role === "client" && (
             <button
+              className="button--style"
               onClick={() => openReserve(data.room_type, data.price_per_night)}
             >
               Reserve
