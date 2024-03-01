@@ -57,6 +57,7 @@ import logo from "../images/logo-1.png";
 import "./page.css";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Navbar() {
   // State to manage the visibility of the login modal
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -98,7 +99,7 @@ export default function Navbar() {
         <a href="/touristspot" className="navItem">
           Tourist Spot
         </a>
-        <a href="" className="navItem">
+        <a href="/restaurant" className="navItem">
           Restaurant
         </a>
         <a href="/hotel" className="navItem">

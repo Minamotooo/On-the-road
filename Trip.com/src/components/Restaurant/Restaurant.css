@@ -1,0 +1,42 @@
+/* Restaurant.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+/* Restaurant.css */
+.restaurant-list {
+  width: 100%; /* or width: 100vw; for the entire viewport width */
+  margin: 0 auto;
+  box-sizing: border-box; /* Optional: Includes padding and border in the element's total width and height */
+}
+
+
+.restaurant-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-item input[type="radio"] {
+  display: none;
+}
+
+.restaurant-item label {
+  cursor: pointer;
+}
+
+.restaurant-item h3 {
+  margin: 0;
+}
+
+.restaurant-item p {
+  margin: 5px 0;
+}
+
+.restaurant-list ul {
+  list-style-type: none; /* This will remove the bullet points */
+}
