@@ -57,21 +57,17 @@ signInRouter.post("/login", async (req, res) => {
       if (passwordMatch) {
         // Passwords match, user is authenticated
         // req.session.user = {username: username,role: 'client'};
-        res
-          .status(200)
-          .json({
-            success: true,
-            message: "Login successful",
-            user: { id: user.id, username: user.username, role: "client" },
-          });
+        res.status(200).json({
+          success: true,
+          message: "Login successful",
+          user: { id: user.id, username: user.username, role: "client" },
+        });
       } else {
         // Passwords do not match
-        res
-          .status(401)
-          .json({
-            success: false,
-            error: "Unauthorized: Incorrect username or password",
-          });
+        res.status(401).json({
+          success: false,
+          error: "Unauthorized: Incorrect username or password",
+        });
       }
     } else {
       // No user found with the provided username
@@ -139,13 +135,11 @@ signInRouter.post("/client", async (req, res) => {
       ]
     );
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Registration successful",
-        user: result.rows[0],
-      });
+    res.status(201).json({
+      success: true,
+      message: "Registration successful",
+      user: result.rows[0],
+    });
   } catch (error) {
     console.error("Error during registration:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -194,7 +188,9 @@ signInRouter.put("/update/:username", async (req, res) => {
     );
 
     if (result.rowCount === 1) {
-      res.status(200).json({ message: "User information updated successfully" });
+      res
+        .status(200)
+        .json({ message: "User information updated successfully" });
     } else {
       res.status(404).json({ error: "User not found" });
     }
@@ -242,11 +238,9 @@ signInRouter.post("/signup", async (req, res) => {
   console.log(firstname);
 
   if (!username || !email || !password || !firstname || !lastname) {
-    return res
-      .status(400)
-      .json({
-        error: "Bad Request: Missing or invalid fields in the request body",
-      });
+    return res.status(400).json({
+      error: "Bad Request: Missing or invalid fields in the request body",
+    });
   }
   const hashedPassword = await bcrypt.hash(password, 13);
   try {
@@ -268,59 +262,147 @@ signInRouter.post("/signup", async (req, res) => {
   }
 });
 
+///Restaurant Signup
 
-  signInRouter.post('/hotellogin', async (req, res) => {
-    const { username, password, businessType } = req.body; 
+signInRouter.post("/restaurant", async (req, res) => {
+  const {
+    email,
+    username,
+    password,
+    businessType,
+    division,
+    district,
+    upazila,
+    union,
+    name,
+    cuisine,
+    phoneNo,
+    imageURL,
+  } = req.body;
 
-    console.log("....................................................................");
-    console.log(req.body);
-  
-    let tableName;
-    switch (businessType.toLowerCase()) {
-      case "hotel":
-        tableName = "HOTEL"; // Ensure the table name is correct
-        break;
-      
-      default:
-        // Handle invalid businessType
-        return res.status(400).json({ success: false, error: 'Invalid business type' });
-    }
-    
-    try {
-      const result = await pool.query(`SELECT * FROM ${tableName} WHERE USERNAME = $1;`, [username]);
-      console.log("....................................................................");
-      console.log(result);
-  
-      if (result.rowCount === 1) {
-        const retrievedData = result.rows[0];
-  
-        // Compare the entered password with the hashed password stored in the database
-        const passwordMatch = await bcrypt.compare(password, retrievedData.password);
-        console.log(password);
-        console.log(retrievedData.password); // Corrected from console.log(user.password) to console.log(retrievedData.password)
-  
-        if (passwordMatch) {
-          // Passwords match, user is authenticated
-         // req.session.user = { username: retrievedData.username, role: businessType.toLowerCase() };
-          res.status(200).json({success: true, message: 'Login successful', retrievedData ,user :{username: retrievedData.username, role: businessType.toLowerCase()}});
-        } else {
-          // Passwords do not match
-          res.status(401).json({success: false, error: 'Incorrect password' });
-        }
+  console.log(username);
+
+  if (!username || !email || !password) {
+    return res
+      .status(400)
+      .json({
+        error: "Bad Request: Missing or invalid fields in the request body",
+      });
+  }
+  const hashedPassword = await bcrypt.hash(password, 13);
+  // console.log(hashedPassword);
+  try {
+    // Insert user into the database
+    const result1 = await pool.query(
+      "INSERT INTO BUSINESS_ENTITY (USERNAME, BUSINESS_TYPE) VALUES ($1, $2 ) RETURNING *",
+      [username, businessType]
+    );
+    //console.log(result1);
+    const temp = await pool.query(
+      "SELECT UNION_ID FROM UNIONS UN JOIN UPAZILLAS UP ON (UN.UPAZILLA_ID = UP.UPAZILLA_ID) JOIN DISTRICTS D ON(UP.DISTRICT_ID = D.DISTRICT_ID) JOIN DIVISIONS DIV ON(D.DIVISION_ID = DIV.DIVISION_ID) WHERE DIV.NAME = $1 AND D.NAME = $2 AND UP.NAME = $3 AND UN.NAME= $4;",
+      [division, district, upazila, union]
+    );
+    const union_id = temp.rows[0].union_id;
+    //console.log(union_id);
+    const result2 = await pool.query(
+      "INSERT INTO restaurant (USERNAME, PASSWORD, EMAIL, UNION_ID, PHONE_NO, NAME, CUISINE, IMAGE) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      [
+        username,
+        hashedPassword,
+        email,
+        union_id,
+        phoneNo,
+        name,
+        cuisine,
+        imageURL,
+      ]
+    );
+    //console.log(result2);
+    // Assuming the user is successfully added, send a success response
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user: result1.rows[0] });
+  } catch (error) {
+    console.error("Error adding user:", error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
+  }
+});
+
+signInRouter.post("/hotellogin", async (req, res) => {
+  const { username, password, businessType } = req.body;
+
+  console.log(
+    "...................................................................."
+  );
+  console.log(req.body);
+
+  let tableName;
+  switch (businessType.toLowerCase()) {
+    case "hotel":
+      tableName = "HOTEL"; // Ensure the table name is correct
+    case "restaurant":
+      tableName = "RESTAURANT";
+      break;
+
+    default:
+      // Handle invalid businessType
+      return res
+        .status(400)
+        .json({ success: false, error: "Invalid business type" });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM ${tableName} WHERE USERNAME = $1;`,
+      [username]
+    );
+    console.log(
+      "...................................................................."
+    );
+    console.log(result);
+
+    if (result.rowCount === 1) {
+      const retrievedData = result.rows[0];
+
+      // Compare the entered password with the hashed password stored in the database
+      const passwordMatch = await bcrypt.compare(
+        password,
+        retrievedData.password
+      );
+      console.log(password);
+      console.log(retrievedData.password); // Corrected from console.log(user.password) to console.log(retrievedData.password)
+
+      if (passwordMatch) {
+        // Passwords match, user is authenticated
+        // req.session.user = { username: retrievedData.username, role: businessType.toLowerCase() };
+        res
+          .status(200)
+          .json({
+            success: true,
+            message: "Login successful",
+            retrievedData,
+            user: {
+              username: retrievedData.username,
+              role: businessType.toLowerCase(),
+            },
+          });
       } else {
-        // No user found with the provided username
-        res.status(402).json({success: false, error: 'Invalid username' });
+        // Passwords do not match
+        res.status(401).json({ success: false, error: "Incorrect password" });
       }
-    } catch (error) {
-      console.error('Error signing in:', error);
-      res.status(500).json({success: false, error: 'Internal Server Error' });
+    } else {
+      // No user found with the provided username
+      res.status(402).json({ success: false, error: "Invalid username" });
     }
-  });
-  
-  
-  
-  // ...
-  
+  } catch (error) {
+    console.error("Error signing in:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+});
+
+// ...
 
 // Start the server
 // app.listen(port, () => {

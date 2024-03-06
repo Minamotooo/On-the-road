@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../Signin&up/in&up.css";
 import { useParams } from "react-router-dom";
 
-export const EditProfile = ({ onClose }) => {
+const EditProfile = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -90,7 +90,9 @@ export const EditProfile = ({ onClose }) => {
         onClose();
       } else {
         const errorMessage = await response.text();
-        console.log(`Error updating profile: ${errorMessage || response.statusText}`);
+        console.log(
+          `Error updating profile: ${errorMessage || response.statusText}`
+        );
         alert(`Error updating profile: ${errorMessage || response.statusText}`);
       }
     } catch (error) {
@@ -219,5 +221,5 @@ export const EditProfile = ({ onClose }) => {
       </div>
     </>
   );
-}
+};
 export default EditProfile;

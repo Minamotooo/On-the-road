@@ -12,7 +12,7 @@ import LoginModal from "./components/Login/LoginModal.jsx";
 import Restaurant from "./components/Restaurant/RestaurantHome.jsx";
 import Places from "./components/TouristSpot/Places.jsx";
 import Hotel from "./components/hotel/Hotel.jsx";
-import HotelDetails from "./components/hotel/HotelDetails.jsx";
+import HotelDetails from "./components/hotel/hotelDetails.jsx";
 import HotelProfile from "./components/hotelside/Hotelprofile.jsx";
 //import HotelDetails from './HotelDetails';
 function App() {
