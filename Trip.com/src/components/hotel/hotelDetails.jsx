@@ -39,7 +39,7 @@ export default function HotelDetails() {
     }
 
     fetchReviews();
-  }, []);
+  }, [reviews]);
 
   useEffect(() => {
     // Function to fetch hotels data
@@ -109,7 +109,7 @@ export default function HotelDetails() {
       // Check if hotelId is not null or undefined
       fetchHotelRooms();
     }
-  }, [hotelId]); // Include hotelId in the dependency array
+  }, [hotelId, details]); // Include hotelId in the dependency array
 
   const handleRatingChange = (event) => {
     setRating(parseInt(event.target.value, 10));
@@ -126,14 +126,14 @@ export default function HotelDetails() {
   const handleSubmitReview = async () => {
     try {
       setClient_username(user.username);
-      console.log(
-        "Posting review:",
-        rating,
-        comment,
-        imageURL,
-        hotel_username,
-        client_username
-      );
+      // console.log(
+      //   "Posting review:",
+      //   rating,
+      //   comment,
+      //   imageURL,
+      //   hotel_username,
+      //   client_username
+      // );
       const response = await fetch(
         "http://localhost:4000/hotel/review/postReview",
         {

@@ -60,7 +60,7 @@ hotelRouter.post('/search', async (req, res) => {
   const { searchTerm } = req.body;
 
   try {
-    const result = await pool.query('SELECT H.hotel_id,H.name, H.address, D.name AS DISTRICT, DIV.name AS DIVISION, H.description FROM HOTEL H JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = DIV.division_id WHERE LOWER(H.name) ILIKE $1 OR LOWER(D.name) ILIKE $1 OR LOWER(DIV.name) ILIKE $1;',[`%${searchTerm}%`]
+    const result = await pool.query('SELECT H.hotel_id,H.name, H.address,H.photo, D.name AS DISTRICT, DIV.name AS DIVISION, H.description FROM HOTEL H JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = DIV.division_id WHERE LOWER(H.name) ILIKE $1 OR LOWER(D.name) ILIKE $1 OR LOWER(DIV.name) ILIKE $1;',[`%${searchTerm.toLowerCase()}%`]
     );
 
     console.log(result);
@@ -148,7 +148,7 @@ hotelRouter.get('/review/:hotelId', async (req, res) => {
     const result = await pool.query('SELECT * FROM reviews R JOIN hotel H ON R.business_username=H.username WHERE hotel_id = $1;',[hotelId]);
    
 
-    console.log(result);
+   // console.log(result);
 
     res.json(result.rows);
   } catch (error) {
@@ -162,13 +162,13 @@ hotelRouter.get('/review/:hotelId', async (req, res) => {
 //FOR DISPLAYING THE HOTEL ROOMS FOR A HOTEL
 hotelRouter.post('/fetchCurrentHotel/:hotelId', async (req, res) => {
     const { hotelId } = req.params;
-    console.log("HELLLLLLLLLLLLLL");
+    //console.log("HELLLLLLLLLLLLLL");
   
     try {
       const result = await pool.query('SELECT * FROM hotel_rooms WHERE HOTEL_ID = $1;',[hotelId]);
      
   
-      console.log(result);
+      //console.log(result);
   
       res.json(result.rows);
     } catch (error) {
@@ -204,7 +204,7 @@ hotelRouter.post('/Roombooking/:hotelId', async (req, res) => {
   try {
       const result = await pool.query('INSERT INTO hotel_room_booking(client_username, hotel_id, room_type,no_of_rooms, check_in_date, check_out_date, total_bill, payment_completion_status) VALUES($1,$2,$3,$4,$5,$6,$7,$8);', [username, hotelId, roomType, noOfRooms, checkInDateObj, checkOutDateObj, totalBill, status]);
 
-      console.log(result);
+     // console.log(result);
 
       res.json(result.rows);
   } catch (error) {
@@ -218,12 +218,12 @@ hotelRouter.post('/Roombooking/:hotelId', async (req, res) => {
 //RETRIEVE BOOKING REQUESTS FOR A HOTEL
 hotelRouter.post('/fetchBookingRequests/:username', async (req, res) => {
   const { username } = req.params;
-  console.log("RECEIVED BOOK REQUEST: ", username);
+  //console.log("RECEIVED BOOK REQUEST: ", username);
   try {
     const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE H.username = $1 AND payment_completion_status = 'PENDING';`,[username]);
-   console.log("BOOKING REQUEST :");
+  // console.log("BOOKING REQUEST :");
 
-    console.log(result);
+    //console.log(result);
 
     res.json(result.rows);
   } catch (error) {
@@ -236,7 +236,7 @@ hotelRouter.post('/fetchBookingRequests/:username', async (req, res) => {
 hotelRouter.post('/BookingAction/:booking_id', async (req, res) => {
   const { booking_id } = req.params;
   const { action } = req.body;
-  console.log("RECEIVED BOOK REQUEST: ",action, "for the ID: " ,booking_id);
+ // console.log("RECEIVED BOOK REQUEST: ",action, "for the ID: " ,booking_id);
   try {
     var result;
     if(action === "approve"){
@@ -247,9 +247,9 @@ hotelRouter.post('/BookingAction/:booking_id', async (req, res) => {
       { result = await pool.query(`
       DELETE FROM hotel_room_booking WHERE booking_id = $1;`,[booking_id]);
   }
-   console.log("BOOKING REQUEST HANDLED");
+  // console.log("BOOKING REQUEST HANDLED");
 
-    console.log(result);
+   // console.log(result);
 
     res.json(result.rows);
   } catch (error) {
@@ -265,9 +265,9 @@ hotelRouter.post('/fetchPendingRequests/:username', async (req, res) => {
  // console.log("RECEIVED BOOK REQUEST: ", username);
   try {
     const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND payment_completion_status = 'PENDING';`,[username]);
-   console.log("BOOKING REQUEST :");
+   //console.log("BOOKING REQUEST :");
 
-    console.log(result);
+   // console.log(result);
 
     res.json(result.rows);
   } catch (error) {
@@ -285,7 +285,7 @@ hotelRouter.post('/fetchApprovedRequests/:username', async (req, res) => {
     const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND payment_completion_status = 'APPROVED';`,[username]);
    //console.log("BOOKING REQUEST :");
 
-    console.log(result);
+    //console.log(result);
 
     res.json(result.rows);
   } catch (error) {
@@ -303,7 +303,7 @@ hotelRouter.post('/fetchApprovedRequests/:username', async (req, res) => {
     try {
       const result = await pool.query('INSERT INTO reviews(rating, comment, image, business_username, client_username) VALUES($1,$2,$3,$4,$5);', [rating, comment, imageURL, hotel_username,client_username]);
   
-      console.log(result);
+      //console.log(result);
   
       res.json(result.rows);
     } catch (error) {

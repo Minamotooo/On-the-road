@@ -42,7 +42,7 @@ export default function Hotelbasicdetails(props) {
 
   const onClose = () => setShowEdit(false);
   const data = props.data;
-  console.log(props.data);
+  //console.log(props.data);
   return (
     <div className="hotel-header">
       <div>

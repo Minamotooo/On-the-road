@@ -42,7 +42,7 @@ export default function Hotel() {
 
         // Set the hotels data to state
         setHotels(data);
-        console.log(data);
+        //console.log(data);
       } catch (error) {
         console.error("Error fetching hotels:", error);
       }
