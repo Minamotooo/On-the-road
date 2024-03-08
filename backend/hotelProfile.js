@@ -72,8 +72,53 @@ hotelRouter.post('/search', async (req, res) => {
   }
 });
 
+//FOR INSERTING A NEW ROOM FOR A HOTEL
+hotelRouter.post("/insertNewRoom", async (req, res) => {
+  const { roomType, hotelID,availableRooms,amenities,pricePerNight,numberOfGuests,roomImageURL } = req.body;
+  console.log("RECEIVED ROOM INFO: ", roomType, hotelID,availableRooms,amenities,pricePerNight,numberOfGuests,roomImageURL);
+  try {
+    // Insert user into the database
+    const result = await pool.query(
+      "INSERT INTO HOTEL_ROOMS (HOTEL_ID,ROOM_TYPE,AVAILABLE_ROOMS_LEFT,PRICE_PER_NIGHT,CAPACITY, AMENITIES,IMAGE) VALUES ($1, $2, $3, $4, $5,$6 ,$7) RETURNING *",
+      [hotelID, roomType, availableRooms, pricePerNight, numberOfGuests, amenities, roomImageURL]
+    );
 
-//FOR SENDING BACK HOTELID FROM HOTEL USERNAME
+    res
+      .status(201)
+      .json({ message: "Room Added successfully" });
+  } catch (error) {
+    console.error("Error adding user:", error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
+  }
+});
+
+
+
+
+
+// FOR EDITING HOTEL ROOM INFO
+hotelRouter.put('/editRoom/:hotelId', async (req, res) => {
+  const { hotelId } = req.params;
+  const { hotelID,roomType,availableRooms, amenities, pricePerNight, numberOfGuests,roomImageURL } = req.body;
+
+  try {
+    // Update the hotel profile
+    const updateQuery = `
+      UPDATE HOTEL_ROOMS
+      SET AVAILABLE_ROOMS_LEFT = $1, PRICE_PER_NIGHT = $2,CAPACITY = $3, AMENITIES = $4, IMAGE = $5
+      WHERE hotel_id = $6 AND ROOM_TYPE = $7
+    `;
+    await pool.query(updateQuery, [availableRooms, pricePerNight, numberOfGuests, amenities, roomImageURL, hotelID,roomType]);
+
+    res.status(200).json({ success: true, message: 'Hotel room info updated successfully' });
+  } catch (error) {
+    console.error('Error updating hotel room info:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
 // FOR SENDING BACK HOTELID FROM HOTEL USERNAME
 hotelRouter.post('/fetchHotelId/:username', async (req, res) => {
   const { username } = req.body;
@@ -177,6 +222,27 @@ hotelRouter.post('/fetchCurrentHotel/:hotelId', async (req, res) => {
     }
   });
   
+//FOR EDITING ROOM INFO
+  hotelRouter.post('/fetchCurrentRoomInfo/:hotelId', async (req, res) => {
+    const { hotelId } = req.params;
+    const { roomType } = req.body;
+    console.log("**************");
+    console.log(hotelId, roomType);
+  
+    try {
+      const result = await pool.query('SELECT * FROM hotel_rooms WHERE HOTEL_ID = $1 AND ROOM_TYPE = $2;',[hotelId,roomType]);
+     
+  
+      //console.log(result);
+  
+      res.json(result.rows);
+    } catch (error) {
+      console.error('Error loading hotel rooms:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+  });
+
+
 
 //FOR RESERVING A ROOM IN A HOTEL
 hotelRouter.post('/Roombooking/:hotelId', async (req, res) => {
@@ -213,7 +279,23 @@ hotelRouter.post('/Roombooking/:hotelId', async (req, res) => {
   }
 });
 
+//ADDING BACK HOTEL ROOMS AFTER CHECKOUTDATE
+hotelRouter.post("/triggerProcedure", async (req, res) => {
+  try {
+    
+    
+    // Execute the PostgreSQL stored procedure
+    const result = await pool.query(
+      "CALL check_and_update_payment_completion_status()"
+    );
 
+    // Return success response
+    res.status(200).json({ message: "Stored procedure triggered successfully" });
+  } catch (error) {
+    console.error("Error triggering stored procedure", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 //RETRIEVE BOOKING REQUESTS FOR A HOTEL
 hotelRouter.post('/fetchBookingRequests/:username', async (req, res) => {
@@ -241,11 +323,11 @@ hotelRouter.post('/BookingAction/:booking_id', async (req, res) => {
     var result;
     if(action === "approve"){
        result = await pool.query(`
-      UPDATE hotel_room_booking SET payment_completion_status = 'APPROVED' where booking_id = $1; `,[booking_id]);
+      UPDATE hotel_room_booking SET payment_completion_status = 'ONGOING' where booking_id = $1; `,[booking_id]);
     }
     else
       { result = await pool.query(`
-      DELETE FROM hotel_room_booking WHERE booking_id = $1;`,[booking_id]);
+      UPDATE hotel_room_booking SET payment_completion_status = 'DENIED' WHERE booking_id = $1;`,[booking_id]);
   }
   // console.log("BOOKING REQUEST HANDLED");
 
@@ -282,7 +364,7 @@ hotelRouter.post('/fetchApprovedRequests/:username', async (req, res) => {
   const { username } = req.params;
  // console.log("RECEIVED BOOK REQUEST: ", username);
   try {
-    const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND payment_completion_status = 'APPROVED';`,[username]);
+    const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND (payment_completion_status = 'ONGOING' OR payment_completion_status = 'COMPLETED');`,[username]);
    //console.log("BOOKING REQUEST :");
 
     //console.log(result);

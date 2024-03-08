@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../HomePage/Navbar";
+import "../Signin&up/in&up.css";
 import Hotelbasicdetails from "../hotel/Hotelbasicdetails";
 import ReviewCard from "../hotel/ReviewCard";
 import Room from "../hotel/Room";
-import "./hotel.css";
-import "../Signin&up/in&up.css";
 import "../hotel/style.css";
+import "./hotel.css";
 export default function HotelDetails() {
   const { username } = useParams();
   const [details, setDetails] = useState([]);
@@ -14,7 +14,6 @@ export default function HotelDetails() {
   const [reviews, setReviews] = useState([]);
   const [hotelId, setHotelId] = useState(null);
   const fetchBookingRequestsRef = useRef();
-
 
   useEffect(() => {
     // Function to fetch reviews data
@@ -41,6 +40,21 @@ export default function HotelDetails() {
 
         const dataHotelId = await responseHotelId.json();
         setHotelId(dataHotelId.hotelId);
+
+        const responseTriggerProcedure = await fetch(
+          `http://localhost:4000/hotel/triggerProcedure`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!responseTriggerProcedure.ok) {
+          console.error("Error triggering stored procedure");
+          return;
+        }
 
         // Fetch reviews
         const responseReviews = await fetch(
@@ -197,12 +211,14 @@ export default function HotelDetails() {
             <p>Check-out Date: {booking.check_out_date}</p>
             <p>Total Bill: {booking.total_bill}</p>
             <p>Payment Completion: {booking.payment_completion_status}</p>
-            <button className="button--style handle"
+            <button
+              className="button--style handle"
               onClick={() => handleBookingAction(booking.booking_id, "approve")}
             >
               Approve
             </button>
-            <button className="button--style handle"
+            <button
+              className="button--style handle"
               onClick={() => handleBookingAction(booking.booking_id, "deny")}
             >
               Deny

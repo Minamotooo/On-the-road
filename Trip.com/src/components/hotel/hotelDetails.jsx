@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import Navbar from "../HomePage/Navbar";
 import "../Signin&up/in&up.css";
+
 import Hotelbasicdetails from "./Hotelbasicdetails";
 import ReviewCard from "./ReviewCard";
 import "./ReviewFormStyles.css";
@@ -12,7 +13,7 @@ export default function HotelDetails() {
   const { hotelId } = useParams(); // Destructure hotelId from the params
   const { user } = useAuth();
   const [client_username, setClient_username] = useState([]);
-
+  //console.log("HotelId from HotelDetails.jsx:", hotelId);
   const [details, setDetails] = useState([]);
   const [hotelDetails, setHotelDetails] = useState([]);
   const [hotel_username, setHotel_username] = useState("");
@@ -168,9 +169,11 @@ export default function HotelDetails() {
     <div>
       <Navbar />
       <Hotelbasicdetails data={hotelDetails} />
+
       <h2>Rooms:</h2>
+
       {details.map((detail, index) => (
-        <Room key={index} data={detail} />
+        <Room key={index} data={detail} hotelID={hotelId} />
       ))}
       <h2>Reviews:</h2>
       <div className="reviews-list">
