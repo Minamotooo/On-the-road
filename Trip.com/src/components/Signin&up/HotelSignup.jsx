@@ -14,11 +14,16 @@ export default function HotelSignup(props) {
   const [hoteladdress, setHotelAddress] = useState("");
   const [hotelphonenumber, setHotelPhoneNumber] = useState("");
   const [hoteldescription, setHotelDescription] = useState("");
+  const [roomtype, setRoomType] = useState("");
+  const [availableRoomsLeft, setAvailableRoomsLeft] = useState("");
+  const [pricePerNight, setPricePerNight] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [amenities, setAmenities] = useState("");
+  const [imageURL, setImageURL] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [image, setImage] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState("");
 
   const navigate = useNavigate();
 
@@ -228,11 +233,16 @@ export default function HotelSignup(props) {
           hoteladdress: hoteladdress,
           hotelphonenumber: hotelphonenumber,
           hoteldescription: hoteldescription,
-          image: previewUrl,
+          image: image,
+          roomtype: roomtype,
+          availableRoomsLeft: availableRoomsLeft,
+          pricePerNight: pricePerNight,
+          capacity: capacity,
+          amenities: amenities,
+          imageURL: imageURL,
+
         }),
       });
-
-      console.log(previewUrl);
 
       if (response.ok) {
         console.log("User registered successfully");
@@ -252,115 +262,176 @@ export default function HotelSignup(props) {
   return (
     <>
       <div className="modal-wrapper"></div>
-
       <div className="modal-container">
-        <h1 className="header">Finish setting up your account</h1>
+        <h3 className="header">Finish setting up your account</h3>
         <button type="button" className="close-button" onClick={props.onClose}>
           &times;
         </button>
-        <div className="input-container">
-          <select
-            value={firstLevel}
-            onChange={(e) => setFirstLevel(e.target.value)}
-            className="input-style"
-          >
-            <option value="">Select Your Division</option>
-            {firstLevelOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+        <div className=" MODAL2">
+          <div className="input_container2">
+            <div className="input-container">
+              <select
+                value={firstLevel}
+                onChange={(e) => setFirstLevel(e.target.value)}
+                className="input-style"
+              >
+                <option value="">Select Your Division</option>
+                {firstLevelOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            value={secondLevel}
-            onChange={(e) => setSecondLevel(e.target.value)}
-            className="input-style"
-            disabled={!firstLevel}
-          >
-            <option value="">Select Your District</option>
-            {secondLevelOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+              <select
+                value={secondLevel}
+                onChange={(e) => setSecondLevel(e.target.value)}
+                className="input-style"
+                disabled={!firstLevel}
+              >
+                <option value="">Select Your District</option>
+                {secondLevelOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            value={thirdLevel}
-            onChange={(e) => setThirdLevel(e.target.value)}
-            className="input-style"
-            disabled={!secondLevel}
-          >
-            <option value="">Select Your Upazilla</option>
-            {thirdLevelOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+              <select
+                value={thirdLevel}
+                onChange={(e) => setThirdLevel(e.target.value)}
+                className="input-style"
+                disabled={!secondLevel}
+              >
+                <option value="">Select Your Upazilla</option>
+                {thirdLevelOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            value={fourthLevel}
-            onChange={(e) => setFourthLevel(e.target.value)}
-            className="input-style"
-            disabled={!thirdLevel}
-          >
-            <option value="">Select Your Union</option>
-            {fourthLevelOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
+              <select
+                value={fourthLevel}
+                onChange={(e) => setFourthLevel(e.target.value)}
+                className="input-style"
+                disabled={!thirdLevel}
+              >
+                <option value="">Select Your Union</option>
+                {fourthLevelOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        <div className="input-container">
-          <input
-            type="text"
-            value={hotelname}
-            placeholder="Hotel Name"
-            onChange={(e) => {
-              setHotelName(e.target.value);
-            }}
-            className="input-style"
-          />
-          <input
-            type="text"
-            value={hoteladdress}
-            placeholder="Hotel Address"
-            onChange={(e) => {
-              setHotelAddress(e.target.value);
-            }}
-            className="input-style"
-          />
-          <input
-            type="text"
-            value={hotelphonenumber}
-            placeholder="Hotel Phone Number"
-            onChange={(e) => {
-              setHotelPhoneNumber(e.target.value);
-            }}
-            className="input-style"
-          />
-          <input
-            type="text"
-            value={hoteldescription}
-            placeholder="A short description of your hotel"
-            onChange={(e) => {
-              setHotelDescription(e.target.value);
-            }}
-            className="input-style"
-          />
-          <div>
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-            {previewUrl && (
-              <img
-                src={previewUrl}
-                alt="Preview"
-                style={{ width: "100px", height: "100px" }}
+            <div className="input-container">
+              <input
+                type="text"
+                value={hotelname}
+                placeholder="Hotel Name"
+                onChange={(e) => {
+                  setHotelName(e.target.value);
+                }}
+                className="input-style"
               />
-            )}
+              <input
+                type="text"
+                value={hoteladdress}
+                placeholder="Hotel Address"
+                onChange={(e) => {
+                  setHotelAddress(e.target.value);
+                }}
+                className="input-style"
+              />
+              <input
+                type="text"
+                value={hotelphonenumber}
+                placeholder="Hotel Phone Number"
+                onChange={(e) => {
+                  setHotelPhoneNumber(e.target.value);
+                }}
+                className="input-style"
+              />
+              <input
+                type="text"
+                value={hoteldescription}
+                placeholder="A short description of your hotel"
+                onChange={(e) => {
+                  setHotelDescription(e.target.value);
+                }}
+                className="input-style"
+              />
+              <input
+                type="text"
+                value={image}
+                placeholder="Hotel Image"
+                onChange={(e) => {
+                  setImage(e.target.value);
+                }}
+                className="input-style"
+              />
+            </div>
+          </div>
+          <div className="input-container2">
+            <input
+              type="text"
+              value={roomtype}
+              placeholder="Room Type"
+              onChange={(e) => {
+                setRoomType(e.target.value);
+              }}
+              className="input-style"
+            />
+            <input
+              type="text"
+              value={availableRoomsLeft}
+              placeholder="Available Rooms Left"
+              onChange={(e) => {
+                setAvailableRoomsLeft(e.target.value);
+              }}
+              className="input-style"
+            />
+            <input
+              type="text"
+              value={pricePerNight}
+              placeholder="Price per Night"
+              onChange={(e) => {
+                setPricePerNight(e.target.value);
+              }}
+              className="input-style"
+            />
+
+            <input
+              type="text"
+              value={capacity}
+              placeholder="Room Capacity"
+              onChange={(e) => {
+                setCapacity(e.target.value);
+              }}
+              className="input-style"
+            />
+
+            <input
+              type="text"
+              value={amenities}
+              placeholder="Amenities"
+              onChange={(e) => {
+                setAmenities(e.target.value);
+              }}
+              className="input-style"
+            />
+
+            <input
+              type="text"
+              value={imageURL}
+              placeholder="Image URL"
+              onChange={(e) => {
+                setImageURL(e.target.value);
+              }}
+              className="input-style"
+            />
           </div>
         </div>
         <div className="button-container">

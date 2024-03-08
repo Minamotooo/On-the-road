@@ -96,16 +96,20 @@ hotelSignUpRouter.post("/", async (req, res) => {
     hotelphonenumber,
     hoteldescription,
     image,
+    roomtype,
+    availableRoomsLeft,
+    pricePerNight,
+    capacity,
+    amenities,
+    imageURL,
   } = req.body;
 
   console.log(username);
 
   if (!username || !email || !password) {
-    return res
-      .status(400)
-      .json({
-        error: "Bad Request: Missing or invalid fields in the request body",
-      });
+    return res.status(400).json({
+      error: "Bad Request: Missing or invalid fields in the request body",
+    });
   }
   const hashedPassword = await bcrypt.hash(password, 13);
   // console.log(hashedPassword);
@@ -123,7 +127,7 @@ hotelSignUpRouter.post("/", async (req, res) => {
     const union_id = temp.rows[0].union_id;
     //console.log(union_id);
     const result2 = await pool.query(
-      "INSERT INTO HOTEL (USERNAME, PASSWORD, NAME, UNION_ID, ADDRESS, PHONE_NO, EMAIL, PHOTO,DESCRIPTION) VALUES ($1, $2, $3, $4, $5, $6, $7 , $8, $9) RETURNING *",
+      "INSERT INTO HOTEL ( USERNAME, PASSWORD, NAME, UNION_ID, ADDRESS, PHONE_NO, EMAIL, PHOTO,DESCRIPTION) VALUES ($1, $2, $3, $4, $5, $6, $7 , $8, $9) RETURNING *",
       [
         username,
         hashedPassword,
@@ -134,6 +138,23 @@ hotelSignUpRouter.post("/", async (req, res) => {
         email,
         image,
         hoteldescription,
+      ]
+    );
+    console.log(result2);
+    console.log(",......................................");
+
+    const hotelID = result2.rows[0].hotel_id;
+
+    const result3 = await pool.query(
+      "INSERT INTO HOTEL_ROOMS (HOTEL_ID,ROOM_TYPE,AVAILABLE_ROOMS_LEFT,PRICE_PER_NIGHT,CAPACITY, AMENITIES,IMAGE) VALUES ($1, $2, $3, $4, $5,$6 ,$7) RETURNING *",
+      [
+        hotelID,
+        roomtype,
+        availableRoomsLeft,
+        pricePerNight,
+        capacity,
+        amenities,
+        imageURL,
       ]
     );
     //console.log(result2);

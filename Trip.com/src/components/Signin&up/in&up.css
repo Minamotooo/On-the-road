@@ -26,14 +26,19 @@
   background-color: white; /* Your desired background color */
   border-radius: 5px; /* Your desired border radius */
   z-index: 1000; /* High z-index to ensure it's on top of other elements */
-  width: 500px; /* Your desired width */
-  max-height: 80vh; /* Height set to auto to adjust to the content */
+  width: 550px; /* Your desired width */
+  max-height: 90vh; /* Height set to auto to adjust to the content */
   padding: 40px; /* Your desired padding */
   display: flex; /* Using flexbox to align inner content */
   flex-direction: column; /* Align children in a column */
   align-items: center; /* Center children horizontally */
   justify-content: center; /* Center children vertically */
   gap: 10px; /* Space between children */
+}
+
+.input-container2 {
+  display: flexbox;
+  margin: 10px;
 }
 
 /* Optional: Additional styles for when the modal is active */
@@ -52,7 +57,7 @@
 
 .close-button {
   position: absolute;
-  top:50px; /* Padding from top */
+  top: 50px; /* Padding from top */
   right: 50px; /* Padding from right */
   border: none;
   background: none;
@@ -249,5 +254,5 @@
 }
 
 .btn {
-  width:250px;
+  width: 250px;
 }
