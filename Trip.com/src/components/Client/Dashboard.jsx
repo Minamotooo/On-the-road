@@ -4,7 +4,7 @@ import { useAuth } from "../../AuthContext";
 import Navbar from "../HomePage/Navbar";
 import "../Signin&up/in&up.css"; // Import the CSS file for styling
 import "./Dashboard.css"; // Import the UserProfile.css
-import { EditProfile } from "/src/components/Client/EditProfile"; // Import the EditProfile component
+import EditProfile from "./EditProfile";// Import the EditProfile component
 
 export default function Dashboard() {
   const navigate = useNavigate();

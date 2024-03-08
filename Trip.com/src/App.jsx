@@ -12,8 +12,10 @@ import LoginModal from "./components/Login/LoginModal.jsx";
 import Restaurant from "./components/Restaurant/RestaurantHome.jsx";
 import Places from "./components/TouristSpot/Places.jsx";
 import Hotel from "./components/hotel/Hotel.jsx";
-import HotelDetails from "./components/hotel/HotelDetails.jsx";
+import HotelDetails from "./components/hotel/hotelDetails.jsx";
 import HotelProfile from "./components/hotelside/Hotelprofile.jsx";
+import RestaurantDashboard from "./components/Restaurant/RestaurantDashboard.jsx";
+import Histogram from "./components/Admin/Histogram.jsx";
 //import HotelDetails from './HotelDetails';
 function App() {
   // const { user } = useAuth();
@@ -34,9 +36,14 @@ function App() {
             path="/clientsidehotelpage/:hotelId"
             element={<HotelDetails />}
           />
-          <Route path="/:business/:username" element={<HotelProfile />} />
+          <Route path="/Hotel/:username" element={<HotelProfile />} />
+          <Route
+            path="/Restaurant/:username"
+            element={<RestaurantDashboard />}
+          />
           <Route path="/edit-profile/:username" element={<EditProfile />} />
           <Route path="/restaurant" element={<Restaurant />} />
+          <Route path="/admin" element={<Histogram />} />
 
           {/* Other routes go here */}
         </Routes>
