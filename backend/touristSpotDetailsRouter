@@ -43,6 +43,22 @@ touristSpotDetailsRouter.post('/Details/:spot_id', async (req, res) => {
   }
 });
 
+touristSpotDetailsRouter.post('/Details/fetchneighboringspots/:spot_id', async (req, res) => {
+  const { spot_id } = req.params;
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM find_neighboring_spots($1)', //FUNCTION CALL
+      [spot_id]
+    );
+    
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error loading neighboring tourist spot DETAILS:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
 touristSpotDetailsRouter.post('/Reviews/:spot_id', async (req, res) => {
   const { spot_id } = req.params;
   
@@ -64,6 +80,7 @@ touristSpotDetailsRouter.post('/Reviews/:spot_id', async (req, res) => {
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
 
 
 module.exports = touristSpotDetailsRouter;

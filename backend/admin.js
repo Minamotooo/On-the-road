@@ -11,7 +11,7 @@ admin.post("/dashboard", async (req, res) => {
   try {
     const query = `SELECT TO_CHAR(booking_date, 'Month') date, SUM(total_bill) bill
     FROM hotel_room_booking
-    WHERE PAYMENT_COMPLETION_STATUS = 'APPROVED' OR PAYMENT_COMPLETION_STATUS = 'ONGOING'
+    WHERE PAYMENT_COMPLETION_STATUS = 'COMPLETED' OR PAYMENT_COMPLETION_STATUS = 'ONGOING'
     AND TO_CHAR(booking_date, 'YYYY') = TO_CHAR(CURRENT_DATE, 'YYYY')
     GROUP BY TO_CHAR(booking_date, 'Month')
     ORDER BY TO_DATE(TO_CHAR(booking_date, 'Month'),'Month') ASC;`;

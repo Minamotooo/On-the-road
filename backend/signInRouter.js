@@ -303,7 +303,7 @@ signInRouter.post("/restaurant", async (req, res) => {
       [division, district, upazila, union]
     );
     const union_id = temp.rows[0].union_id;
-    //console.log(union_id);
+    console.log(union_id);
     const result2 = await pool.query(
       "INSERT INTO restaurant (USERNAME, PASSWORD, EMAIL, UNION_ID, PHONE_NO, NAME, CUISINE, IMAGE) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
       [

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
-import "./in&up.css";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
+import "./in&up.css";
 
 export default function AdminSignin({ onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSignin = async () => {
@@ -27,6 +28,10 @@ export default function AdminSignin({ onClose }) {
     }
 
     if (email === "Admin" && password === "1") {
+      const user = {
+        username: "Admin",
+      };
+      login(user);
       navigate("/admin");
       onClose();
     }

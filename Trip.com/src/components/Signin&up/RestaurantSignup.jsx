@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 import "./in&up.css";
 
 export default function RestaurantaSignup(props) {
-
   const [firstLevel, setFirstLevel] = useState("");
   const [secondLevel, setSecondLevel] = useState("");
   const [thirdLevel, setThirdLevel] = useState("");
@@ -18,6 +18,8 @@ export default function RestaurantaSignup(props) {
   const [email, setEmail] = useState("");
 
   const [imageURL, setImageURL] = useState(null);
+
+  const { login } = useAuth();
 
   const navigate = useNavigate();
 
@@ -55,7 +57,7 @@ export default function RestaurantaSignup(props) {
         }
       } catch (error) {
         console.log(`Error getting division: ${error.message}`);
-      } 
+      }
     };
     fetchDivisions();
   }, []);
@@ -95,7 +97,7 @@ export default function RestaurantaSignup(props) {
         }
       } catch (error) {
         console.log(`Error getting district: ${error.message}`);
-      } 
+      }
     };
     fetchDistricts();
   }, [firstLevel]);
@@ -171,7 +173,7 @@ export default function RestaurantaSignup(props) {
         }
       } catch (error) {
         console.log(`Error getting union: ${error.message}`);
-      } 
+      }
     };
     fetchUnions();
   }, [thirdLevel]);
@@ -180,7 +182,6 @@ export default function RestaurantaSignup(props) {
 
   const handleSignUp = async () => {
     try {
-
       const response = await fetch("http://localhost:4000/signin/restaurant", {
         method: "POST",
         headers: {
@@ -197,14 +198,14 @@ export default function RestaurantaSignup(props) {
           union: fourthLevel,
           name,
           cuisine,
-            phoneNo,
-            imageURL,
+          phoneNo,
+          imageURL,
         }),
       });
 
-     
       if (response.ok) {
         alert("User registered successfully");
+        login({ username: props.username, email: props.email });
         navigate(`/Restaurant/${props.username}`);
       } else {
         const errorMessage = await response.text();
@@ -309,16 +310,15 @@ export default function RestaurantaSignup(props) {
             }}
             className="input-style"
           />
-            <input
-                type="text"
-                value={imageURL}
-                placeholder="Drop Image URL"
-                onChange={(e) => {
-                setImageURL(e.target.value);
-                }}
-                className="input-style"
-            />  
-
+          <input
+            type="text"
+            value={imageURL}
+            placeholder="Drop Image URL"
+            onChange={(e) => {
+              setImageURL(e.target.value);
+            }}
+            className="input-style"
+          />
         </div>
         <div className="button-container">
           <button className="button--style" onClick={handleSignUp}>
