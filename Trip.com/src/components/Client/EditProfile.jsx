@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../Signin&up/in&up.css";
 import { useParams } from "react-router-dom";
 
-function EditProfile({ onClose }) {
+export default function EditProfile({ onClose }) {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -222,5 +222,3 @@ function EditProfile({ onClose }) {
     </>
   );
 }
-
-export default EditProfile;

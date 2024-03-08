@@ -107,7 +107,7 @@ function App() {
     <Chart
       options={revenueOptions}
       series={revenueSeries}
-      type="bar"
+      type="line"
       width="600"
     />
   ) : (
@@ -132,16 +132,16 @@ function App() {
         Admin Dashboard <i className="fas fa-user"></i>{" "}
       </h1>
       <div className="main--container">
-      <div className="row">
-        <h4>Amount of Transaction per month</h4>
-        <br />
-        <div className="col-4">{chartComponent}</div>
-      </div>
-      <div className="row">
-        <h4>Revenue per month(5%)</h4>
-        <br />
-        <div className="col-4">{RevenueChart}</div>
-      </div>
+        <div className="row">
+          <h4>Amount of Transaction per month</h4>
+          <br />
+          <div className="col-4">{chartComponent}</div>
+        </div>
+        <div className="row">
+          <h4>Revenue per month(5%)</h4>
+          <br />
+          <div className="col-4">{RevenueChart}</div>
+        </div>
       </div>
     </div>
   );
