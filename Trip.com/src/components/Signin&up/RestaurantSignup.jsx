@@ -202,10 +202,10 @@ export default function RestaurantaSignup(props) {
         }),
       });
 
-
+     
       if (response.ok) {
-        console.log("User registered successfully");
-        console.log(props.username);
+        alert("User registered successfully");
+        navigate(`/Restaurant/${props.username}`);
       } else {
         const errorMessage = await response.text();
         console.log(`Error signing up: ${errorMessage || response.statusText}`);
