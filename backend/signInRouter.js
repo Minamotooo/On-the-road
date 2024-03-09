@@ -8,6 +8,7 @@ const pool = require("./db/database");
 const bcrypt = require("bcrypt");
 
 const bodyParser = require("body-parser");
+const { resolveBreakpointValues } = require("@mui/system/breakpoints");
 //const app = express();
 
 signInRouter.use(bodyParser.json());
@@ -341,7 +342,8 @@ signInRouter.post("/hotellogin", async (req, res) => {
   let tableName;
   switch (businessType.toLowerCase()) {
     case "hotel":
-      tableName = "HOTEL"; // Ensure the table name is correct
+      tableName = "HOTEL";
+      break; // Ensure the table name is correct
     case "restaurant":
       tableName = "RESTAURANT";
       break;

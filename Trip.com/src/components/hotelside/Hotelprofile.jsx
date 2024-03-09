@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 import Navbar from "../HomePage/Navbar";
 import "../Signin&up/in&up.css";
 import Hotelbasicdetails from "../hotel/Hotelbasicdetails";
@@ -7,6 +8,7 @@ import ReviewCard from "../hotel/ReviewCard";
 import Room from "../hotel/Room";
 import "../hotel/style.css";
 import "./hotel.css";
+
 export default function HotelDetails() {
   const { username } = useParams();
   const [details, setDetails] = useState([]);
@@ -14,6 +16,8 @@ export default function HotelDetails() {
   const [reviews, setReviews] = useState([]);
   const [hotelId, setHotelId] = useState(null);
   const fetchBookingRequestsRef = useRef();
+
+  const { user } = useAuth();
 
   useEffect(() => {
     // Function to fetch reviews data
@@ -199,33 +203,40 @@ export default function HotelDetails() {
           <ReviewCard key={index} data={review} />
         ))}
       </div>
-
-      <h2>Booking Requests:</h2>
-      <div className="booking-requests-list">
-        {bookingRequests.map((booking, index) => (
-          <div key={index} className="booking-request">
-            <p>Client: {booking.client_username}</p>
-            <p>Room Type: {booking.room_type}</p>
-            <p>No. of Rooms: {booking.no_of_rooms}</p>
-            <p>Check-in Date: {booking.check_in_date}</p>
-            <p>Check-out Date: {booking.check_out_date}</p>
-            <p>Total Bill: {booking.total_bill}</p>
-            <p>Payment Completion: {booking.payment_completion_status}</p>
-            <button
-              className="button--style handle"
-              onClick={() => handleBookingAction(booking.booking_id, "approve")}
-            >
-              Approve
-            </button>
-            <button
-              className="button--style handle"
-              onClick={() => handleBookingAction(booking.booking_id, "deny")}
-            >
-              Deny
-            </button>
+      {user && user.role === "hotel" && user.username === username && (
+        <>
+          <h2>Booking Requests:</h2>
+          <div className="booking-requests-list">
+            {bookingRequests.map((booking, index) => (
+              <div key={index} className="booking-request">
+                <p>Client: {booking.client_username}</p>
+                <p>Room Type: {booking.room_type}</p>
+                <p>No. of Rooms: {booking.no_of_rooms}</p>
+                <p>Check-in Date: {booking.check_in_date}</p>
+                <p>Check-out Date: {booking.check_out_date}</p>
+                <p>Total Bill: {booking.total_bill}</p>
+                <p>Payment Completion: {booking.payment_completion_status}</p>
+                <button
+                  className="button--style handle"
+                  onClick={() =>
+                    handleBookingAction(booking.booking_id, "approve")
+                  }
+                >
+                  Approve
+                </button>
+                <button
+                  className="button--style handle"
+                  onClick={() =>
+                    handleBookingAction(booking.booking_id, "deny")
+                  }
+                >
+                  Deny
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 }

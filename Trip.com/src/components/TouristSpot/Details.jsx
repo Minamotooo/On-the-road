@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import ReviewCard from "./TouristSpot/touristSpotReviewCard";
+import { Link, useParams } from "react-router-dom";
+import NeighboringSpotCard from "./NeighboringSpotCard"; // Assuming you have a component for displaying neighboring spots
+import ReviewCard from "./touristSpotReviewCard";
 
 export default function Details() {
   const { spot_id } = useParams();
   const [imageAddress, setImageAddress] = useState("");
   const [spotData, setSpotData] = useState({});
   const [spotReviews, setSpotReviews] = useState([]);
+  const [neighboringSpots, setNeighboringSpots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch details of the current tourist spot
         const spotResponse = await fetch(
           `http://localhost:4000/touristSpotInfo/Details/${spot_id}`,
           {
@@ -34,6 +37,7 @@ export default function Details() {
 
         setImageAddress(spotData[0].image);
 
+        // Fetch reviews for the current tourist spot
         const reviewsResponse = await fetch(
           `http://localhost:4000/touristSpotInfo/Reviews/${spot_id}`,
           {
@@ -52,6 +56,26 @@ export default function Details() {
 
         const reviewsData = await reviewsResponse.json();
         setSpotReviews(reviewsData);
+
+        // Fetch neighboring spots
+        const neighboringSpotsResponse = await fetch(
+          `http://localhost:4000/touristSpotInfo/Details/fetchneighboringspots/${spot_id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!neighboringSpotsResponse.ok) {
+          throw new Error(
+            `Fetching neighboring spots failed: ${neighboringSpotsResponse.statusText}`
+          );
+        }
+
+        const neighboringSpotsData = await neighboringSpotsResponse.json();
+        setNeighboringSpots(neighboringSpotsData);
       } catch (error) {
         setError(`Fetching data failed: ${error.message}`);
       } finally {
@@ -94,6 +118,18 @@ export default function Details() {
       <div className="reviews-list">
         {spotReviews.map((review, index) => (
           <ReviewCard key={index} data={review} />
+        ))}
+      </div>
+
+      <h2>Neighboring Spots:</h2>
+      <div className="neighboring-spots-list">
+        {neighboringSpots.map((neighborSpot) => (
+          <Link
+            key={neighborSpot.spot_id}
+            to={`/touristspot/${neighborSpot.spot_id}`}
+          >
+            <NeighboringSpotCard data={neighborSpot} />
+          </Link>
         ))}
       </div>
     </div>

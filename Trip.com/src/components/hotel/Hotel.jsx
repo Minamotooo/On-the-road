@@ -9,9 +9,9 @@ export default function Hotel() {
   const [hotels, setHotels] = useState([]);
   const navigate = useNavigate();
 
-  const handleHotelClick = (hotelId) => {
+  const handleHotelClick = (username) => {
     // Directly navigate to the hotel's detail page
-    navigate(`/clientsidehotelpage/${hotelId}`);
+    navigate(`/hotel/${username}`);
   };
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function Hotel() {
             <HotelCard
               key={hotel.hotel_id} // It's best practice to use unique ID rather than index
               data={hotel}
-              onClick={() => handleHotelClick(hotel.hotel_id)}
+              onClick={() => handleHotelClick(hotel.username)}
             />
           )
         )}

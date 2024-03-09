@@ -381,7 +381,7 @@ hotelRouter.post('/fetchApprovedRequests/:username', async (req, res) => {
   hotelRouter.post('/review/postReview', async (req, res) => {
     
     const { rating, comment, imageURL, hotel_username,client_username } = req.body;
-  
+  console.log("RECEIVED REVIEW INFO: ", rating, comment, imageURL, hotel_username,client_username);
     try {
       const result = await pool.query('INSERT INTO reviews(rating, comment, image, business_username, client_username) VALUES($1,$2,$3,$4,$5);', [rating, comment, imageURL, hotel_username,client_username]);
   

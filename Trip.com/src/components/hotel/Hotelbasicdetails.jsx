@@ -12,6 +12,15 @@ export default function Hotelbasicdetails(props) {
   const { username } = useParams();
   const [hotelId, setHotelId] = useState(null);
 
+  const [client_username, setClient_username] = useState([]);
+  const [hotel_username, setHotel_username] = useState("");
+  const [reviews, setReviews] = useState([]);
+  const [rating, setRating] = useState(1);
+  const [comment, setComment] = useState("");
+  const [imageURL, setImageURL] = useState("");
+
+  //const { user } = useAuth(); // Access user information using the useAuth hook
+  const { user, logout } = useAuth();
   useEffect(() => {
     // Function to fetch reviews data
     const fetchHotelData = async () => {
@@ -42,7 +51,63 @@ export default function Hotelbasicdetails(props) {
       }
     };
     fetchHotelData();
-  });
+  }),
+    [hotelId];
+
+  const handleRatingChange = (event) => {
+    setRating(parseInt(event.target.value, 10));
+  };
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+
+  const handleImageURLChange = (event) => {
+    setImageURL(event.target.value);
+  };
+
+  const handleSubmitReview = async () => {
+    try {
+      setClient_username(user.username);
+      console.log("*******USERNAME***:", username);
+      setHotel_username(username);
+      console.log(
+        "Posting review:",
+        rating,
+        comment,
+        imageURL,
+        username,
+        client_username
+      );
+      const response = await fetch(
+        "http://localhost:4000/hotel/review/postReview",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Include other headers like authorization if needed
+          },
+          body: JSON.stringify({
+            rating,
+            comment,
+            imageURL,
+            hotel_username: username,
+            client_username,
+            // Add any other required data like client username and hotel username
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Error posting review:", response.statusText);
+      }
+
+      // Refresh reviews after posting a new one
+      //fetchReviews();
+    } catch (error) {
+      console.error("Error posting review:", error);
+    }
+  };
 
   const [isAddRoomModalOpen, setAddRoomModalOpen] = useState(false);
 
@@ -110,7 +175,7 @@ export default function Hotelbasicdetails(props) {
   const handleUpdate = () => {
     setShowEdit(true);
   };
-  const { user, logout } = useAuth(); // Access user information using the useAuth hook
+  // Access user information using the useAuth hook
   // console.log("User:", user.username, user.role);
   // In handleDeleteClick function
   const handleDelete = async () => {
@@ -140,6 +205,7 @@ export default function Hotelbasicdetails(props) {
   const onClose = () => setShowEdit(false);
   const data = props.data;
   //console.log(props.data);
+
   return (
     <div className="hotel-header">
       <div>
@@ -184,6 +250,42 @@ export default function Hotelbasicdetails(props) {
         )}
       </div>
       {showEdit && <HotelProfileEdit onClose={onClose} />}
+
+      {user && user.role === "client" && (
+        <div className="review-form">
+          <h2>Write a Review:</h2>
+          <div>
+            <label htmlFor="rating">Rating:</label>
+            <select id="rating" value={rating} onChange={handleRatingChange}>
+              {[1, 2, 3, 4, 5].map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="comment">Comment:</label>
+            <textarea
+              id="comment"
+              value={comment}
+              onChange={handleCommentChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="imageURL">Image URL:</label>
+            <input
+              type="text"
+              id="imageURL"
+              value={imageURL}
+              onChange={handleImageURLChange}
+            />
+          </div>
+          <button className="button--style" onClick={handleSubmitReview}>
+            Submit Review
+          </button>
+        </div>
+      )}
     </div>
   );
 }

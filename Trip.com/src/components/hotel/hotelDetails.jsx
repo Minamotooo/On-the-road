@@ -10,7 +10,8 @@ import "./ReviewFormStyles.css";
 import Room from "./Room";
 
 export default function HotelDetails() {
-  const { hotelId } = useParams(); // Destructure hotelId from the params
+  const { username } = useParams(); // Destructure hotelId from the params
+  const [hotelId, setHotelId] = useState(null); // Initialize hotelId state with null
   const { user } = useAuth();
   const [client_username, setClient_username] = useState([]);
   //console.log("HotelId from HotelDetails.jsx:", hotelId);
@@ -21,11 +22,42 @@ export default function HotelDetails() {
   const [rating, setRating] = useState(1);
   const [comment, setComment] = useState("");
   const [imageURL, setImageURL] = useState("");
+  console.log("********************CUrrently logged in user:", user);
 
   useEffect(() => {
+    const fetchHotelData = async () => {
+      try {
+        // Fetch hotelId
+        const responseHotelId = await fetch(
+          `http://localhost:4000/hotel/fetchHotelId/${username}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username,
+            }),
+          }
+        );
+
+        if (!responseHotelId.ok) {
+          console.error("Error fetching hotelId");
+          return;
+        }
+
+        const dataHotelId = await responseHotelId.json();
+        setHotelId(dataHotelId.hotelId);
+      } catch (error) {
+        console.error("Error fetching hotelId:", error.message);
+      }
+    };
+    fetchHotelData();
+
     // Function to fetch reviews data
     async function fetchReviews() {
       try {
+        console.log("********************CUrrently logged in user:", user);
         const response = await fetch(
           `http://localhost:4000/hotel/review/${hotelId}`
         );
@@ -40,9 +72,7 @@ export default function HotelDetails() {
     }
 
     fetchReviews();
-  }, [reviews]);
 
-  useEffect(() => {
     // Function to fetch hotels data
     async function fetchHotelDetails() {
       try {
@@ -79,9 +109,8 @@ export default function HotelDetails() {
 
     // Call the fetchHotels function
     fetchHotelDetails();
-  }, []); // The empty array as a second argument ensures useEffect runs once after initial render
+    // The empty array as a second argument ensures useEffect runs once after initial render
 
-  useEffect(() => {
     async function fetchHotelRooms() {
       try {
         const response = await fetch(
@@ -110,61 +139,62 @@ export default function HotelDetails() {
       // Check if hotelId is not null or undefined
       fetchHotelRooms();
     }
-  }, [hotelId, details]); // Include hotelId in the dependency array
+    // Include hotelId in the dependency array
 
-  const handleRatingChange = (event) => {
-    setRating(parseInt(event.target.value, 10));
-  };
+    const handleRatingChange = (event) => {
+      setRating(parseInt(event.target.value, 10));
+    };
 
-  const handleCommentChange = (event) => {
-    setComment(event.target.value);
-  };
+    const handleCommentChange = (event) => {
+      setComment(event.target.value);
+    };
 
-  const handleImageURLChange = (event) => {
-    setImageURL(event.target.value);
-  };
+    const handleImageURLChange = (event) => {
+      setImageURL(event.target.value);
+    };
 
-  const handleSubmitReview = async () => {
-    try {
-      setClient_username(user.username);
-      // console.log(
-      //   "Posting review:",
-      //   rating,
-      //   comment,
-      //   imageURL,
-      //   hotel_username,
-      //   client_username
-      // );
-      const response = await fetch(
-        "http://localhost:4000/hotel/review/postReview",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // Include other headers like authorization if needed
-          },
-          body: JSON.stringify({
-            rating,
-            comment,
-            imageURL,
-            hotel_username,
-            client_username,
-            // Add any other required data like client username and hotel username
-          }),
+    const handleSubmitReview = async () => {
+      try {
+        setClient_username(user.username);
+        // console.log(
+        //   "Posting review:",
+        //   rating,
+        //   comment,
+        //   imageURL,
+        //   hotel_username,
+        //   client_username
+        // );
+        const response = await fetch(
+          "http://localhost:4000/hotel/review/postReview",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              // Include other headers like authorization if needed
+            },
+            body: JSON.stringify({
+              rating,
+              comment,
+              imageURL,
+              hotel_username,
+              client_username,
+              // Add any other required data like client username and hotel username
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          console.error("Error posting review:", response.statusText);
         }
-      );
 
-      if (!response.ok) {
-        console.error("Error posting review:", response.statusText);
+        // Refresh reviews after posting a new one
+        //fetchReviews();
+      } catch (error) {
+        console.error("Error posting review:", error);
       }
-
-      // Refresh reviews after posting a new one
-      //fetchReviews();
-    } catch (error) {
-      console.error("Error posting review:", error);
-    }
-  };
-
+    };
+  }),
+    [hotelId, reviews];
   return (
     <div>
       <Navbar />
