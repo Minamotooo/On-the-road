@@ -69,3 +69,5 @@ touristSpotRouter.post('/home', async (req, res) => {
 
 
 module.exports = touristSpotRouter;
+
+

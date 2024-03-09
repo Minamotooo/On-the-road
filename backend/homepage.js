@@ -64,6 +64,21 @@ app.get("/homepage", (req, res) => {
   }
 });
 
+app.post("/homepage", async (req, res) => {
+  console.log("Request received");
+  try {
+    const result = await pool.query(
+      `SELECT * FROM calculate_monthly_revenue();`
+    );
+    console.log(result.rows);
+    res.json({ success: true, data: result.rows });
+    console.log(result.rows);
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+});
+
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

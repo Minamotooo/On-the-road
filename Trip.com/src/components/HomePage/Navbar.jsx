@@ -57,7 +57,6 @@ import logo from "../images/logo-1.png";
 import "./page.css";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Navbar() {
   // State to manage the visibility of the login modal
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -70,11 +69,9 @@ export default function Navbar() {
   // Function to open the login modal
   const navigate = useNavigate();
 
-
   const navigateToDashboard = () => {
     navigate(`/${user.role}/${user.username}`); // Replace "/dashboard" with the actual path to your dashboard
   };
-
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -105,9 +102,6 @@ export default function Navbar() {
         <a href="/hotel" className="navItem">
           Hotel
         </a>
-        <a href="" className="navItem">
-          Transportation
-        </a>
       </nav>
       <div className="button--container">
         {user ? ( // Check if a user is logged in
@@ -117,7 +111,13 @@ export default function Navbar() {
               {user.username}
             </button>
             {/* Attach the logout function to the onClick event */}
-            <button onClick={() => { logout(); navigateToHome(); }} className="signin--button">
+            <button
+              onClick={() => {
+                logout();
+                navigateToHome();
+              }}
+              className="signin--button"
+            >
               Logout
             </button>
           </>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import "./App.css";
 import Navbar from "../HomePage/Navbar";
+import Sus from "./Sus";
 
 function App() {
   const [data, setData] = useState([]);
@@ -143,6 +144,7 @@ function App() {
           <div className="col-4">{RevenueChart}</div>
         </div>
       </div>
+      <Sus />
     </div>
   );
 }
