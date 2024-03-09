@@ -47,9 +47,7 @@ admin.post("/removeFromSusList/:username", async (req, res) => {
     console.log("Removing user from suspicious list:", username);
 
     // Update the user's sus status in the database
-    await pool.query("UPDATE client_user SET sus = 'no' WHERE username = $1", [
-      username,
-    ]);
+    await pool.query('CALL remove_user_from_sus_list($1)', [username]);
 
     // Debug log
     console.log("User removed successfully");
