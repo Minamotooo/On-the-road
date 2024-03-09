@@ -47,7 +47,7 @@ admin.post("/removeFromSusList/:username", async (req, res) => {
     console.log("Removing user from suspicious list:", username);
 
     // Update the user's sus status in the database
-    await pool.query('CALL remove_user_from_sus_list($1)', [username]);
+    await pool.query("CALL remove_user_from_sus_list($1)", [username]);
 
     // Debug log
     console.log("User removed successfully");
@@ -69,6 +69,58 @@ admin.post("/showsususer", async (req, res) => {
     res.json({ success: true, data: result.rows });
     console.log(result.rows);
   } catch (error) {
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+});
+
+admin.post("/logtable", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM Log_Table");
+    res.json({ success: true, data: result.rows });
+  } catch (error) {
+    console.error("Error fetching log table data:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+});
+
+admin.post("/deleteduser", async (req, res) => {
+  console.log("Request received for deleted users");
+  try {
+    // Fetch deleted users from the 'deleted_client_user' table
+    const result = await pool.query(
+      "SELECT username, profile_photo FROM deleted_client_user"
+    );
+
+    console.log(result.rows);
+    res.json({ success: true, data: result.rows });
+  } catch (error) {
+    console.error("Error fetching deleted users", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+});
+
+// Route to restore a deleted user
+admin.post("/restoreuser/:username", async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    // Restore the user by moving them from 'deleted_client_user' to 'client_user'
+    await pool.query(
+      "INSERT INTO client_user (username, first_name, last_name, password, email, date_of_birth, phone_no, profile_photo, division, district, zip_code, house_no, road_no, road_name, sus) " +
+        "SELECT username, first_name, last_name, password, email, date_of_birth, phone_no, profile_photo, division, district, zip_code, house_no, road_no, road_name, 'no' " + // Assuming 'sus' is not in 'deleted_client_user'
+        "FROM deleted_client_user WHERE username = $1",
+      [username]
+    );
+
+    // Delete the user from 'deleted_client_user' after restoring
+    await pool.query("DELETE FROM deleted_client_user WHERE username = $1", [
+      username,
+    ]);
+
+    console.log("User restored successfully");
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error restoring user:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 });
