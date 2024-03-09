@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
+import Navbar from "../HomePage/Navbar";
 import NeighboringSpotCard from "./NeighboringSpotCard"; // Assuming you have a component for displaying neighboring spots
+import "./commentStyles.css";
 import ReviewCard from "./touristSpotReviewCard";
 
 export default function Details() {
@@ -11,6 +14,12 @@ export default function Details() {
   const [neighboringSpots, setNeighboringSpots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { user } = useAuth();
+
+  // State for posting comments
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,7 +93,46 @@ export default function Details() {
     };
 
     fetchData();
-  }, [spot_id]);
+  }, [spot_id, spotReviews]);
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+
+  const handleRatingChange = (event) => {
+    setRating(parseInt(event.target.value, 10));
+  };
+
+  const handleSubmitComment = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:4000/touristSpot/Reviews/postComment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            rating,
+            comment,
+            spot_id,
+            username: user.username,
+            // Add any other required data like user information if needed
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Error posting comment:", response.statusText);
+      }
+
+      // Refresh comments after posting a new one
+      // fetchComments();
+      setComment("");
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -100,6 +148,7 @@ export default function Details() {
 
   return (
     <div>
+      <Navbar />
       {imageAddress && (
         <img
           src={imageAddress}
@@ -114,7 +163,7 @@ export default function Details() {
       <p>
         {`${spotData.union_name}, ${spotData.upazilla_name}, ${spotData.district_name}, ${spotData.division_name}`}
       </p>
-      <h2>Reviews:</h2>
+      <h2>Comments:</h2>
       <div className="reviews-list">
         {spotReviews.map((review, index) => (
           <ReviewCard key={index} data={review} />
@@ -132,6 +181,33 @@ export default function Details() {
           </Link>
         ))}
       </div>
+      {/* Add the form for submitting comments */}
+      {user && user.role === "client" && (
+        <div className="comment-form">
+          <h2>Write a Comment:</h2>
+          <div>
+            <label htmlFor="comment">Comment:</label>
+            <textarea
+              id="comment"
+              value={comment}
+              onChange={handleCommentChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="rating">Rating:</label>
+            <select id="rating" value={rating} onChange={handleRatingChange}>
+              {[1, 2, 3, 4, 5].map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button className="button--style" onClick={handleSubmitComment}>
+            Submit Comment
+          </button>
+        </div>
+      )}
     </div>
   );
 }

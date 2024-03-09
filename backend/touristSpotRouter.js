@@ -88,6 +88,26 @@ touristSpotRouter.post('/home', async (req, res) => {
     }
   });
 
+
+
+
+
+  touristSpotRouter.post('/Reviews/postComment', async (req, res) => {
+    const { rating,comment,spot_id,username } = req.body;
+    
+   //console.log("Posting comment:",comment,spot_id,username);
+    try {
+      const result = await pool.query(
+        `INSERT INTO tourist_spot_blog_comment (rating,comment_content,spot_id,client_username) VALUES ($1,$2,$3,$4) RETURNING *;`, [rating,comment,spot_id,username]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      console.error('Error posting tourist spot comment:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+    
+  });
+
 module.exports = touristSpotRouter;
 
 

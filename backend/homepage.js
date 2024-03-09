@@ -55,14 +55,6 @@ const getTouristSpotsData = () => {
   ];
 };
 
-app.get("/homepage", (req, res) => {
-  try {
-    const data = getTouristSpotsData();
-    res.json(data);
-  } catch (error) {
-    res.status(500).send("Error fetching tourist spots data");
-  }
-});
 
 app.post("/homepage", async (req, res) => {
   console.log("Request received");

@@ -395,6 +395,63 @@ hotelRouter.post('/fetchApprovedRequests/:username', async (req, res) => {
   });
 
 
+  hotelRouter.post("/gettopreviewedtouristspots", async (req, res) => {
+  
+    const {username} = req.body;
+    console.log("BACKEND******",username);
+  
+    try {
+      // Call the stored procedure to update average ratings
+      const result1 = await pool.query(
+        `CALL update_average_ratings($1);`, [username]
+      );
+  
+      // Select the top 5 tourist spots ordered by Average_Rating
+      const result = await pool.query(
+        
+        `SELECT TS.spot_id,TS.name, TS.blog_description, TS.image, TS.average_rating, COUNT(TS.spot_id) reviewCount, (D.name || ', ' || DIV."name") location FROM tourist_spot TS  JOIN tourist_spot_blog_comment C ON TS.spot_id = C.spot_id JOIN unions U ON TS.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = DIV.division_id GROUP BY TS.spot_id,TS.name, TS.blog_description, TS.image, TS.average_rating, D.name, DIV.name ORDER BY Average_Rating DESC LIMIT 5;`
+      );
+  
+      // Send the result to the client
+      res.json(result.rows);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error fetching tourist spots data");
+    }
+  });
 
+
+  hotelRouter.post("/gettopreviewedhotels", async (req, res) => {
+  
+    const {username} = req.body;
+    console.log("BACKEND******",username);
+  
+    try {
+      // Call the stored procedure to update average ratings
+      const result1 = await pool.query(
+        `CALL update_average_hotel_ratings($1);`, [username]
+      );
+  
+      // Select the top 5 tourist spots ordered by Average_Rating
+      const result = await pool.query(
+        
+        `SELECT H.hotel_id,H.name, H.description, H.photo, H.average_rating, COUNT(H.hotel_id) reviewCount, (D.name || ', ' || DIV."name") location 
+        FROM Hotel H
+        JOIN reviews R ON H.username = R.business_username
+        JOIN unions U ON H.union_id = U.union_id
+        JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id
+        JOIN districts D ON UPZ.district_id = D.district_id
+        JOIN divisions DIV ON D.division_id = DIV.division_id
+        GROUP BY H.hotel_id,H.name, H.description, H.photo, H.average_rating, D.name, DIV.name
+        ORDER BY Average_Rating DESC LIMIT 5;`
+      );
+  
+      // Send the result to the client
+      res.json(result.rows);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error fetching tourist spots data");
+    }
+  });
 
  module.exports = hotelRouter;
