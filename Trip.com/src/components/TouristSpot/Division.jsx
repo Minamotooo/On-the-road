@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Cards from "./Cards";
+import DivisionSpots from "./DivisionSpots"; // Import the new component
 import "./Places.css";
-// Import images
 
 export default function Division({ divisions }) {
+  const [selectedDivisionSpots, setSelectedDivisionSpots] = useState([]);
+
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -25,9 +27,31 @@ export default function Division({ divisions }) {
     },
   };
 
+  const handleDivisionClick = async (division_Name) => {
+    try {
+      const response = await fetch(
+        `http://localhost:4000/touristSpot/fetchDivisionWiseSpots/myDivision`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ divisionName: division_Name.toString() }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setSelectedDivisionSpots(data); // Set the division spots based on the divisionName
+    } catch (error) {
+      console.error("Error fetching division spots:", error);
+      // Handle the error as needed
+    }
+  };
+
   // Check if divisions is an array and has elements
   if (!Array.isArray(divisions) || divisions.length === 0) {
-    // You can add a loading state or return some fallback UI here
     return <p>No divisions to display</p>;
   }
 
@@ -36,9 +60,17 @@ export default function Division({ divisions }) {
       <h2> 8 divisions, endless adventures</h2>
       <Carousel responsive={responsive}>
         {divisions.map((division) => (
-          <Cards key={division.id} title={division.name} image={division.url} />
+          <div
+            key={division.id}
+            onClick={() => handleDivisionClick(division.name)}
+          >
+            <Cards title={division.name} image={division.url} />
+          </div>
         ))}
       </Carousel>
+
+      {/* Render the DivisionSpots component with the selectedDivisionSpots */}
+      <DivisionSpots divisionSpots={selectedDivisionSpots} />
     </div>
   );
 }

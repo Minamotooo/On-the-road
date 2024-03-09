@@ -1,7 +1,6 @@
-import React from "react"
-import { ReactDOM } from "react-dom/client"
-import "./page.css"
-import star from "../images/star.png"
+import React from "react";
+import star from "../images/star.png";
+import "./page.css";
 
 /*
 Challenge: Build the Card component
@@ -23,29 +22,22 @@ Notes:
 */
 
 export default function Card(props) {
-    console.log(props.reviewCount);
-    return (
-        
-        <div className="card">
-            <img
-    src={`${import.meta.env.VITE_PUBLIC_URL || ''}/images/${props.image}`}
-    className="card--image"
-    alt="poster"
-/>
-            
-            <h3 className="card--title">{props.title}</h3>
-            <div className="card--stats">
-                <img src={star} 
-                    className="card--star"
-                    alt="star" />
-                <span className="details">
-                <span>{props.rating}</span>
-                <span className="gray">({props.reviewCount}) • </span>
-                <span className="gray">{props.location}</span>
-                </span>
-            </div>
-            
-            <p className="card--description">{props.description}</p>
-        </div>
-    )
+  console.log(props.reviewCount);
+  return (
+    <div className="card">
+      <img src={`${props.image}`} className="card--image" alt="poster" />
+
+      <h3 className="card--title">{props.title}</h3>
+      <div className="card--stats">
+        <img src={star} className="card--star" alt="star" />
+        <span className="details">
+          <span>{props.rating}</span>
+          <span className="gray">({props.reviewCount}) • </span>
+          <span className="gray">{props.location}</span>
+        </span>
+      </div>
+
+      <p className="card--description">{props.description}</p>
+    </div>
+  );
 }

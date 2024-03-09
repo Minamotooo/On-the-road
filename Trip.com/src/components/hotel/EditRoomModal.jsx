@@ -20,6 +20,11 @@ export default function EditRoomModal({
   useEffect(() => {
     async function fetchHotelRoomInfo() {
       try {
+        if (!hotelId) {
+          console.error("Invalid hotelId");
+          return;
+        }
+
         const response = await fetch(
           `http://localhost:4000/hotel/fetchCurrentRoomInfo/${hotelId}`, // Use backticks for template literals
           {

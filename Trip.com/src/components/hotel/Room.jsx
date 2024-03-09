@@ -90,6 +90,7 @@ export default function Room(props) {
         console.log("noOfRooms: " + reservationData.noOfRooms);
         console.log("Checkin Date: " + reservationData.checkInDate);
         console.log("Checkout Date: " + reservationData.checkOutDate);
+        const hotelID = fetchedHotelId;
 
         const response = await fetch(
           `http://localhost:4000/hotel/Roombooking/${hotelID}`,

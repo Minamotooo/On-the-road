@@ -27,6 +27,15 @@ touristSpotDetailsRouter.use(cors()); // Enable CORS for all routes
 //       res.status(500).json({ success: false, error: 'Internal Server Error' });
 //     }
 //   });
+
+
+
+
+
+
+
+
+
   
 touristSpotDetailsRouter.post('/Details/:spot_id', async (req, res) => {
   const { spot_id } = req.params;
@@ -48,7 +57,7 @@ touristSpotDetailsRouter.post('/Details/fetchneighboringspots/:spot_id', async (
 
   try {
     const result = await pool.query(
-      'SELECT * FROM find_neighboring_spots($1)', //FUNCTION CALL
+      `SELECT * FROM find_neighboring_spots($1);`, //FUNCTION CALL
       [spot_id]
     );
     
@@ -58,6 +67,9 @@ touristSpotDetailsRouter.post('/Details/fetchneighboringspots/:spot_id', async (
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
+
+
 
 touristSpotDetailsRouter.post('/Reviews/:spot_id', async (req, res) => {
   const { spot_id } = req.params;
@@ -80,6 +92,9 @@ touristSpotDetailsRouter.post('/Reviews/:spot_id', async (req, res) => {
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
+
+
 
 
 

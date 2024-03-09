@@ -1,0 +1,58 @@
+/* Comment form styles */
+.comment-form {
+  margin-top: 20px;
+  width: 40%; /* Set the width to 40% */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.comment-form h2 {
+  color: #333;
+}
+
+.comment-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+/* Comment list styles */
+.comments-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f8d7da;
+  width: 40%; /* Set the width to 40% */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.comment-card p {
+  color: #721c24;
+}
+
+.comment-card small {
+  color: #999;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 600px) {
+  .comment-form,
+  .comment-card {
+    width: 100%; /* Full width on small screens */
+  }
+}

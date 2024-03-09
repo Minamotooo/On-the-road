@@ -44,7 +44,7 @@ touristSpotRouter.post('/home', async (req, res) => {
   
       res.json(result.rows);
     } catch (error) {
-      console.error('Error loading tourist spot:', error);
+      console.error('Error loading divisions:', error);
       res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
   });
@@ -66,7 +66,47 @@ touristSpotRouter.post('/home', async (req, res) => {
   });
     
 
+  touristSpotRouter.post('/fetchDivisionWiseSpots/myDivision', async (req, res) => {
+    const { divisionName } = req.body;
+    console.log('****************', divisionName);
+    try {
+      console.log('Received request with divisionName:', divisionName);
+  
+      // Rest of your code...
+  
+      const result = await pool.query(
+        `SELECT * FROM find_spots_under_division($1);`, //FUNCTION CALL
+        [divisionName]
+      );
+  
+      console.log('Result:', result.rows);
+  
+      res.json(result.rows);
+    } catch (error) {
+      console.error('Error loading division wise tourist spot DETAILS:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+  });
 
+
+
+
+
+  touristSpotRouter.post('/Reviews/postComment', async (req, res) => {
+    const { rating,comment,spot_id,username } = req.body;
+    
+   //console.log("Posting comment:",comment,spot_id,username);
+    try {
+      const result = await pool.query(
+        `INSERT INTO tourist_spot_blog_comment (rating,comment_content,spot_id,client_username) VALUES ($1,$2,$3,$4) RETURNING *;`, [rating,comment,spot_id,username]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      console.error('Error posting tourist spot comment:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+    
+  });
 
 module.exports = touristSpotRouter;
 
