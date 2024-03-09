@@ -194,7 +194,7 @@ export default function HotelDetails() {
       }
     };
   }),
-    [hotelId, reviews];
+    [hotelId, reviews, details];
   return (
     <div>
       <Navbar />

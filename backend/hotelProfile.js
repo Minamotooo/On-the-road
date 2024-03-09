@@ -60,7 +60,7 @@ hotelRouter.post('/search', async (req, res) => {
   const { searchTerm } = req.body;
 
   try {
-    const result = await pool.query('SELECT H.hotel_id,H.name, H.address,H.photo, D.name AS DISTRICT, DIV.name AS DIVISION, H.description FROM HOTEL H JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = DIV.division_id WHERE LOWER(H.name) ILIKE $1 OR LOWER(D.name) ILIKE $1 OR LOWER(DIV.name) ILIKE $1;',[`%${searchTerm.toLowerCase()}%`]
+    const result = await pool.query('SELECT H.hotel_id,H.username,H.name, H.address,H.photo, D.name AS DISTRICT, DIV.name AS DIVISION, H.description FROM HOTEL H JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = DIV.division_id WHERE LOWER(H.name) ILIKE $1 OR LOWER(D.name) ILIKE $1 OR LOWER(DIV.name) ILIKE $1;',[`%${searchTerm.toLowerCase()}%`]
     );
 
     console.log(result);

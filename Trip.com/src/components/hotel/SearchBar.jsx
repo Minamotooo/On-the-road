@@ -10,9 +10,9 @@ export default function SearchBar() {
 
   const navigate = useNavigate();
 
-  const handleHotelClick = (hotelId) => {
+  const handleHotelClick = (username) => {
     // Directly navigate to the hotel's detail page
-    navigate(`/clientsidehotelpage/${hotelId}`);
+    navigate(`/hotel/${username}`);
   };
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function SearchBar() {
                 <HotelCard
                   key={hotel.hotel_id}
                   data={hotel}
-                  onClick={() => handleHotelClick(hotel.hotel_id)}
+                  onClick={() => handleHotelClick(hotel.username)}
                 />
               ))}
             </section>
