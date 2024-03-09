@@ -83,6 +83,33 @@ admin.post("/logtable", async (req, res) => {
   }
 });
 
+admin.post("/addtouristspot", async (req, res) => {
+  const { division, district, upazilla, union, name, blogDescription, image } =
+    req.body;
+  try {
+    const temp = await pool.query(
+      "SELECT UNION_ID FROM UNIONS UN JOIN UPAZILLAS UP ON (UN.UPAZILLA_ID = UP.UPAZILLA_ID) JOIN DISTRICTS D ON(UP.DISTRICT_ID = D.DISTRICT_ID) JOIN DIVISIONS DIV ON(D.DIVISION_ID = DIV.DIVISION_ID) WHERE DIV.NAME = $1 AND D.NAME = $2 AND UP.NAME = $3 AND UN.NAME= $4;",
+      [division, district, upazilla, union]
+    );
+    const union_id = temp.rows[0].union_id;
+    console.log(union_id);
+    const result2 = await pool.query(
+      "INSERT INTO tourist_spot (union_id,name,blog_description,image) VALUES ($1, $2, $3, $4) RETURNING *",
+      [union_id, name, blogDescription, image]
+    );
+    //console.log(result2);
+    // Assuming the user is successfully added, send a success response
+    res.status(201).json({
+      message: "Tourist Spot Added successfully",
+    });
+  } catch (error) {
+    console.error("Error adding user:", error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
+  }
+});
+
 admin.post("/deleteduser", async (req, res) => {
   console.log("Request received for deleted users");
   try {
