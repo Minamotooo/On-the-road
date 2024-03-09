@@ -198,7 +198,7 @@ export default function Dashboard() {
           </button>
         </div>
 
-        <div className="container">
+        <div>
         <h1>Booking History</h1>
 
         <div className="booking-segment">
