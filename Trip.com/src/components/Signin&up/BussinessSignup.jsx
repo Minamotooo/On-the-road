@@ -1,18 +1,17 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import HotelSignup from "./HotelSignup";
 import RestaurantSignup from "./RestaurantSignup";
 import TravelAgencySignup from "./TravelAgencySignup";
 import TourGuideSignup from "./TourGuideSignup";
 
-
-export default function BussinessSignup({onClose}) {
+export default function BussinessSignup({ onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [username, setUsername] = useState("");
   const [businessType, setbusinessType] = useState("");
-  const [next,setNext] = useState(false);
+  const [next, setNext] = useState(false);
 
   // Simulate fetching data from a database
 
@@ -21,7 +20,7 @@ export default function BussinessSignup({onClose}) {
       setNext(true);
     } else {
       // Optionally, handle the error case where no business type is selected
-      alert('Please select a business type.');
+      alert("Please select a business type.");
     }
   };
 
@@ -35,14 +34,16 @@ export default function BussinessSignup({onClose}) {
   // Function to get the business signup component based on the business type
   const getBusinessSignupComponent = () => {
     const SignupComponent = BUSINESS_COMPONENTS[businessType];
-    return SignupComponent ? <SignupComponent 
-                                  onClose={onClose} 
-                                  email={email} 
-                                  username={username} 
-                                  password={password}
-                                  businessType={businessType} /> : null;
+    return SignupComponent ? (
+      <SignupComponent
+        onClose={onClose}
+        email={email}
+        username={username}
+        password={password}
+        businessType={businessType}
+      />
+    ) : null;
   };
-
 
   return (
     <>
@@ -90,52 +91,34 @@ export default function BussinessSignup({onClose}) {
           />
           <label className="errorLabel">{passwordError}</label>
           <p>Bussiness Type</p>
-            <div className="radio-container">
-  <label className="custom-radio">
-    <input 
-      type="radio" 
-      name="business-type" 
-      value="Restaurant" 
-      checked={businessType === "Restaurant"}
-      onChange={(e) => setbusinessType(e.target.value)}
-    />
-    <span>Restaurant</span>
-  </label>
-  <label className="custom-radio">
-    <input 
-      type="radio" 
-      name="business-type" 
-      value="Hotel" 
-      checked={businessType === "Hotel"}
-      onChange={(e) => setbusinessType(e.target.value)}
-    />
-    <span>Hotel</span>
-  </label>
-  <label className="custom-radio">
-    <input
-      type="radio"
-      name="business-type"
-      value="Travel Agency"
-      checked={businessType === "Travel Agency"}
-      onChange={(e) => setbusinessType(e.target.value)}
-    />
-    <span>Travel Agency</span>
-  </label>
-  <label className="custom-radio">
-    <input
-      type="radio" 
-      name="business-type" 
-      value="Tour Guide" 
-      checked={businessType === "Tour Guide"}
-      onChange={(e) => setbusinessType(e.target.value)}
-    />
-    <span>Tour Guide</span>
-  </label>
-</div>
+          <div className="radio-container">
+            <label className="custom-radio">
+              <input
+                type="radio"
+                name="business-type"
+                value="Restaurant"
+                checked={businessType === "Restaurant"}
+                onChange={(e) => setbusinessType(e.target.value)}
+              />
+              <span>Restaurant</span>
+            </label>
+            <label className="custom-radio">
+              <input
+                type="radio"
+                name="business-type"
+                value="Hotel"
+                checked={businessType === "Hotel"}
+                onChange={(e) => setbusinessType(e.target.value)}
+              />
+              <span>Hotel</span>
+            </label>
+          </div>
         </div>
 
         <div>
-          <button className="button--style" onClick={nextPage}>Next</button>
+          <button className="button--style" onClick={nextPage}>
+            Next
+          </button>
           <p>
             Already a member? <button className="link">Sign in!</button>
           </p>

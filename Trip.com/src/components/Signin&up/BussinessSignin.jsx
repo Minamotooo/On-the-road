@@ -124,26 +124,6 @@ export default function BussinessSignin({ onClose }) {
               />
               <span>Hotel</span>
             </label>
-            <label className="custom-radio">
-              <input
-                type="radio"
-                name="business-type"
-                value="Travel Agency"
-                checked={businessType === "Travel Agency"}
-                onChange={(e) => setbusinessType(e.target.value)}
-              />
-              <span>Travel Agency</span>
-            </label>
-            <label className="custom-radio">
-              <input
-                type="radio"
-                name="business-type"
-                value="Tour Guide"
-                checked={businessType === "Tour Guide"}
-                onChange={(e) => setbusinessType(e.target.value)}
-              />
-              <span>Tour Guide</span>
-            </label>
           </div>
           <input
             type="text"
