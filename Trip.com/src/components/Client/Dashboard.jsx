@@ -199,47 +199,76 @@ export default function Dashboard() {
         </div>
 
         <div className="container">
-          <h1>Booking History</h1>
-          <div className="booking-segment">
-            <h2>Pending Booking Requests</h2>
-            <div className="booking-list scrollable-container">
+        <h1>Booking History</h1>
+
+        <div className="booking-segment">
+          <h2>Pending Booking Requests</h2>
+          <table className="booking-table">
+            <thead>
+              <tr>
+                <th>Hotel</th>
+                <th>Room Type</th>
+                <th>No. of Rooms</th>
+                <th>Check-in Date</th>
+                <th>Check-out Date</th>
+                <th>Total Bill</th>
+              </tr>
+            </thead>
+            <tbody>
               {pendingHotelBookings && pendingHotelBookings.length > 0 ? (
                 pendingHotelBookings.map((booking, index) => (
-                  <div key={index} className="booking-request">
-                    <p>Hotel: {booking.name}</p>
-                    <p>Room Type: {booking.room_type}</p>
-                    <p>No. of Rooms: {booking.no_of_rooms}</p>
-                    <p>Check-in Date: {booking.check_in_date}</p>
-                    <p>Check-out Date: {booking.check_out_date}</p>
-                    <p>Total Bill: {booking.total_bill}</p>
-                  </div>
+                  <tr key={index}>
+                    <td>{booking.name}</td>
+                    <td>{booking.room_type}</td>
+                    <td>{booking.no_of_rooms}</td>
+                    <td>{booking.check_in_date}</td>
+                    <td>{booking.check_out_date}</td>
+                    <td>{booking.total_bill}</td>
+                  </tr>
                 ))
               ) : (
-                <p>No pending booking requests</p>
+                <tr>
+                  <td colSpan="6">No pending booking requests</td>
+                </tr>
               )}
-            </div>
-          </div>
+            </tbody>
+          </table>
+        </div>
 
-          <div className="booking-segment">
-            <h2>Completed Booking Requests</h2>
-            <div className="booking-list scrollable-container">
+        <div className="booking-segment">
+          <h2>Completed Booking Requests</h2>
+          <table className="booking-table">
+            <thead>
+              <tr>
+                <th>Hotel</th>
+                <th>Room Type</th>
+                <th>No. of Rooms</th>
+                <th>Check-in Date</th>
+                <th>Check-out Date</th>
+                <th>Total Bill</th>
+              </tr>
+            </thead>
+            <tbody>
               {approvedHotelBookings && approvedHotelBookings.length > 0 ? (
                 approvedHotelBookings.map((booking, index) => (
-                  <div key={index} className="booking-request">
-                    <p>Hotel: {booking.name}</p>
-                    <p>Room Type: {booking.room_type}</p>
-                    <p>No. of Rooms: {booking.no_of_rooms}</p>
-                    <p>Check-in Date: {booking.check_in_date}</p>
-                    <p>Check-out Date: {booking.check_out_date}</p>
-                    <p>Total Bill: {booking.total_bill}</p>
-                  </div>
+                  <tr key={index}>
+                    <td>{booking.name}</td>
+                    <td>{booking.room_type}</td>
+                    <td>{booking.no_of_rooms}</td>
+                    <td>{booking.check_in_date}</td>
+                    <td>{booking.check_out_date}</td>
+                    <td>{booking.total_bill}</td>
+                  </tr>
                 ))
               ) : (
-                <p>No completed booking requests</p>
+                <tr>
+                  <td colSpan="6">No completed booking requests</td>
+                </tr>
               )}
-            </div>
-          </div>
+            </tbody>
+          </table>
         </div>
+      </div>
       </div>
       {showEditProfile && <EditProfile onClose={onClose} />}
     </div>
