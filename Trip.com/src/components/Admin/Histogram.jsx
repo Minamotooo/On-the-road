@@ -5,11 +5,21 @@ import Navbar from "../HomePage/Navbar";
 import Sus from "./Sus";
 import LogTable from "./LogTable";
 import Deleted from "./Deleted";
+import AddTouristSpot from "./AddTouristSpot";
+
 
 export default function Histogram() {
   const [data, setData] = useState([]);
   const [revenue, setRevenue] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -149,7 +159,13 @@ export default function Histogram() {
       <Sus />
       <Deleted />
       <LogTable />
+      <div className="placement">
+      <button className="button--style TS" onClick={handleOpenModal}>Add Tourist Spot</button>
+
+      {isModalOpen && (
+        <AddTouristSpot onClose={handleCloseModal} />
+      )}
+      </div>
     </div>
   );
 }
-
