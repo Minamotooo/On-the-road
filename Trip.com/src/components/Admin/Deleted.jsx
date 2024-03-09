@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./susUsers.css"; // Import the CSS file
 
-const SusUsers = () => {
+export default function Deleted() {
   const [susUsers, setSusUsers] = useState([]);
 
   useEffect(() => {
@@ -9,7 +9,7 @@ const SusUsers = () => {
     const fetchSusUsers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:4000/admin/showsususer",
+          "http://localhost:4000/admin/deleteduser",
           {
             method: "POST",
             headers: {
@@ -46,11 +46,11 @@ const SusUsers = () => {
 
     fetchSusUsers();
   }, []); // Add any dependencies if needed
-
-  const removeFromSusList = async (username) => {
+  
+  const RestoreAccount = async (username) => {
     try {
       const response = await fetch(
-        `http://localhost:4000/admin/removeFromSusList/${username}`,
+        `http://localhost:4000/admin/restoreuser/${username}`,
         {
           method: "POST",
           headers: {
@@ -58,28 +58,30 @@ const SusUsers = () => {
           },
           body: JSON.stringify({
             // Add any necessary data for the PUT request
-            key: "value",
           }),
         }
       );
 
       if (response.ok) {
-        // Update the state or trigger a re-fetch
-        const updatedSusUsers = susUsers.filter(
-          (user) => user.username !== username
-        );
-        setSusUsers(updatedSusUsers);
+        const responseData = await response.json();
+
+        if (responseData.success) {
+          // Remove the user from the sus list
+          setSusUsers((prev) => prev.filter((user) => user.username !== username));
+        } else {
+          console.error("Error restoring user:", responseData.error);
+        }
       } else {
-        console.error("Error removing user from suspicious list");
+        console.error("Error restoring user:", response.statusText);
       }
     } catch (error) {
-      console.error("Error removing user from suspicious list:", error.message);
+      console.error("Error restoring user:", error.message);
     }
   };
 
   return (
     <div className="susUsersContainer">
-      <h4>Suspicious Users</h4>
+      <h4>Deleted Users</h4>
       <div className="userList">
         {susUsers.map((user) => (
           <div key={user.id} className="userCard">
@@ -92,9 +94,9 @@ const SusUsers = () => {
               <h5 className="username">{user.username}</h5>
               <button
                 className="button--style btn"
-                onClick={() => removeFromSusList(user.username)}
+                onClick={() => RestoreAccount(user.username)}
               >
-                Unmark
+                Restore
               </button>
             </div>
           </div>
@@ -102,6 +104,5 @@ const SusUsers = () => {
       </div>
     </div>
   );
-};
-
-export default SusUsers;
+}
+    

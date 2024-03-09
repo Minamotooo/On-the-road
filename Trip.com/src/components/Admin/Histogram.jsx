@@ -3,8 +3,10 @@ import Chart from "react-apexcharts";
 import "./App.css";
 import Navbar from "../HomePage/Navbar";
 import Sus from "./Sus";
+import LogTable from "./LogTable";
+import Deleted from "./Deleted";
 
-function App() {
+export default function Histogram() {
   const [data, setData] = useState([]);
   const [revenue, setRevenue] = useState([]);
 
@@ -145,8 +147,9 @@ function App() {
         </div>
       </div>
       <Sus />
+      <Deleted />
+      <LogTable />
     </div>
   );
 }
 
-export default App;
