@@ -1,15 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import Navbar from "../HomePage/Navbar";
-import NeighboringSpotCard from "./NeighboringSpotCard"; // Assuming you have a component for displaying neighboring spots
-import "./commentStyles.css";
-import ReviewCard from "./touristSpotReviewCard";
+import {
+  API,
+  PageHero,
+  PhotoCard,
+  RatingPicker,
+  ReviewItem,
+  SectionHead,
+  Stars,
+  carouselBreakpoints,
+  placeName,
+} from "../Shared/ui";
+
+const post = (url, body) =>
+  fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: body ? JSON.stringify(body) : undefined,
+  });
 
 export default function Details() {
   const { spot_id } = useParams();
-  const [imageAddress, setImageAddress] = useState("");
-  const [spotData, setSpotData] = useState({});
+  const [spotData, setSpotData] = useState(null);
   const [spotReviews, setSpotReviews] = useState([]);
   const [neighboringSpots, setNeighboringSpots] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,194 +35,186 @@ export default function Details() {
 
   // State for posting comments
   const [comment, setComment] = useState("");
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState(5);
+  const [note, setNote] = useState("");
+
+  const fetchReviews = useCallback(async () => {
+    const reviewsResponse = await post(`${API}/touristSpotInfo/Reviews/${spot_id}`);
+    if (!reviewsResponse.ok) throw new Error(`Fetching reviews failed: ${reviewsResponse.statusText}`);
+    const reviews = await reviewsResponse.json();
+    setSpotReviews(reviews.sort((a, b) => b.comment_id - a.comment_id));
+  }, [spot_id]);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        // Fetch details of the current tourist spot
-        const spotResponse = await fetch(
-          `http://localhost:4000/touristSpotInfo/Details/${spot_id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+        const spotResponse = await post(`${API}/touristSpotInfo/Details/${spot_id}`);
+        if (!spotResponse.ok) throw new Error(`Fetching spot data failed: ${spotResponse.statusText}`);
+        const spotRows = await spotResponse.json();
+        setSpotData(spotRows[0] || null);
+
+        await fetchReviews();
+
+        const neighboursResponse = await post(
+          `${API}/touristSpotInfo/Details/fetchneighboringspots/${spot_id}`
         );
-
-        if (!spotResponse.ok) {
-          throw new Error(
-            `Fetching spot data failed: ${spotResponse.statusText}`
-          );
-        }
-
-        const spotData = await spotResponse.json();
-        setSpotData(spotData[0]);
-
-        setImageAddress(spotData[0].image);
-
-        // Fetch reviews for the current tourist spot
-        const reviewsResponse = await fetch(
-          `http://localhost:4000/touristSpotInfo/Reviews/${spot_id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!reviewsResponse.ok) {
-          throw new Error(
-            `Fetching reviews failed: ${reviewsResponse.statusText}`
-          );
-        }
-
-        const reviewsData = await reviewsResponse.json();
-        setSpotReviews(reviewsData);
-
-        // Fetch neighboring spots
-        const neighboringSpotsResponse = await fetch(
-          `http://localhost:4000/touristSpotInfo/Details/fetchneighboringspots/${spot_id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!neighboringSpotsResponse.ok) {
-          throw new Error(
-            `Fetching neighboring spots failed: ${neighboringSpotsResponse.statusText}`
-          );
-        }
-
-        const neighboringSpotsData = await neighboringSpotsResponse.json();
-        setNeighboringSpots(neighboringSpotsData);
-      } catch (error) {
-        setError(`Fetching data failed: ${error.message}`);
+        if (!neighboursResponse.ok)
+          throw new Error(`Fetching neighboring spots failed: ${neighboursResponse.statusText}`);
+        setNeighboringSpots(await neighboursResponse.json());
+        setError(null);
+      } catch (err) {
+        setError(`Fetching data failed: ${err.message}`);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [spot_id, spotReviews]);
+    window.scrollTo(0, 0);
+  }, [spot_id, fetchReviews]);
 
-  const handleCommentChange = (event) => {
-    setComment(event.target.value);
-  };
-
-  const handleRatingChange = (event) => {
-    setRating(parseInt(event.target.value, 10));
-  };
-
-  const handleSubmitComment = async () => {
+  const handleSubmitComment = async (event) => {
+    event.preventDefault();
+    if (!comment.trim()) {
+      setNote("Write a few words about your visit first.");
+      return;
+    }
     try {
-      const response = await fetch(
-        "http://localhost:4000/touristSpot/Reviews/postComment",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            rating,
-            comment,
-            spot_id,
-            username: user.username,
-            // Add any other required data like user information if needed
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        console.error("Error posting comment:", response.statusText);
-      }
-
-      // Refresh comments after posting a new one
-      // fetchComments();
+      const response = await post(`${API}/touristSpot/Reviews/postComment`, {
+        rating,
+        comment: comment.trim(),
+        spot_id,
+        username: user.username,
+      });
+      if (!response.ok) throw new Error(response.statusText);
       setComment("");
-    } catch (error) {
-      console.error("Error posting comment:", error);
+      setRating(5);
+      setNote("Thanks for sharing your experience!");
+      await fetchReviews();
+    } catch (err) {
+      console.error("Error posting comment:", err);
+      setNote("Could not post your comment, please try again.");
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!spotData || Object.keys(spotData).length === 0) {
-    return <div>No data found</div>;
-  }
+  const average =
+    spotReviews.length > 0
+      ? spotReviews.reduce((sum, r) => sum + Number(r.rating), 0) / spotReviews.length
+      : 0;
 
   return (
-    <div>
+    <div className="otr-page">
       <Navbar />
-      {imageAddress && (
-        <img
-          src={imageAddress}
-          alt={spotData.name}
-          style={{ maxWidth: "100%", height: "200px" }}
-        />
-      )}
-      <h1>{spotData.name}</h1>
-      <h2>Description:</h2>
-      <p>{spotData.blog_description}</p>
-      <h2>Location:</h2>
-      <p>
-        {`${spotData.union_name}, ${spotData.upazilla_name}, ${spotData.district_name}, ${spotData.division_name}`}
-      </p>
-      <h2>Comments:</h2>
-      <div className="reviews-list">
-        {spotReviews.map((review, index) => (
-          <ReviewCard key={index} data={review} />
-        ))}
-      </div>
-
-      <h2>Neighboring Spots:</h2>
-      <div className="neighboring-spots-list">
-        {neighboringSpots.map((neighborSpot) => (
-          <Link
-            key={neighborSpot.spot_id}
-            to={`/touristspot/${neighborSpot.spot_id}`}
+      {loading && !spotData ? (
+        <p className="otr-wrap otr-empty">Loading…</p>
+      ) : error ? (
+        <p className="otr-wrap otr-empty">{error}</p>
+      ) : !spotData ? (
+        <p className="otr-wrap otr-empty">No data found</p>
+      ) : (
+        <>
+          <PageHero
+            kicker={`${placeName(spotData.district_name)}, ${spotData.division_name}`}
+            title={spotData.name}
+            sub={spotData.blog_description}
+            arch={spotData.image}
+            pill={neighboringSpots[0]?.image}
           >
-            <NeighboringSpotCard data={neighborSpot} />
-          </Link>
-        ))}
-      </div>
-      {/* Add the form for submitting comments */}
-      {user && user.role === "client" && (
-        <div className="comment-form">
-          <h2>Write a Comment:</h2>
-          <div>
-            <label htmlFor="comment">Comment:</label>
-            <textarea
-              id="comment"
-              value={comment}
-              onChange={handleCommentChange}
-            />
+            <div className="otr-facts">
+              <div>
+                <span className="otr-facts__label">Rating</span>
+                {average > 0 ? (
+                  <>
+                    <Stars value={average} /> {average.toFixed(1)} ({spotReviews.length})
+                  </>
+                ) : (
+                  "Not rated yet"
+                )}
+              </div>
+              <div>
+                <span className="otr-facts__label">Location</span>
+                {`${spotData.union_name}, ${spotData.upazilla_name}`}
+              </div>
+              <div>
+                <span className="otr-facts__label">District</span>
+                {placeName(spotData.district_name)}
+              </div>
+            </div>
+          </PageHero>
+
+          <div className="otr-wrap">
+            <section className="otr-section">
+              <SectionHead kicker="Travellers say" title="Stories from the road" />
+              {spotReviews.length === 0 ? (
+                <p className="otr-empty">No comments yet. Be the first to share your trip!</p>
+              ) : (
+                <div className="otr-reviews">
+                  {spotReviews.map((review) => (
+                    <ReviewItem
+                      key={review.comment_id}
+                      name={review.client_username}
+                      rating={review.rating}
+                      date={review.comment_date}
+                      text={review.comment_content}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {user && user.role === "client" && (
+              <section className="otr-section">
+                <div className="otr-panel">
+                  <SectionHead kicker="Been here?" title="Write a comment" small />
+                  <form className="otr-form" onSubmit={handleSubmitComment}>
+                    <label>Your rating</label>
+                    <RatingPicker value={rating} onChange={setRating} />
+                    <label htmlFor="comment">Your story</label>
+                    <textarea
+                      id="comment"
+                      value={comment}
+                      placeholder="What should the next traveller know?"
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <div>
+                      <button type="submit" className="otr-btn">
+                        Post comment
+                      </button>
+                    </div>
+                    {note && <span className="otr-note">{note}</span>}
+                  </form>
+                </div>
+              </section>
+            )}
+
+            {neighboringSpots.length > 0 && (
+              <section className="otr-section">
+                <SectionHead
+                  kicker="While you're there"
+                  title={
+                    <>
+                      More around <span className="bd">{spotData.division_name}</span>
+                    </>
+                  }
+                />
+                <Carousel responsive={carouselBreakpoints} className="otr-carousel" showDots>
+                  {neighboringSpots.map((neighbour) => (
+                    <PhotoCard
+                      key={neighbour.spot_id}
+                      to={`/touristspot/${neighbour.spot_id}`}
+                      image={neighbour.image}
+                      title={neighbour.name}
+                      rating={neighbour.average_rating}
+                      location={placeName(neighbour.district_name)}
+                      description={neighbour.blog_description}
+                    />
+                  ))}
+                </Carousel>
+              </section>
+            )}
           </div>
-          <div>
-            <label htmlFor="rating">Rating:</label>
-            <select id="rating" value={rating} onChange={handleRatingChange}>
-              {[1, 2, 3, 4, 5].map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button className="button--style" onClick={handleSubmitComment}>
-            Submit Comment
-          </button>
-        </div>
+        </>
       )}
     </div>
   );

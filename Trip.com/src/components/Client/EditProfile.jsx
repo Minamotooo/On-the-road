@@ -31,9 +31,9 @@ function EditProfile({ onClose }) {
         );
         if (response.ok) {
           const data = await response.json();
-          const formattedDateOfBirth = new Date(data.date_of_birth)
-            .toISOString()
-            .split("T")[0];
+          // The API sends e.g. "30 November ,1999"; turn it back into YYYY-MM-DD
+          const parsed = new Date(`${(data.date_of_birth || "").replace(/\s*,\s*/, " ")} 12:00`);
+          const formattedDateOfBirth = isNaN(parsed) ? "" : parsed.toISOString().split("T")[0];
           console.log(data);
           setEmail(data.email);
           setFirstName(data.first_name);
@@ -85,7 +85,6 @@ function EditProfile({ onClose }) {
       );
 
       if (response.ok) {
-        alert("Profile updated successfully");
         navigate(`/client/${username}`);
         onClose();
       } else {

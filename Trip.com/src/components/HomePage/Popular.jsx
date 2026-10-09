@@ -12,11 +12,10 @@ export default function Popular() {
     // Function to fetch data
     const fetchData = async () => {
       try {
-        let username = user.username;
+        let username = user?.username;
         if (username === undefined || username === null) {
           username = "Unknown User";
         }
-        console.log("***********", username);
 
         const response = await fetch(
           "http://localhost:4000/hotel/gettopreviewedtouristspots",
@@ -45,11 +44,10 @@ export default function Popular() {
 
     const fetchHotels = async () => {
       try {
-        let username = user.username;
+        let username = user?.username;
         if (username === undefined || username === null) {
           username = "Unknown User";
         }
-        console.log("***********", username);
 
         const response = await fetch(
           "http://localhost:4000/hotel/gettopreviewedhotels",
@@ -81,6 +79,7 @@ export default function Popular() {
     return (
       <Card
         key={x.spot_id}
+        to={`/touristspot/${x.spot_id}`}
         image={x.image}
         rating={x.average_rating}
         reviewCount={x.reviewcount}
@@ -94,7 +93,8 @@ export default function Popular() {
   const temp1 = hotels.map((x) => {
     return (
       <Card
-        key={x.spot_id}
+        key={x.hotel_id}
+        to={`/hotel/${x.username}`}
         image={x.photo}
         rating={x.average_rating}
         reviewCount={x.reviewcount}

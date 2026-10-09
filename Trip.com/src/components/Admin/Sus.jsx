@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./susUsers.css"; // Import the CSS file
+import { Avatar, SectionHead } from "../Shared/ui";
 
 const SusUsers = () => {
   const [susUsers, setSusUsers] = useState([]);
@@ -78,29 +78,24 @@ const SusUsers = () => {
   };
 
   return (
-    <div className="susUsersContainer">
-      <h4>Suspicious Users</h4>
-      <div className="userList">
-        {susUsers.map((user) => (
-          <div key={user.id} className="userCard">
-            <img
-              src={user.profile_photo}
-              alt={`Profile of ${user.username}`}
-              className="img"
-            />
-            <div className="userInfo">
-              <h5 className="username">{user.username}</h5>
-              <button
-                className="button--style btn"
-                onClick={() => removeFromSusList(user.username)}
-              >
+    <section className="otr-section">
+      <SectionHead kicker="Flagged by the database" title="Suspicious users" small />
+      {susUsers.length === 0 ? (
+        <p className="otr-empty">Nobody is flagged right now.</p>
+      ) : (
+        <div className="otr-chips">
+          {susUsers.map((user) => (
+            <div key={user.username} className="otr-panel" style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 18px" }}>
+              <Avatar name={user.username} photo={user.profile_photo} />
+              <span className="otr-review__name">{user.username}</span>
+              <button className="otr-btn otr-btn--small" onClick={() => removeFromSusList(user.username)}>
                 Unmark
               </button>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+      )}
+    </section>
   );
 };
 

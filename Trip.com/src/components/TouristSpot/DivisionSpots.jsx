@@ -1,28 +1,37 @@
 import React from "react";
-import "./DivisionSpots.css"; // Import your CSS file for styling
+import { PhotoCard, SectionHead, placeName } from "../Shared/ui";
 
-const DivisionSpots = ({ divisionSpots }) => {
-  // Check if divisionSpots is an array and has elements
-  if (!Array.isArray(divisionSpots) || divisionSpots.length === 0) {
-    return <p>No spots to display</p>;
-  }
+const DivisionSpots = ({ division, divisionSpots }) => {
+  if (!division) return null;
 
   return (
-    <div className="division-spots-container">
-      <h2>Explore the Division of Your Choice</h2>
-      <div className="spot-cards">
-        {divisionSpots.map((spot) => (
-          <div key={spot.spot_id} className="spot-card">
-            <img src={spot.image} alt={spot.name} className="spot-image" />
-            <div className="spot-details">
-              <h3>{spot.name}</h3>
-              <p>{spot.blog_description}</p>
-              {/* Add more details or styling as needed */}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <section className="otr-section">
+      <SectionHead
+        kicker={`${divisionSpots.length} place${divisionSpots.length === 1 ? "" : "s"} to see`}
+        title={
+          <>
+            Explore <span className="bd">{division}</span>
+          </>
+        }
+      />
+      {divisionSpots.length === 0 ? (
+        <p className="otr-empty">No spots added for this division yet.</p>
+      ) : (
+        <div className="otr-grid">
+          {divisionSpots.map((spot) => (
+            <PhotoCard
+              key={spot.spot_id}
+              to={`/touristspot/${spot.spot_id}`}
+              image={spot.image}
+              title={spot.name}
+              rating={spot.average_rating}
+              location={placeName(spot.district_name)}
+              description={spot.blog_description}
+            />
+          ))}
+        </div>
+      )}
+    </section>
   );
 };
 

@@ -1,202 +1,154 @@
-// Restaurant.jsx
-
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../HomePage/Navbar";
+// Restaurant.css also carries the site-wide body font and #f4f4f4 background
 import "./Restaurant.css";
+import { API, PageHero, SectionHead, placeName, postJSON } from "../Shared/ui";
 import RestaurantSearchBar from "./RestaurantSearchBar";
 
-// const restaurants = [
-//   {
-//     id: 1,
-//     name: "Cafe Fusion",
-//     cuisine: "Italian",
-//     rating: 4.5,
-//     address: "123 Main Street, Cityville",
-//   },
-//   {
-//     id: 2,
-//     name: "Spice Bistro",
-//     cuisine: "Indian",
-//     rating: 4.2,
-//     address: "456 Oak Avenue, Townsville",
-//   },
-//   {
-//     id: 3,
-//     name: "Sushi Haven",
-//     cuisine: "Japanese",
-//     rating: 4.7,
-//     address: "789 Pine Lane, Villagetown",
-//   },
-// ];
+const priceranges = ["$", "$$", "$$$"];
+const priceLabel = { $: "Budget", $$: "Mid-range", $$$: "Fine dining" };
 
 const Restaurant = () => {
   const [selectedPriceRange, setSelectedPriceRange] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("");
   const [divisions, setDivisions] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
-  const priceranges = ["$", "$$", "$$$"];
 
   useEffect(() => {
-    // Fetch the Division options
     const fetchDivisions = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:4000/hotelSignUp/divisions",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              message: "Get divisions",
-            }),
-          }
-        );
-        console.log("Request sent");
-        console.log(response);
-        if (response.ok) {
-          console.log("Response received");
-          const data = await response.json();
-          console.log(data);
-          setDivisions(
-            data.success ? data.data.map((division) => division.name) : []
-          );
-        } else {
-          const errorMessage = await response.text();
-          setError(
-            `Error getting division: ${errorMessage || response.statusText}`
-          );
-        }
-      } catch (error) {
-        setError(`Error getting division: ${error.message}`);
-      } finally {
-        setLoading(false);
+        const response = await postJSON(`${API}/hotelSignUp/divisions`, { message: "Get divisions" });
+        if (!response.ok) throw new Error(response.statusText);
+        const data = await response.json();
+        setDivisions(data.success ? data.data.map((division) => division.name) : []);
+      } catch (err) {
+        setError(`Error getting division: ${err.message}`);
       }
     };
     fetchDivisions();
   }, []);
 
-  const [searchTerm, setSearchTerm] = useState("");
-
   useEffect(() => {
-    // Fetch the restaurants based on the selected filters and search term
+    const controller = new AbortController();
     const fetchRestaurants = async () => {
       try {
-        setLoading(true);
-        console.log(searchTerm, selectedDivision, selectedPriceRange);
-
-        const response = await fetch(
-          "http://localhost:4000/restaurant/search",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              division: selectedDivision,
-              priceRange: selectedPriceRange,
-              searchTerm: searchTerm, // Add the search term to the request
-            }),
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Printing data: ");
-          console.log(data);
-          setRestaurants(data);
-          console.log("Printing restaurants: ");
-          console.log(restaurants);
-        } else {
-          const errorMessage = await response.text();
-          setError(
-            `Error getting restaurants: ${errorMessage || response.statusText}`
-          );
-        }
-      } catch (error) {
-        setError(`Error getting restaurants: ${error.message}`);
-      } finally {
-        setLoading(false);
+        const response = await fetch(`${API}/restaurant/search`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            division: selectedDivision,
+            priceRange: selectedPriceRange,
+            searchTerm: searchTerm.trim(),
+          }),
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error(response.statusText);
+        const data = await response.json();
+        setRestaurants(data.sort((a, b) => a.name.localeCompare(b.name)));
+        setError(null);
+      } catch (err) {
+        if (err.name !== "AbortError") setError(`Error getting restaurants: ${err.message}`);
       }
     };
-
     fetchRestaurants();
+    return () => controller.abort();
   }, [selectedDivision, selectedPriceRange, searchTerm]);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handlePriceRange = (event) => {
-    setSelectedPriceRange(event.target.value);
-  };
-
-  const handleDivision = (event) => {
-    setSelectedDivision(event.target.value);
-  };
-
   return (
-    <div className="restaurant-list">
+    <div className="otr-page">
       <Navbar />
+      <PageHero
+        kicker="Taste of Bangladesh"
+        title="Eat like the locals do."
+        sub="From Old Dhaka biryani to Chattogram mezbani and Sylhet's endless bhorta."
+        arch="/images/food/haji-biryani.jpg"
+        pill="/images/food/kacchi.jpg"
+      >
+        <RestaurantSearchBar value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+      </PageHero>
 
-      <h2>Top-notch Restaurants</h2>
+      <div className="otr-wrap">
+        <section className="otr-section">
+          <SectionHead
+            kicker={`${restaurants.length} restaurant${restaurants.length === 1 ? "" : "s"}`}
+            title={
+              <>
+                Top-notch restaurants around <span className="bd">Bangladesh</span>
+              </>
+            }
+          />
 
-      <div className="dropdowns">
-        <div className="dropdown">
-          <label>Select Division:</label>
-          <select
-            id="divisionDropdown"
-            value={selectedDivision}
-            onChange={handleDivision}
-          >
-            <option value="">All Divisions</option>
+          <div className="otr-chips" style={{ marginBottom: 12 }}>
+            <button
+              className={`otr-chip ${selectedDivision === "" ? "otr-chip--on" : ""}`}
+              onClick={() => setSelectedDivision("")}
+            >
+              All divisions
+            </button>
             {divisions.map((division) => (
-              <option key={division} value={division}>
+              <button
+                key={division}
+                className={`otr-chip ${selectedDivision === division ? "otr-chip--on" : ""}`}
+                onClick={() => setSelectedDivision(division)}
+              >
                 {division}
-              </option>
+              </button>
             ))}
-          </select>
-        </div>
-
-        <div className="dropdown">
-          <label>Select Rating:</label>
-          <select
-            id="priceRangeDropdown"
-            value={selectedPriceRange}
-            onChange={handlePriceRange}
-          >
-            <option value="">Price Range</option>
-            {priceranges.map((rating) => (
-              <option key={rating} value={rating}>
-                {rating}
-              </option>
+          </div>
+          <div className="otr-chips" style={{ marginBottom: 26 }}>
+            <button
+              className={`otr-chip ${selectedPriceRange === "" ? "otr-chip--on" : ""}`}
+              onClick={() => setSelectedPriceRange("")}
+            >
+              Any price
+            </button>
+            {priceranges.map((price) => (
+              <button
+                key={price}
+                className={`otr-chip ${selectedPriceRange === price ? "otr-chip--on" : ""}`}
+                onClick={() => setSelectedPriceRange(price)}
+              >
+                {price} · {priceLabel[price]}
+              </button>
             ))}
-          </select>
-        </div>
-      </div>
+          </div>
 
-      <div className="search--bar">
-        <RestaurantSearchBar onChange={handleSearch} />
+          {error && <p className="otr-note">{error}</p>}
+          {restaurants.length === 0 ? (
+            <p className="otr-empty">No restaurants match these filters yet.</p>
+          ) : (
+            <div className="otr-grid">
+              {restaurants.map((restaurant) => (
+                <Link
+                  key={restaurant.restaurant_id}
+                  to={`/Restaurant/${restaurant.username}`}
+                  className="otr-card"
+                >
+                  <img src={restaurant.image} alt={restaurant.name} className="otr-card__img" loading="lazy" />
+                  <div className="otr-card__body">
+                    <h3 className="otr-card__title">{restaurant.name}</h3>
+                    <div className="otr-card__meta">
+                      <span className="otr-muted">
+                        {placeName(restaurant.district)}, {restaurant.division}
+                      </span>
+                    </div>
+                    <p className="otr-card__desc">{restaurant.description}</p>
+                    <div className="otr-card__foot">
+                      <span className="otr-tag" style={{ margin: 0 }}>
+                        {restaurant.cuisine}
+                      </span>
+                      <b title={priceLabel[restaurant.price_point]}>{restaurant.price_point}</b>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
       </div>
-
-      <ul>
-        {restaurants.map((restaurant, key) => (
-          <li key={key} className="restaurant-item">
-            <input
-              type="radio"
-              name="restaurant"
-              id={`restaurant-${restaurant.id}`}
-            />
-            <label htmlFor={`restaurant-${restaurant.id}`}>
-              <h3>{restaurant.name}</h3>
-              <p>Cuisine: {restaurant.cuisine}</p>
-              <p>Address: {restaurant.address}</p>
-            </label>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

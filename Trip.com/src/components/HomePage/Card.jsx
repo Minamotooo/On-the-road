@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import star from "../images/star.png";
 import "./page.css";
 
@@ -22,8 +23,7 @@ Notes:
 */
 
 export default function Card(props) {
-  console.log(props.reviewCount);
-  return (
+  const card = (
     <div className="card">
       <img src={`${props.image}`} className="card--image" alt="poster" />
 
@@ -39,5 +39,13 @@ export default function Card(props) {
 
       <p className="card--description">{props.description}</p>
     </div>
+  );
+  // Cards on the landing page open the spot / hotel they show
+  return props.to ? (
+    <Link to={props.to} className="card--link">
+      {card}
+    </Link>
+  ) : (
+    card
   );
 }

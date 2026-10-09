@@ -1,21 +1,14 @@
 import React from "react";
-import "./ReviewCard.css";
+import { ReviewItem } from "../Shared/ui";
 
-const ReviewCard = (props) => {
-  const data = props.data;
-
-  return (
-    <div className="review-card">
-      <div className="review-rating">{`Rating: ${data.rating} out of 5`}</div>
-      {data.image && (
-        <div className="review-image">
-          <img src={data.image} alt="Review" />
-        </div>
-      )}
-      <div className="review-comment">{data.comment}</div>
-      <div className="review-username">{`- ${data.client_username}`}</div>
-    </div>
-  );
-};
+const ReviewCard = ({ data }) => (
+  <ReviewItem
+    name={data.client_username}
+    rating={data.rating}
+    date={data.review_date}
+    text={data.comment}
+    image={data.image}
+  />
+);
 
 export default ReviewCard;

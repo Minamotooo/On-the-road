@@ -13,6 +13,9 @@ hotelRouter.use(bodyParser.json({ limit: '10mb' }));
 
 hotelRouter.use(bodyParser.json());
 
+// Never send password hashes to the browser
+const withoutPassword = ({ password, ...rest }) => rest;
+
 //////////////////CASCADING DELETE////////////////////////
 // DELETE route for deleting a hotel by username
 hotelRouter.delete('/delete/:username', async (req, res) => {
@@ -47,9 +50,7 @@ hotelRouter.post('/hotellandingpage', async (req, res) => {
     const result = await pool.query('SELECT H.*,D.name AS DISTRICT, DIV.name as DIVISION, H.description, MIN(HR.price_per_night) AS STARTING_PRICE  FROM HOTEL H JOIN hotel_rooms HR ON H.hotel_id = HR.hotel_id  JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = Div.division_id GROUP BY H.hotel_id, D.name, DIV.name ORDER BY STARTING_PRICE; ');
    
 
-    console.log(result);
-
-    res.json(result.rows);
+    res.json(result.rows.map(withoutPassword));
   } catch (error) {
     console.error('Error loading hotels:', error);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
@@ -62,8 +63,6 @@ hotelRouter.post('/search', async (req, res) => {
   try {
     const result = await pool.query('SELECT H.hotel_id,H.username,H.name, H.address,H.photo, D.name AS DISTRICT, DIV.name AS DIVISION, H.description FROM HOTEL H JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = DIV.division_id WHERE LOWER(H.name) ILIKE $1 OR LOWER(D.name) ILIKE $1 OR LOWER(DIV.name) ILIKE $1;',[`%${searchTerm.toLowerCase()}%`]
     );
-
-    console.log(result);
 
     res.json(result.rows);
   } catch (error) {
@@ -175,9 +174,10 @@ hotelRouter.post('/details/:hotelId', async (req, res) => {
     const result = await pool.query('SELECT H.*,U.name AS UNION_NAME,UPZ.name AS UPAZILLA_NAME,D.name AS DISTRICT_NAME,DIV.name AS DIVISION_NAME FROM HOTEL H JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = Div.division_id WHERE H.hotel_id = $1; ',[hotelId]);
    
 
-    console.log(result);
-
-    res.json(result.rows[0]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Hotel not found' });
+    }
+    res.json(withoutPassword(result.rows[0]));
   } catch (error) {
     console.error('Error loading hotel rooms:', error);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
@@ -190,7 +190,7 @@ hotelRouter.get('/review/:hotelId', async (req, res) => {
   const { hotelId } = req.params;
 
   try {
-    const result = await pool.query('SELECT * FROM reviews R JOIN hotel H ON R.business_username=H.username WHERE hotel_id = $1;',[hotelId]);
+    const result = await pool.query('SELECT R.*, H.hotel_id, H.name FROM reviews R JOIN hotel H ON R.business_username=H.username WHERE hotel_id = $1;',[hotelId]);
    
 
    // console.log(result);
@@ -302,7 +302,7 @@ hotelRouter.post('/fetchBookingRequests/:username', async (req, res) => {
   const { username } = req.params;
   //console.log("RECEIVED BOOK REQUEST: ", username);
   try {
-    const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE H.username = $1 AND payment_completion_status = 'PENDING';`,[username]);
+    const result = await pool.query(`SELECT HRB.*, H.name, H.username AS hotel_username, H.photo FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE H.username = $1 AND payment_completion_status = 'PENDING';`,[username]);
   // console.log("BOOKING REQUEST :");
 
     //console.log(result);
@@ -346,7 +346,7 @@ hotelRouter.post('/fetchPendingRequests/:username', async (req, res) => {
   const { username } = req.params;
  // console.log("RECEIVED BOOK REQUEST: ", username);
   try {
-    const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND payment_completion_status = 'PENDING';`,[username]);
+    const result = await pool.query(`SELECT HRB.*, H.name, H.username AS hotel_username, H.photo FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND payment_completion_status = 'PENDING';`,[username]);
    //console.log("BOOKING REQUEST :");
 
    // console.log(result);
@@ -364,7 +364,7 @@ hotelRouter.post('/fetchApprovedRequests/:username', async (req, res) => {
   const { username } = req.params;
  // console.log("RECEIVED BOOK REQUEST: ", username);
   try {
-    const result = await pool.query(`SELECT * FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND (payment_completion_status = 'ONGOING' OR payment_completion_status = 'COMPLETED');`,[username]);
+    const result = await pool.query(`SELECT HRB.*, H.name, H.username AS hotel_username, H.photo FROM hotel_room_booking HRB JOIN hotel H ON H.hotel_id = HRB.hotel_id WHERE HRB.client_username = $1 AND (payment_completion_status = 'ONGOING' OR payment_completion_status = 'COMPLETED');`,[username]);
    //console.log("BOOKING REQUEST :");
 
     //console.log(result);
@@ -435,14 +435,14 @@ hotelRouter.post('/fetchApprovedRequests/:username', async (req, res) => {
       // Select the top 5 tourist spots ordered by Average_Rating
       const result = await pool.query(
         
-        `SELECT H.hotel_id,H.name, H.description, H.photo, H.average_rating, COUNT(H.hotel_id) reviewCount, (D.name || ', ' || DIV."name") location 
+        `SELECT H.hotel_id,H.username,H.name, H.description, H.photo, H.average_rating, COUNT(H.hotel_id) reviewCount, (D.name || ', ' || DIV."name") location 
         FROM Hotel H
         JOIN reviews R ON H.username = R.business_username
         JOIN unions U ON H.union_id = U.union_id
         JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id
         JOIN districts D ON UPZ.district_id = D.district_id
         JOIN divisions DIV ON D.division_id = DIV.division_id
-        GROUP BY H.hotel_id,H.name, H.description, H.photo, H.average_rating, D.name, DIV.name
+        GROUP BY H.hotel_id,H.username,H.name, H.description, H.photo, H.average_rating, D.name, DIV.name
         ORDER BY Average_Rating DESC LIMIT 5;`
       );
   

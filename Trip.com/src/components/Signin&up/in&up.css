@@ -256,3 +256,83 @@
 .btn {
   width: 250px;
 }
+
+/* ------------------------------------------------------------------
+   Landing-page look for the sign-in / sign-up / edit modals:
+   navy headings, pink pill buttons, soft rounded inputs.
+   ------------------------------------------------------------------ */
+.modal-wrapper {
+  background-color: rgba(17, 43, 60, 0.45);
+  z-index: 1001;
+}
+
+.modal-container,
+.modal-container2 {
+  border-radius: 14px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+  font-family: "Jost", sans-serif;
+  z-index: 1002;
+}
+
+.modal-container .header,
+.modal-container2 .header {
+  color: #112b3c;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+}
+
+.modal-container2 h4,
+.modal-container p {
+  color: #808080;
+}
+
+.close-button {
+  color: #808080;
+}
+
+.button--style {
+  border: 2px solid #e61c5d;
+  border-radius: 45px;
+  color: #e61c5d;
+  font-family: "Jost", sans-serif;
+  font-weight: 600;
+  background-color: #fff;
+}
+
+.button--style:hover {
+  background-color: #e61c5d;
+  border-color: #e61c5d;
+  color: #fff;
+}
+
+.input-style {
+  border: 1.5px solid #e5e5e5;
+  border-radius: 10px;
+  font-family: "Jost", sans-serif;
+  font-size: 15px;
+  color: #112b3c;
+  outline: none;
+}
+
+.input-style:focus {
+  border-color: #e61c5d;
+}
+
+.custom-radio input[type="radio"]:checked + span {
+  background-color: #e61c5d;
+  border-radius: 45px;
+}
+
+.radio-container {
+  border-radius: 45px;
+  border-color: #e5e5e5;
+}
+
+.link {
+  color: #e61c5d;
+}
+
+.link:hover,
+.link:focus {
+  color: #112b3c;
+}

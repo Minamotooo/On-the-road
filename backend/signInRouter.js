@@ -82,7 +82,6 @@ signInRouter.post("/login", async (req, res) => {
 });
 
 signInRouter.post("/client", async (req, res) => {
-  console.log(req.body);
   const {
     username,
     firstName,
@@ -139,7 +138,7 @@ signInRouter.post("/client", async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Registration successful",
-      user: result.rows[0],
+      user: { username: result.rows[0].username, role: "client" },
     });
   } catch (error) {
     console.error("Error during registration:", error);
@@ -254,7 +253,7 @@ signInRouter.post("/signup", async (req, res) => {
     // Assuming the user is successfully added, send a success response
     res
       .status(201)
-      .json({ message: "User registered successfully", user: result.rows[0] });
+      .json({ message: "User registered successfully", user: { username: result.rows[0].username } });
   } catch (error) {
     console.error("Error adding user:", error);
     res
@@ -337,7 +336,6 @@ signInRouter.post("/hotellogin", async (req, res) => {
   console.log(
     "...................................................................."
   );
-  console.log(req.body);
 
   let tableName;
   switch (businessType.toLowerCase()) {
@@ -360,10 +358,6 @@ signInRouter.post("/hotellogin", async (req, res) => {
       `SELECT * FROM ${tableName} WHERE USERNAME = $1;`,
       [username]
     );
-    console.log(
-      "...................................................................."
-    );
-    console.log(result);
 
     if (result.rowCount === 1) {
       const retrievedData = result.rows[0];
@@ -373,8 +367,6 @@ signInRouter.post("/hotellogin", async (req, res) => {
         password,
         retrievedData.password
       );
-      console.log(password);
-      console.log(retrievedData.password); // Corrected from console.log(user.password) to console.log(retrievedData.password)
 
       if (passwordMatch) {
         // Passwords match, user is authenticated
@@ -384,7 +376,7 @@ signInRouter.post("/hotellogin", async (req, res) => {
           .json({
             success: true,
             message: "Login successful",
-            retrievedData,
+            retrievedData: { ...retrievedData, password: undefined },
             user: {
               username: retrievedData.username,
               role: businessType.toLowerCase(),

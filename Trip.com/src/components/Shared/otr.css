@@ -1,0 +1,762 @@
+/*
+ * Shared look for the inner pages, lifted from the landing page:
+ * navy headings, the pink "TOP REVIEWED" kicker, the arch photo with the
+ * little pill photo leaning on it, soft shadows and round pill buttons.
+ * Everything is prefixed with otr- so it can't leak into older styles.
+ */
+:root {
+  --otr-navy: #112b3c;
+  --otr-pink: #e61c5d;
+  --otr-pink-soft: #fde8ef;
+  --otr-grey: #808080;
+  --otr-muted: #918e9b;
+  --otr-bg: #f4f4f4;
+  --otr-card: #ffffff;
+  --otr-shadow: 0px 12px 40px 0px rgba(0, 0, 0, 0.04);
+  --otr-shadow-hover: 0px 15px 45px 0px rgba(0, 0, 0, 0.1);
+}
+
+.otr-page {
+  padding-top: 60px; /* room for the fixed navbar */
+  padding-bottom: 40px;
+  min-height: calc(100vh - 100px);
+  text-align: left;
+}
+
+.otr-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+/* the navbar is fixed without a top offset; pin it so it ignores the padding */
+.otr-page > .navbar--container {
+  top: 0;
+  left: 0;
+}
+
+/* ---------------------------------------------------------------- hero */
+.otr-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding-top: 50px;
+  padding-bottom: 30px;
+}
+
+.otr-hero__text {
+  flex: 1 1 auto;
+  max-width: 640px;
+  padding-left: 90px;
+}
+
+.otr-kicker {
+  color: var(--otr-pink);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 6px 0;
+}
+
+.otr-hero__title {
+  color: var(--otr-navy);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 105%;
+  margin: 0 0 18px 0;
+  text-shadow: 0px 12px 40px rgba(0, 0, 0, 0.04);
+}
+
+.otr-hero__sub {
+  color: #666;
+  font-size: 18px;
+  line-height: 1.45;
+  max-width: 440px;
+  margin: 0 0 26px 0;
+}
+
+.otr-hero__art {
+  position: relative;
+  flex: 0 0 auto;
+  width: 330px;
+  height: 400px;
+  margin-right: 70px;
+}
+
+.otr-arch {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 390px;
+  object-fit: cover;
+  border-top-left-radius: 150px;
+  border-top-right-radius: 150px;
+  box-shadow: var(--otr-shadow);
+}
+
+.otr-pill {
+  position: absolute;
+  left: 190px;
+  top: 150px;
+  width: 110px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 60px;
+  border: 5px solid #fff;
+  box-shadow: var(--otr-shadow);
+}
+
+/* ---------------------------------------------------------------- sections */
+.otr-section {
+  margin-top: 46px;
+}
+
+.otr-section__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.otr-title {
+  color: var(--otr-navy);
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0;
+  max-width: 700px;
+}
+
+.otr-title--sm {
+  font-size: 26px;
+}
+
+.otr-muted {
+  color: var(--otr-muted);
+}
+
+.otr-empty {
+  font-family: "Jost", sans-serif;
+  color: var(--otr-muted);
+  padding: 30px 0;
+}
+
+/* ---------------------------------------------------------------- search */
+.otr-search {
+  display: flex;
+  align-items: center;
+  max-width: 520px;
+  background: #fff;
+  border-radius: 45px;
+  box-shadow: var(--otr-shadow-hover);
+  padding: 6px 6px 6px 22px;
+}
+
+.otr-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: "Jost", sans-serif;
+  font-size: 16px;
+  color: var(--otr-navy);
+  background: transparent;
+  padding: 8px 0;
+}
+
+.otr-search button,
+.otr-btn {
+  font-family: "Jost", sans-serif;
+  font-size: 15px;
+  border: none;
+  border-radius: 45px;
+  padding: 9px 22px;
+  background: var(--otr-pink);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.otr-search button:hover,
+.otr-btn:hover {
+  background: var(--otr-navy);
+}
+
+.otr-btn--ghost {
+  background: #fff;
+  color: var(--otr-grey);
+  box-shadow: var(--otr-shadow);
+}
+
+.otr-btn--ghost:hover {
+  background: var(--otr-pink);
+  color: #fff;
+}
+
+.otr-btn--small {
+  padding: 6px 16px;
+  font-size: 14px;
+}
+
+.otr-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------- chips */
+.otr-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.otr-chip {
+  font-family: "Jost", sans-serif;
+  font-size: 14px;
+  padding: 7px 16px;
+  border-radius: 45px;
+  border: none;
+  background: #fff;
+  color: var(--otr-grey);
+  box-shadow: var(--otr-shadow);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.otr-chip:hover,
+.otr-chip--on {
+  background: var(--otr-pink);
+  color: #fff;
+}
+
+.otr-tag {
+  display: inline-block;
+  font-family: "Jost", sans-serif;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 45px;
+  background: var(--otr-pink-soft);
+  color: var(--otr-pink);
+  margin: 0 6px 6px 0;
+}
+
+/* ---------------------------------------------------------------- cards */
+.otr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 26px;
+}
+
+.otr-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--otr-card);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--otr-shadow);
+  font-family: "Jost", sans-serif;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.otr-card:hover {
+  transform: scale(1.03);
+  box-shadow: var(--otr-shadow-hover);
+}
+
+.otr-card__img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.otr-card__body {
+  padding: 14px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.otr-card__title {
+  color: var(--otr-navy);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 6px 0;
+}
+
+.otr-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--otr-navy);
+  margin-bottom: 8px;
+}
+
+.otr-card__desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: #444;
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.otr-card__foot {
+  margin-top: auto;
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--otr-navy);
+}
+
+.otr-price b {
+  font-weight: 600;
+}
+
+.otr-star {
+  height: 14px;
+}
+
+/* Division tiles: photo with the name written over it */
+.otr-tile {
+  position: relative;
+  height: 210px;
+  margin: 0 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--otr-shadow);
+}
+
+.otr-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.otr-tile:hover img {
+  transform: scale(1.06);
+}
+
+.otr-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(17, 43, 60, 0) 45%, rgba(17, 43, 60, 0.75) 100%);
+}
+
+.otr-tile span {
+  position: absolute;
+  left: 18px;
+  bottom: 14px;
+  z-index: 1;
+  color: #fff;
+  font-family: "Jost", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.otr-tile--on {
+  outline: 4px solid var(--otr-pink);
+  outline-offset: -4px;
+}
+
+.otr-carousel {
+  padding-bottom: 30px;
+}
+
+.otr-carousel .react-multi-carousel-dot button {
+  background: transparent;
+  border-color: var(--otr-pink);
+  padding: 0;
+}
+
+.otr-carousel .react-multi-carousel-dot--active button {
+  background: var(--otr-pink);
+}
+
+.otr-carousel .react-multiple-carousel__arrow {
+  background: rgba(17, 43, 60, 0.6);
+}
+
+.otr-carousel .otr-card {
+  margin: 10px 12px 20px;
+}
+
+/* ---------------------------------------------------------------- panels */
+.otr-panel {
+  background: var(--otr-card);
+  border-radius: 8px;
+  box-shadow: var(--otr-shadow);
+  padding: 24px 28px;
+  font-family: "Jost", sans-serif;
+}
+
+.otr-panel h3 {
+  color: var(--otr-navy);
+  margin: 0 0 12px 0;
+}
+
+.otr-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 34px;
+  font-family: "Jost", sans-serif;
+  color: var(--otr-navy);
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+
+.otr-facts__label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--otr-muted);
+}
+
+/* ---------------------------------------------------------------- reviews */
+.otr-reviews {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.otr-review {
+  background: var(--otr-card);
+  border-radius: 8px;
+  box-shadow: var(--otr-shadow);
+  padding: 18px 20px;
+  font-family: "Jost", sans-serif;
+}
+
+.otr-review__who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.otr-review__name {
+  color: var(--otr-navy);
+  font-weight: 600;
+}
+
+.otr-review__date {
+  font-size: 12px;
+  color: var(--otr-muted);
+}
+
+.otr-review p {
+  color: #444;
+  font-weight: 300;
+  line-height: 1.45;
+  margin: 8px 0 0 0;
+}
+
+.otr-review__img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.otr-avatar {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--otr-pink-soft);
+  color: var(--otr-pink);
+  font-family: "Jost", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  object-fit: cover;
+}
+
+.otr-avatar--lg {
+  width: 110px;
+  height: 110px;
+  font-size: 38px;
+  border: 5px solid #fff;
+  box-shadow: var(--otr-shadow-hover);
+}
+
+.otr-stars {
+  color: var(--otr-pink);
+  letter-spacing: 1px;
+  font-size: 15px;
+}
+
+.otr-stars .off {
+  color: #ddd;
+}
+
+/* ---------------------------------------------------------------- forms */
+.otr-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 560px;
+}
+
+.otr-form label {
+  font-family: "Jost", sans-serif;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--otr-muted);
+}
+
+.otr-input,
+.otr-form textarea,
+.otr-form select,
+.otr-form input {
+  font-family: "Jost", sans-serif;
+  font-size: 15px;
+  color: var(--otr-navy);
+  border: 1.5px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #fff;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.otr-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.otr-form textarea:focus,
+.otr-form input:focus,
+.otr-form select:focus,
+.otr-input:focus {
+  border-color: var(--otr-pink);
+}
+
+.otr-rate {
+  display: flex;
+  gap: 4px;
+}
+
+.otr-rate button {
+  background: none;
+  border: none;
+  padding: 0 2px;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  color: #ddd;
+}
+
+.otr-rate button.on {
+  color: var(--otr-pink);
+}
+
+.otr-note {
+  font-family: "Jost", sans-serif;
+  font-size: 14px;
+  color: var(--otr-pink);
+}
+
+/* ---------------------------------------------------------------- tables */
+.otr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Jost", sans-serif;
+  font-size: 14px;
+  background: var(--otr-card);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--otr-shadow);
+}
+
+.otr-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--otr-muted);
+  padding: 14px 16px;
+  background: #fafafa;
+}
+
+.otr-table td {
+  padding: 13px 16px;
+  color: var(--otr-navy);
+  border-top: 1px solid #f0f0f0;
+}
+
+.otr-status {
+  display: inline-block;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 45px;
+  background: #eef4f8;
+  color: var(--otr-navy);
+}
+
+.otr-status--PENDING {
+  background: #fff4dc;
+  color: #a86b00;
+}
+
+.otr-status--ONGOING {
+  background: var(--otr-pink-soft);
+  color: var(--otr-pink);
+}
+
+.otr-status--COMPLETED {
+  background: #e6f6ee;
+  color: #1d7a4b;
+}
+
+.otr-status--DENIED {
+  background: #eeeeee;
+  color: #777;
+}
+
+/* ---------------------------------------------------------------- room rows */
+.otr-room {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  background: var(--otr-card);
+  border-radius: 8px;
+  box-shadow: var(--otr-shadow);
+  overflow: hidden;
+  font-family: "Jost", sans-serif;
+  margin-bottom: 20px;
+}
+
+.otr-room img {
+  width: 260px;
+  min-height: 180px;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+
+.otr-room__info {
+  flex: 1;
+  padding: 18px 0;
+}
+
+.otr-room__info h3 {
+  color: var(--otr-navy);
+  font-size: 20px;
+  margin: 0 0 8px 0;
+}
+
+.otr-room__info p {
+  color: #555;
+  font-weight: 300;
+  margin: 4px 0;
+}
+
+.otr-room__price {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 24px;
+  border-left: 1px solid #f2f2f2;
+}
+
+.otr-room__price small {
+  color: var(--otr-muted);
+}
+
+.otr-room__price strong {
+  color: var(--otr-navy);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- modal */
+.otr-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 43, 60, 0.45);
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.otr-modal {
+  background: #fff;
+  border-radius: 14px;
+  padding: 30px 34px;
+  width: min(460px, 92vw);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.otr-modal__close {
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: var(--otr-grey);
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------- small screens */
+@media (max-width: 900px) {
+  .otr-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .otr-hero__text {
+    padding-left: 0;
+  }
+  .otr-hero__title {
+    font-size: 40px;
+  }
+  .otr-hero__art {
+    margin: 0 auto;
+  }
+  .otr-wrap {
+    padding: 0 20px;
+  }
+  .otr-room {
+    flex-direction: column;
+  }
+  .otr-room img {
+    width: 100%;
+  }
+  .otr-room__info {
+    padding: 0 20px;
+  }
+  .otr-room__price {
+    align-items: flex-start;
+    border-left: none;
+  }
+}

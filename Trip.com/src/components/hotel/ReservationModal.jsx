@@ -1,88 +1,32 @@
-// // ReservationModal.jsx
-// import React, { useState } from "react";
-// import Modal from "react-modal";
-// import { useAuth } from "../../AuthContext";
-
-// const ReservationModal = ({ isOpen, onClose, onReserve }) => {
-//   const { user } = useAuth();
-//   const [noOfRooms, setNoOfRooms] = useState(1);
-//   const [checkInDate, setCheckInDate] = useState("");
-//   const [checkOutDate, setCheckOutDate] = useState("");
-
-//   const handleReserve = () => {
-//     // Validate the form data here before calling onReserve
-//     // You can add more validation as needed
-
-//     onReserve({
-//       username: user.username,
-
-//       noOfRooms,
-//       checkInDate,
-//       checkOutDate,
-//     });
-
-//     // Close the modal after reservation
-//     onClose();
-//   };
-
-//   return (
-//     <Modal isOpen={isOpen} onRequestClose={onClose}>
-//       <h2>Reservation Details</h2>
-//       <label>
-//         Number of Rooms:
-//         <input
-//           type="number"
-//           value={noOfRooms}
-//           onChange={(e) => setNoOfRooms(e.target.value)}
-//         />
-//       </label>
-//       <label>
-//         Check-In Date:
-//         <input
-//           type="date"
-//           value={checkInDate}
-//           onChange={(e) => setCheckInDate(e.target.value)}
-//         />
-//       </label>
-//       <label>
-//         Check-Out Date:
-//         <input
-//           type="date"
-//           value={checkOutDate}
-//           onChange={(e) => setCheckOutDate(e.target.value)}
-//         />
-//       </label>
-//       <button onClick={handleReserve}>Reserve</button>
-//     </Modal>
-//   );
-// };
-
-// export default ReservationModal;
-
 import React, { useState } from "react";
-import Modal from "react-modal";
 import { useAuth } from "../../AuthContext";
+import { Modal, taka } from "../Shared/ui";
 
-const ReservationModal = ({ isOpen, onClose, onReserve, availableRooms }) => {
+const isoDate = (date) => date.toISOString().slice(0, 10);
+
+const ReservationModal = ({ onClose, onReserve, availableRooms, roomType, pricePerNight }) => {
   const { user } = useAuth();
+  const today = new Date();
   const [noOfRooms, setNoOfRooms] = useState(1);
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleReserve = () => {
-    // Validate the form data here before calling onReserve
+  const nights =
+    checkInDate && checkOutDate
+      ? Math.round((new Date(checkOutDate) - new Date(checkInDate)) / 86400000)
+      : 0;
+
+  const handleReserve = (event) => {
+    event.preventDefault();
     if (!checkInDate || !checkOutDate) {
       setErrorMessage("Please enter both check-in and check-out dates");
       return;
     }
-
-    if (new Date(checkOutDate) <= new Date(checkInDate)) {
-      // Display an error message
+    if (nights <= 0) {
       setErrorMessage("Check-out date must be later than check-in date");
       return;
     }
-
     if (noOfRooms > availableRooms) {
       setErrorMessage("Number of rooms exceeds the available rooms");
       return;
@@ -91,52 +35,48 @@ const ReservationModal = ({ isOpen, onClose, onReserve, availableRooms }) => {
       setErrorMessage("Number of rooms must be greater than 0");
       return;
     }
-
-    // Reset the error message
     setErrorMessage("");
-
-    // You can add more validation as needed
-
-    onReserve({
-      username: user.username,
-      noOfRooms,
-      checkInDate,
-      checkOutDate,
-    });
-
-    // Close the modal after reservation
-    onClose();
+    onReserve({ username: user.username, noOfRooms, checkInDate, checkOutDate });
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose}>
-      <h2>Reservation Details</h2>
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-      <label>
-        Number of Rooms:
+    <Modal kicker={roomType} title="Reservation details" onClose={onClose}>
+      <form className="otr-form" onSubmit={handleReserve}>
+        <label>Number of rooms</label>
         <input
           type="number"
+          min="1"
+          max={availableRooms}
           value={noOfRooms}
-          onChange={(e) => setNoOfRooms(e.target.value)}
+          onChange={(e) => setNoOfRooms(Number(e.target.value))}
         />
-      </label>
-      <label>
-        Check-In Date:
+        <label>Check-in</label>
         <input
           type="date"
+          min={isoDate(today)}
           value={checkInDate}
           onChange={(e) => setCheckInDate(e.target.value)}
         />
-      </label>
-      <label>
-        Check-Out Date:
+        <label>Check-out</label>
         <input
           type="date"
+          min={checkInDate || isoDate(today)}
           value={checkOutDate}
           onChange={(e) => setCheckOutDate(e.target.value)}
         />
-      </label>
-      <button onClick={handleReserve}>Reserve</button>
+        {nights > 0 && (
+          <p className="otr-muted" style={{ fontFamily: "Jost, sans-serif", margin: "4px 0" }}>
+            {nights} night{nights > 1 ? "s" : ""} × {noOfRooms} room{noOfRooms > 1 ? "s" : ""} ={" "}
+            <b style={{ color: "#112b3c" }}>{taka(nights * noOfRooms * pricePerNight)}</b>
+          </p>
+        )}
+        {errorMessage && <span className="otr-note">{errorMessage}</span>}
+        <div>
+          <button type="submit" className="otr-btn">
+            Send request
+          </button>
+        </div>
+      </form>
     </Modal>
   );
 };

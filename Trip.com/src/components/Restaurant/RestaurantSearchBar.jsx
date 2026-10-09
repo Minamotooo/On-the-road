@@ -1,20 +1,17 @@
 import React from "react";
-import searchIcon from "../images/search.png"; // Make sure you have an icon image at this path
-//import "./SearchBar.css"; // The CSS file for styling
+import "../Shared/otr.css";
 
-const RestaurantSearchBar = ({ onChange }) => {
+const RestaurantSearchBar = ({ value, onChange }) => {
   return (
-    <div className="searchcontainer">
-      <div className="searchbar">
-        <img src={searchIcon} alt="Search" className="search-icon" />
-        <input
-          type="text"
-          placeholder="Search for restaurants..."
-          onChange={onChange}
-          className="search-input"
-        />
-      </div>
-    </div>
+    <form className="otr-search" onSubmit={(e) => e.preventDefault()}>
+      <input
+        type="text"
+        placeholder="Search restaurants by name…"
+        value={value}
+        onChange={onChange}
+      />
+      <button type="submit">Search</button>
+    </form>
   );
 };
 

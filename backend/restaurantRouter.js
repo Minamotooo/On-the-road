@@ -10,6 +10,9 @@ const bodyParser = require('body-parser');
 
 restaurantRouter.use(bodyParser.json());
 
+// Never send password hashes to the browser
+const withoutPassword = ({ password, ...rest }) => rest;
+
 
 //code here
 
@@ -46,7 +49,7 @@ restaurantRouter.post('/search', async (req, res) => {
   
       //console.log(result.rows[0]);
   
-      res.json(result.rows);
+      res.json(result.rows.map(withoutPassword));
     } catch (error) {
       console.error('Error loading restaurants:', error);
       res.status(500).json({ success: false, error: 'Internal Server Error' });
@@ -54,8 +57,22 @@ restaurantRouter.post('/search', async (req, res) => {
   });
 
 
-
-
-
+// One restaurant with its location, for the restaurant page
+restaurantRouter.post('/profile/:username', async (req, res) => {
+  const { username } = req.params;
+  try {
+    const result = await pool.query(
+      'SELECT H.*, U.name AS union_name, UPZ.name AS upazilla_name, D.name AS district, DIV.name AS division FROM RESTAURANT H JOIN unions U ON H.union_id = U.union_id JOIN upazillas UPZ ON U.upazilla_id = UPZ.upazilla_id JOIN districts D ON UPZ.district_id = D.district_id JOIN divisions DIV ON D.division_id = DIV.division_id WHERE H.username = $1;',
+      [username]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Restaurant not found' });
+    }
+    res.json(withoutPassword(result.rows[0]));
+  } catch (error) {
+    console.error('Error loading restaurant:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
 
 module.exports = restaurantRouter;

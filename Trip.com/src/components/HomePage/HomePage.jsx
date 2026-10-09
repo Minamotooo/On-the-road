@@ -1,15 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import Navbar from "./Navbar";
 import Header from "./Header";
+import Navbar from "./Navbar";
 import Popular from "./Popular";
 
 export default function HomePage() {
-    return (
-        <div>
-            <Navbar />
-            <Header />
-            <Popular />
-        </div>
-    )
+  return (
+    <div>
+      <Navbar />
+      <br />
+      <Header />
+      <Popular />
+    </div>
+  );
 }

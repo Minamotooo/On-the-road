@@ -1,171 +1,138 @@
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
-import "./App.css";
 import Navbar from "../HomePage/Navbar";
-import Sus from "./Sus";
-import LogTable from "./LogTable";
-import Deleted from "./Deleted";
+import { API, SectionHead, postJSON, taka } from "../Shared/ui";
 import AddTouristSpot from "./AddTouristSpot";
+import Deleted from "./Deleted";
+import LogTable from "./LogTable";
+import Sus from "./Sus";
 
+const NAVY = "#112B3C";
+const PINK = "#E61C5D";
+
+const baseChart = {
+  chart: { toolbar: { show: false }, fontFamily: "Jost, sans-serif" },
+  grid: { borderColor: "#eeeeee", strokeDashArray: 4 },
+  dataLabels: { enabled: false },
+  yaxis: { labels: { formatter: (v) => taka(v) } },
+  tooltip: { y: { formatter: (v) => taka(v) } },
+};
 
 export default function Histogram() {
   const [data, setData] = useState([]);
   const [revenue, setRevenue] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
   useEffect(() => {
-    const fetchData = async () => {
+    const load = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/admin/dashboard`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          const res = await response.json();
-          setData(res.data);
-        } else {
-          console.log("Error fetching user data: ", response.statusText);
-        }
-      } catch (error) {
-        console.log("Error fetching user data: ", error.message);
+        const [dashboard, monthly] = await Promise.all([
+          postJSON(`${API}/admin/dashboard`),
+          postJSON(`${API}/admin/revenue`),
+        ]);
+        if (dashboard.ok) setData((await dashboard.json()).data);
+        if (monthly.ok) setRevenue((await monthly.json()).data);
+        if (!dashboard.ok || !monthly.ok) setError("Some dashboard data could not be loaded.");
+      } catch (err) {
+        setError(`Error fetching dashboard data: ${err.message}`);
       }
     };
-
-    const fetchRevenue = async () => {
-      try {
-        const response = await fetch(`http://localhost:4000/admin/revenue`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          const res2 = await response.json();
-          setRevenue(res2.data);
-        } else {
-          console.log("Error fetching revenue data: ", response.statusText);
-        }
-      } catch (error) {
-        console.log("Error fetching revenue data: ", error.message);
-      }
-    };
-    fetchRevenue();
-    fetchData();
+    load();
   }, []);
 
-  const dates = data.map((item) => item.date);
-  const bills = data.map((item) => item.bill);
+  const months = data.map((item) => item.date.trim().slice(0, 3));
+  const bills = data.map((item) => Number(item.bill));
+  const revenueMonths = revenue.map((item) => item.month_name.slice(0, 3));
+  const monthlyRevenue = revenue.map((item) => Number(item.revenue));
 
-  const months = revenue.map((item) => item.month_name);
-  const monthlyRevenue = revenue.map((item) => item.revenue);
-
-  const shouldRenderChart = dates.length > 0;
-  const chartOptions = {
-    colors: ["#E91E63", "#FF9800"],
-    chart: {
-      id: "basic-bar",
-    },
-    xaxis: {
-      categories: dates,
-    },
-  };
-
-  const chartSeries = [
-    {
-      name: "Transaction",
-      data: bills,
-    },
-  ];
-
-  const chartComponent = shouldRenderChart && (
-    <Chart options={chartOptions} series={chartSeries} type="bar" width="600" />
-  );
-
-  console.log("Data State:", data);
-  console.log("Revenue State:", revenue);
-
-  const shouldRenderRevenue = months.length > 0 && monthlyRevenue.length > 0;
-
-  const revenueOptions = {
-    colors: ["#E91E63", "#FF9800"],
-    chart: {
-      id: "basic-bar",
-    },
-    xaxis: {
-      categories: shouldRenderRevenue ? months : [],
-    },
-  };
-
-  const revenueSeries = [
-    {
-      name: "Monthly Revenue",
-      data: shouldRenderRevenue ? monthlyRevenue : [],
-    },
-  ];
-
-  console.log("Revenue Options:", revenueOptions);
-  console.log("Revenue Series:", revenueSeries);
-  const RevenueChart = shouldRenderRevenue ? (
-    <Chart
-      options={revenueOptions}
-      series={revenueSeries}
-      type="line"
-      width="600"
-    />
-  ) : (
-    <div>No revenue data available.</div>
-  );
-
-  // Add an error check
-  if (revenue.length === 0) {
-    return <div>Error fetching revenue data.</div>;
-  }
-
-  console.log("Revenue Options:", revenueOptions);
-  console.log("Revenue Series:", revenueSeries);
-
-  console.log("Should Render Revenue:", shouldRenderRevenue);
-  console.log("Revenue Chart:", RevenueChart);
+  const totalBookings = bills.reduce((a, b) => a + b, 0);
+  const totalRevenue = monthlyRevenue.reduce((a, b) => a + b, 0);
+  const bestMonth = revenue.reduce((best, r) => (!best || Number(r.revenue) > Number(best.revenue) ? r : best), null);
 
   return (
-    <div className="App">
+    <div className="otr-page">
       <Navbar />
-      <h1>
-        Admin Dashboard <i className="fas fa-user"></i>{" "}
-      </h1>
-      <div className="main--container">
-        <div className="row">
-          <h4>Amount of Transaction per month</h4>
-          <br />
-          <div className="col-4">{chartComponent}</div>
+      <section className="otr-wrap otr-hero" style={{ paddingBottom: 0 }}>
+        <div className="otr-hero__text" style={{ maxWidth: "none" }}>
+          <p className="otr-kicker">Admin</p>
+          <h1 className="otr-hero__title">Behind the scenes.</h1>
+          <p className="otr-hero__sub">Bookings, revenue and the people keeping On the road honest.</p>
+          <button className="otr-btn" onClick={() => setIsModalOpen(true)}>
+            Add tourist spot
+          </button>
         </div>
-        <div className="row">
-          <h4>Revenue per month(5%)</h4>
-          <br />
-          <div className="col-4">{RevenueChart}</div>
-        </div>
-      </div>
-      <Sus />
-      <Deleted />
-      <LogTable />
-      <div className="placement">
-      <button className="button--style TS" onClick={handleOpenModal}>Add Tourist Spot</button>
+      </section>
 
-      {isModalOpen && (
-        <AddTouristSpot onClose={handleCloseModal} />
-      )}
+      <div className="otr-wrap">
+        {error && <p className="otr-note">{error}</p>}
+
+        <section className="otr-section">
+          <div className="otr-grid">
+            <div className="otr-panel">
+              <span className="otr-facts__label otr-muted">Booking value this year</span>
+              <h3 style={{ fontSize: 30, margin: "6px 0 0" }}>{taka(totalBookings)}</h3>
+            </div>
+            <div className="otr-panel">
+              <span className="otr-facts__label otr-muted">Our 5% commission</span>
+              <h3 style={{ fontSize: 30, margin: "6px 0 0", color: PINK }}>{taka(totalRevenue)}</h3>
+            </div>
+            <div className="otr-panel">
+              <span className="otr-facts__label otr-muted">Best month</span>
+              <h3 style={{ fontSize: 30, margin: "6px 0 0" }}>{bestMonth ? bestMonth.month_name : "—"}</h3>
+            </div>
+          </div>
+        </section>
+
+        <section className="otr-section">
+          <div className="otr-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))" }}>
+            <div className="otr-panel">
+              <SectionHead kicker="Bookings" title="Transactions per month" small />
+              {months.length > 0 ? (
+                <Chart
+                  type="bar"
+                  height={300}
+                  options={{
+                    ...baseChart,
+                    colors: [NAVY],
+                    plotOptions: { bar: { borderRadius: 6, columnWidth: "55%" } },
+                    xaxis: { categories: months },
+                  }}
+                  series={[{ name: "Transactions", data: bills }]}
+                />
+              ) : (
+                <p className="otr-empty">No bookings yet this year.</p>
+              )}
+            </div>
+            <div className="otr-panel">
+              <SectionHead kicker="Revenue" title="Commission per month (5%)" small />
+              {revenueMonths.length > 0 ? (
+                <Chart
+                  type="area"
+                  height={300}
+                  options={{
+                    ...baseChart,
+                    colors: [PINK],
+                    stroke: { curve: "smooth", width: 3 },
+                    fill: { type: "gradient", gradient: { opacityFrom: 0.35, opacityTo: 0.02 } },
+                    markers: { size: 4 },
+                    xaxis: { categories: revenueMonths },
+                  }}
+                  series={[{ name: "Revenue", data: monthlyRevenue }]}
+                />
+              ) : (
+                <p className="otr-empty">No revenue data available.</p>
+              )}
+            </div>
+          </div>
+        </section>
+
+        <Sus />
+        <Deleted />
+        <LogTable />
       </div>
+
+      {isModalOpen && <AddTouristSpot onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 }

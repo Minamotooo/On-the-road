@@ -1,98 +1,54 @@
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+import React, { useState } from "react";
+import { Modal } from "../Shared/ui";
 
-export default function AddRoomModal({ hotelId, isOpen, onClose, onAdd }) {
+export default function AddRoomModal({ hotelId, onClose, onAdd }) {
   const [roomType, setRoomType] = useState("");
   const [availableRooms, setAvailableRooms] = useState("");
   const [amenities, setAmenities] = useState("");
   const [pricePerNight, setPricePerNight] = useState("");
   const [numberOfGuests, setNumberOfGuests] = useState("");
   const [roomImageURL, setRoomImageURL] = useState("");
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    // You can perform any additional initialization here
-    // For example, reset state values when the modal opens
-    setRoomType("");
-    setAvailableRooms("");
-    setAmenities("");
-    setPricePerNight("");
-    setNumberOfGuests("");
-    setRoomImageURL("");
-  }, [isOpen]);
-
-  const handleSave = () => {
+  const handleSave = (event) => {
+    event.preventDefault();
+    if (!roomType.trim() || !availableRooms || !pricePerNight || !numberOfGuests) {
+      setError("Room type, rooms, guests and price are required.");
+      return;
+    }
     onAdd({
       hotelId,
-      roomType,
+      roomType: roomType.trim(),
       availableRooms,
       amenities,
       pricePerNight,
       numberOfGuests,
-      roomImageURL,
+      roomImageURL: roomImageURL.trim() || null,
     });
-
-    onClose();
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      contentLabel="Add Room Modal"
-    >
-      <div className="modal-content">
-        {/* Text fields for adding information */}
-        <h4>Room Type:</h4>
-        <input
-          type="text"
-          placeholder="Room Type"
-          value={roomType}
-          onChange={(e) => setRoomType(e.target.value)}
-        />
-        <h4>Number of Available Rooms:</h4>
-        <input
-          type="text"
-          placeholder="Available Rooms"
-          value={availableRooms}
-          onChange={(e) => setAvailableRooms(e.target.value)}
-        />
-        <h4>Amenities:</h4>
-        <input
-          type="text"
-          placeholder="Amenities"
-          value={amenities}
-          onChange={(e) => setAmenities(e.target.value)}
-        />
-        <h4>Number of guests:</h4>
-        <input
-          type="text"
-          placeholder="Number of Guests"
-          value={numberOfGuests}
-          onChange={(e) => setNumberOfGuests(e.target.value)}
-        />
-        <h4>Price Per Night:</h4>
-        <input
-          type="text"
-          placeholder="Price Per Night"
-          value={pricePerNight}
-          onChange={(e) => setPricePerNight(e.target.value)}
-        />
-        {/* Add other text fields for adding information */}
-        <h4>Room Image URL:</h4>
-        <input
-          type="text"
-          placeholder="Room Image URL"
-          value={roomImageURL}
-          onChange={(e) => setRoomImageURL(e.target.value)}
-        />
-        <h4></h4>
-        <button className="button--style" onClick={handleSave}>
-          Save
-        </button>
-        <button className="button--style" onClick={onClose}>
-          Cancel
-        </button>
-      </div>
+    <Modal kicker="New room" title="Add a room" onClose={onClose}>
+      <form className="otr-form" onSubmit={handleSave}>
+        <label>Room type</label>
+        <input value={roomType} placeholder="e.g. Deluxe Sea View" onChange={(e) => setRoomType(e.target.value)} />
+        <label>Available rooms</label>
+        <input type="number" min="0" value={availableRooms} onChange={(e) => setAvailableRooms(e.target.value)} />
+        <label>Guests per room</label>
+        <input type="number" min="1" value={numberOfGuests} onChange={(e) => setNumberOfGuests(e.target.value)} />
+        <label>Price per night (৳)</label>
+        <input type="number" min="1" value={pricePerNight} onChange={(e) => setPricePerNight(e.target.value)} />
+        <label>Amenities</label>
+        <input value={amenities} placeholder="Wi-Fi, TV, Balcony" onChange={(e) => setAmenities(e.target.value)} />
+        <label>Room photo link</label>
+        <input value={roomImageURL} placeholder="https://…" onChange={(e) => setRoomImageURL(e.target.value)} />
+        {error && <span className="otr-note">{error}</span>}
+        <div>
+          <button type="submit" className="otr-btn">
+            Save room
+          </button>
+        </div>
+      </form>
     </Modal>
   );
 }

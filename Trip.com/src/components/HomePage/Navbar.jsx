@@ -30,9 +30,9 @@
 //                 </Link>
 //             </div>
 //             <nav className="nav--Menu">
-//                 <a href="/touristspot" className="navItem">Tourist Spot</a>
+//                 <a href="/touristspot" className={navClass("/touristspot")}>Tourist Spot</a>
 //                 <a href="" className="navItem">Restaurant</a>
-//                 <a href="/hotel" className="navItem">Hotel</a>
+//                 <a href="/hotel" className={navClass("/hotel")}>Hotel</a>
 //                 <a href="" className="navItem">Transportation</a>
 //             </nav>
 //             <div className="button--container">
@@ -55,7 +55,7 @@ import { useAuth } from "../../AuthContext"; // Adjust the path accordingly
 import Entity from "../Signin&up/Entity";
 import logo from "../images/logo-1.png";
 import "./page.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   // State to manage the visibility of the login modal
@@ -68,9 +68,13 @@ export default function Navbar() {
   //user = { username: "user1", role: "client" };
   // Function to open the login modal
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const navClass = (section) =>
+    pathname.toLowerCase().startsWith(section) ? "navItem active" : "navItem";
 
   const navigateToDashboard = () => {
-    navigate(`/${user.role}/${user.username}`); // Replace "/dashboard" with the actual path to your dashboard
+    // The admin has no username route of its own
+    navigate(user.username === "Admin" && !user.role ? "/admin" : `/${user.role}/${user.username}`);
   };
 
   const openLoginModal = () => {
@@ -93,13 +97,13 @@ export default function Navbar() {
         </Link>
       </div>
       <nav className="nav--Menu">
-        <a href="/touristspot" className="navItem">
+        <a href="/touristspot" className={navClass("/touristspot")}>
           Tourist Spot
         </a>
-        <a href="/restaurant" className="navItem">
+        <a href="/restaurant" className={navClass("/restaurant")}>
           Restaurant
         </a>
-        <a href="/hotel" className="navItem">
+        <a href="/hotel" className={navClass("/hotel")}>
           Hotel
         </a>
       </nav>
@@ -128,7 +132,9 @@ export default function Navbar() {
             <button onClick={openLoginModal} className="signin--button">
               Login
             </button>
-            <button className="signup--button">Register</button>
+            <button onClick={openLoginModal} className="signup--button">
+              Register
+            </button>
           </>
         )}
       </div>

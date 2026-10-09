@@ -1,34 +1,32 @@
-const { Pool } = require("pg");
+const fs = require("fs");
+const path = require("path");
+const { Pool, types } = require("pg");
 
-// const pool = new Pool();
-// module.exports = {
-//   query: (text, params) => pool.query(text, params),
-// };
+// Pick up PGUSER / PGPASSWORD / ... from backend/.env if they're set there
+// (real environment variables win).
+const envFile = path.join(__dirname, "..", ".env");
+if (fs.existsSync(envFile)) {
+  for (const line of fs.readFileSync(envFile, "utf8").split(/\r?\n/)) {
+    const match = line.match(/^\s*([A-Z_]+)\s*=\s*(.*?)\s*$/);
+    if (match && process.env[match[1]] === undefined) process.env[match[1]] = match[2];
+  }
+}
 
-// const { Pool } = require('pg');
+// Return DATE columns as plain 'YYYY-MM-DD' strings instead of JS Dates,
+// so check-in/check-out dates don't shift a day when serialised to JSON.
+types.setTypeParser(1082, (value) => value);
 
-// // PostgreSQL configuration
-//Sakif PC
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'postgres',
-    password: 'slogsweep44445',
-    port: 5432,
-});
+// PostgreSQL configuration. Defaults match the README; override any of them
+// with PGUSER / PGHOST / PGDATABASE / PGPASSWORD / PGPORT in backend/.env.
+const config = {
+  user: process.env.PGUSER || "postgres",
+  host: process.env.PGHOST || "localhost",
+  database: process.env.PGDATABASE || "ontheroad",
+  password: process.env.PGPASSWORD || "1",
+  port: Number(process.env.PGPORT) || 5432,
+};
 
-//Aurchi PC
-// const pool = new Pool({
-//     user: 'postgres',
-//     host: 'localhost',
-//     database: 'ontheroad',
-//     password: '1',
-//     port: 5432,
-// });
+const pool = new Pool(config);
 
 module.exports = pool;
-//haha
-
-
-
-
+module.exports.config = config;
